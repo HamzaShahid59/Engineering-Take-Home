@@ -162,8 +162,11 @@
       "dependents_placeholder": "e.g. 0",
       "error": {
         "dob_required": "Date of birth is required",
+        "dob_min_age": "Borrower must be at least 18 years old",
+        "dob_max_age": "Borrower age must not exceed 65 years",
         "dependents_required": "Number of dependents is required",
-        "dependents_min": "Number of dependents cannot be negative"
+        "dependents_min": "Number of dependents cannot be negative",
+        "dependents_max": "Maximum 10 dependents allowed"
       }
     },
     "step_placeholder": "This step is coming soon.",
@@ -205,9 +208,18 @@
     }
   },
   "page": {
-    "simulator":    { "title": "Mortgage Simulator", "subtitle": "Our interactive mortgage calculator is coming soon." },
-    "dashboard":    { "placeholder": "Dashboard coming soon" },
-    "applications": { "placeholder": "Applications coming soon" },
-    "documents":    { "placeholder": "Documents coming soon" }
+    "simulator": {
+      "title": "Mortgage Simulator",
+      "subtitle": "Our interactive mortgage calculator is coming soon."
+    },
+    "dashboard": {
+      "placeholder": "Dashboard coming soon"
+    },
+    "applications": {
+      "placeholder": "Applications coming soon"
+    },
+    "documents": {
+      "placeholder": "Documents coming soon"
+    }
   }
 }

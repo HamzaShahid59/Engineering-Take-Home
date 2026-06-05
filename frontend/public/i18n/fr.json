@@ -162,8 +162,11 @@
       "dependents_placeholder": "ex. 0",
       "error": {
         "dob_required": "La date de naissance est obligatoire",
+        "dob_min_age": "L'emprunteur doit avoir au moins 18 ans",
+        "dob_max_age": "L'âge de l'emprunteur ne peut pas dépasser 65 ans",
         "dependents_required": "Le nombre de personnes à charge est obligatoire",
-        "dependents_min": "Le nombre de personnes à charge ne peut pas être négatif"
+        "dependents_min": "Le nombre de personnes à charge ne peut pas être négatif",
+        "dependents_max": "Maximum 10 personnes à charge autorisées"
       }
     },
     "step_placeholder": "Cette étape arrive bientôt.",
@@ -205,9 +208,18 @@
     }
   },
   "page": {
-    "simulator":    { "title": "Simulateur hypothécaire", "subtitle": "Notre calculateur hypothécaire interactif arrive bientôt." },
-    "dashboard":    { "placeholder": "Tableau de bord à venir" },
-    "applications": { "placeholder": "Demandes à venir" },
-    "documents":    { "placeholder": "Documents à venir" }
+    "simulator": {
+      "title": "Simulateur hypothécaire",
+      "subtitle": "Notre calculateur hypothécaire interactif arrive bientôt."
+    },
+    "dashboard": {
+      "placeholder": "Tableau de bord à venir"
+    },
+    "applications": {
+      "placeholder": "Demandes à venir"
+    },
+    "documents": {
+      "placeholder": "Documents à venir"
+    }
   }
 }

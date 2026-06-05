@@ -162,8 +162,11 @@
       "dependents_placeholder": "bijv. 0",
       "error": {
         "dob_required": "Geboortedatum is verplicht",
+        "dob_min_age": "De kredietnemer moet minstens 18 jaar oud zijn",
+        "dob_max_age": "De leeftijd van de kredietnemer mag niet hoger zijn dan 65 jaar",
         "dependents_required": "Aantal personen ten laste is verplicht",
-        "dependents_min": "Aantal personen ten laste kan niet negatief zijn"
+        "dependents_min": "Aantal personen ten laste kan niet negatief zijn",
+        "dependents_max": "Maximum 10 personen ten laste toegestaan"
       }
     },
     "step_placeholder": "Deze stap komt binnenkort.",
@@ -205,9 +208,18 @@
     }
   },
   "page": {
-    "simulator":    { "title": "Hypotheeksimulator", "subtitle": "Onze interactieve hypotheekcalculator komt binnenkort beschikbaar." },
-    "dashboard":    { "placeholder": "Dashboard komt binnenkort" },
-    "applications": { "placeholder": "Aanvragen komt binnenkort" },
-    "documents":    { "placeholder": "Documenten komt binnenkort" }
+    "simulator": {
+      "title": "Hypotheeksimulator",
+      "subtitle": "Onze interactieve hypotheekcalculator komt binnenkort beschikbaar."
+    },
+    "dashboard": {
+      "placeholder": "Dashboard komt binnenkort"
+    },
+    "applications": {
+      "placeholder": "Aanvragen komt binnenkort"
+    },
+    "documents": {
+      "placeholder": "Documenten komt binnenkort"
+    }
   }
 }

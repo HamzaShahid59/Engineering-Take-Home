@@ -1,6 +1,8 @@
 import { Component, computed, inject } from '@angular/core';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { SimulatorStateService } from './simulator-state.service';
+import { MortgageSimulationService } from '../../core/services/mortgage-simulation.service';
+import { SimulationCalculateRequest } from '../../core/models/simulation.models';
 import { Step1PurposeComponent } from './steps/step1-purpose/step1-purpose';
 import { Step2BorrowerComponent } from './steps/step2-borrower/step2-borrower';
 import { Step3PropertyComponent } from './steps/step3-property/step3-property';
@@ -31,6 +33,7 @@ const STEPS: SimulatorStep[] = [
 export class SimulatorComponent {
   protected readonly state = inject(SimulatorStateService);
   private readonly translate = inject(TranslateService);
+  private readonly simService = inject(MortgageSimulationService);
   protected readonly steps = STEPS;
 
   protected readonly canContinue = computed(() => {
@@ -66,7 +69,34 @@ export class SimulatorComponent {
     }
     if (step === 6) {
       const pd = this.state.personalDetails();
-      return pd !== null && !!pd.date_of_birth && pd.number_of_dependents !== null && pd.number_of_dependents >= 0;
+
+      if (
+        !pd ||
+        !pd.date_of_birth ||
+        pd.number_of_dependents === null ||
+        pd.number_of_dependents < 0 ||
+        pd.number_of_dependents > 10
+      ) {
+        return false;
+      }
+
+      const birthDate = new Date(pd.date_of_birth);
+      const today = new Date();
+
+      let age = today.getFullYear() - birthDate.getFullYear();
+
+      const birthdayPassed =
+        today.getMonth() > birthDate.getMonth() ||
+        (
+          today.getMonth() === birthDate.getMonth() &&
+          today.getDate() >= birthDate.getDate()
+        );
+
+      if (!birthdayPassed) {
+        age--;
+      }
+
+      return age >= 18 && age <= 65;
     }
     return false;
   });
@@ -81,7 +111,51 @@ export class SimulatorComponent {
   });
 
   protected continue(): void {
-    this.state.setStep(this.state.currentStep() + 1);
+    if (this.state.currentStep() === 6) {
+      this.showResult();
+    } else {
+      this.state.setStep(this.state.currentStep() + 1);
+    }
+  }
+
+  private showResult(): void {
+    const pd = this.state.propertyDetails()!;
+    const fd = this.state.financialDetails()!;
+
+    const payload: SimulationCalculateRequest = {
+      project_details: {
+        project_purpose: this.state.projectPurpose()!,
+        borrower_type: this.state.borrowerType()!,
+        property_type: pd.property_type!,
+        property_location: pd.property_location!,
+        property_price: pd.property_price!,
+        property_usage: pd.property_usage!,
+        sale_type: pd.sale_type!,
+        epc_score: pd.epc_score,
+      },
+      contribution: {
+        own_funds: this.state.contribution()!.own_funds!,
+      },
+      financial_details: {
+        incomes: fd.incomes.map(r => ({ income_type: r.type!, monthly_amount: r.monthly_amount! })),
+        liabilities: fd.liabilities.length > 0
+          ? fd.liabilities.map(r => ({ liability_type: r.type!, monthly_amount: r.monthly_amount! }))
+          : undefined,
+      },
+      personal_details: {
+        date_of_birth: this.state.personalDetails()!.date_of_birth!,
+        number_of_dependents: this.state.personalDetails()!.number_of_dependents!,
+      },
+      preferred_duration_years: 25,
+    };
+
+    this.simService.calculate(payload).subscribe({
+      next: result => {
+        console.log('[Simulator] calculate result:', result);
+        this.state.setStep(7);
+      },
+      error: err => console.error('[Simulator] calculate error:', err),
+    });
   }
 
   protected startOver(): void {
