@@ -34,6 +34,33 @@
         "email_invalid": "Entrez une adresse e-mail valide",
         "password_required": "Le mot de passe est obligatoire"
       }
+    },
+    "register": {
+      "title": "Créer votre compte",
+      "full_name_label": "Nom complet",
+      "email_label": "Adresse e-mail",
+      "phone_label": "Numéro de téléphone",
+      "phone_hint": "Optionnel · ex. +32471234567 ou 0471234567",
+      "password_label": "Mot de passe",
+      "password_hint": "Min. 8 caractères, une majuscule et un chiffre",
+      "submit": "Créer un compte",
+      "submitting": "Création du compte…",
+      "have_account": "Vous avez déjà un compte ?",
+      "sign_in": "Se connecter",
+      "error": {
+        "email_exists": "Un compte avec cette adresse e-mail existe déjà.",
+        "password_validation": "Le mot de passe ne répond pas aux exigences. Utilisez au moins 8 caractères, une majuscule et un chiffre.",
+        "generic": "Une erreur s'est produite. Veuillez réessayer.",
+        "full_name_required": "Le nom complet est obligatoire",
+        "full_name_min": "Le nom complet doit comporter au moins 2 caractères",
+        "email_required": "L'e-mail est obligatoire",
+        "email_invalid": "Entrez une adresse e-mail valide",
+        "password_required": "Le mot de passe est obligatoire",
+        "password_min": "Le mot de passe doit comporter au moins 8 caractères",
+        "password_uppercase": "Le mot de passe doit contenir au moins une majuscule",
+        "password_number": "Le mot de passe doit contenir au moins un chiffre",
+        "phone_invalid": "Entrez un numéro de téléphone belge valide, ex. +32471234567 ou 0471234567"
+      }
     }
   },
   "page": {

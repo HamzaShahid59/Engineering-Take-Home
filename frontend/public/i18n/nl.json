@@ -34,6 +34,33 @@
         "email_invalid": "Voer een geldig e-mailadres in",
         "password_required": "Wachtwoord is verplicht"
       }
+    },
+    "register": {
+      "title": "Account aanmaken",
+      "full_name_label": "Volledige naam",
+      "email_label": "E-mailadres",
+      "phone_label": "Telefoonnummer",
+      "phone_hint": "Optioneel · bijv. +32471234567 of 0471234567",
+      "password_label": "Wachtwoord",
+      "password_hint": "Min. 8 tekens, één hoofdletter en één cijfer",
+      "submit": "Account aanmaken",
+      "submitting": "Account wordt aangemaakt…",
+      "have_account": "Heeft u al een account?",
+      "sign_in": "Inloggen",
+      "error": {
+        "email_exists": "Er bestaat al een account met dit e-mailadres.",
+        "password_validation": "Wachtwoord voldoet niet aan de vereisten. Gebruik minimaal 8 tekens, één hoofdletter en één cijfer.",
+        "generic": "Er is iets misgegaan. Probeer het opnieuw.",
+        "full_name_required": "Volledige naam is verplicht",
+        "full_name_min": "Volledige naam moet minimaal 2 tekens bevatten",
+        "email_required": "E-mail is verplicht",
+        "email_invalid": "Voer een geldig e-mailadres in",
+        "password_required": "Wachtwoord is verplicht",
+        "password_min": "Wachtwoord moet minimaal 8 tekens bevatten",
+        "password_uppercase": "Wachtwoord moet minimaal één hoofdletter bevatten",
+        "password_number": "Wachtwoord moet minimaal één cijfer bevatten",
+        "phone_invalid": "Voer een geldig Belgisch telefoonnummer in, bijv. +32471234567 of 0471234567"
+      }
     }
   },
   "page": {
