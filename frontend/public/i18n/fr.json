@@ -15,11 +15,16 @@
     "system": "Passer en mode clair"
   },
   "lang": {
-    "select": "Choisir la langue"
+    "select": "Choisir la langue",
+    "en": "English",
+    "nl": "Nederlands",
+    "fr": "Français"
   },
   "auth": {
     "login": {
       "title": "Bon retour",
+      "hero_title": "Votre parcours hypothécaire, simplifié",
+      "hero_subtitle": "Gérez votre demande, téléchargez des documents et suivez votre progression en un seul endroit.",
       "email_label": "Adresse e-mail",
       "password_label": "Mot de passe",
       "submit": "Se connecter",
@@ -37,6 +42,8 @@
     },
     "register": {
       "title": "Créer votre compte",
+      "hero_title": "Commencez votre parcours hypothécaire aujourd'hui",
+      "hero_subtitle": "Rejoignez des milliers d'acheteurs belges qui font confiance à Oper pour les guider.",
       "full_name_label": "Nom complet",
       "email_label": "Adresse e-mail",
       "phone_label": "Numéro de téléphone",
@@ -64,7 +71,7 @@
     }
   },
   "page": {
-    "simulator":    { "placeholder": "Simulateur à venir" },
+    "simulator":    { "title": "Simulateur hypothécaire", "subtitle": "Notre calculateur hypothécaire interactif arrive bientôt." },
     "dashboard":    { "placeholder": "Tableau de bord à venir" },
     "applications": { "placeholder": "Demandes à venir" },
     "documents":    { "placeholder": "Documents à venir" }

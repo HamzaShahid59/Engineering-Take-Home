@@ -15,11 +15,16 @@
     "system": "Overschakelen naar lichte modus"
   },
   "lang": {
-    "select": "Taal selecteren"
+    "select": "Taal selecteren",
+    "en": "English",
+    "nl": "Nederlands",
+    "fr": "Français"
   },
   "auth": {
     "login": {
       "title": "Welkom terug",
+      "hero_title": "Uw hypotheektraject, vereenvoudigd",
+      "hero_subtitle": "Beheer uw aanvraag, upload documenten en volg uw voortgang op één plek.",
       "email_label": "E-mailadres",
       "password_label": "Wachtwoord",
       "submit": "Inloggen",
@@ -37,6 +42,8 @@
     },
     "register": {
       "title": "Account aanmaken",
+      "hero_title": "Begin vandaag met uw hypotheektraject",
+      "hero_subtitle": "Sluit u aan bij duizenden Belgische huizenkopers die Oper vertrouwen om hen te begeleiden.",
       "full_name_label": "Volledige naam",
       "email_label": "E-mailadres",
       "phone_label": "Telefoonnummer",
@@ -64,7 +71,7 @@
     }
   },
   "page": {
-    "simulator":    { "placeholder": "Simulator komt binnenkort" },
+    "simulator":    { "title": "Hypotheeksimulator", "subtitle": "Onze interactieve hypotheekcalculator komt binnenkort beschikbaar." },
     "dashboard":    { "placeholder": "Dashboard komt binnenkort" },
     "applications": { "placeholder": "Aanvragen komt binnenkort" },
     "documents":    { "placeholder": "Documenten komt binnenkort" }

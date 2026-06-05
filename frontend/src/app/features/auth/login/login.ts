@@ -53,7 +53,7 @@ export class LoginComponent {
   }
 
   protected inputClass(hasError: boolean): string {
-    const base = 'w-full rounded-lg border px-3 py-2 text-sm shadow-sm transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 dark:bg-navy-800 dark:text-white';
+    const base = 'w-full rounded-lg border px-3 py-2 text-sm shadow-sm transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 dark:bg-navy-900 dark:text-white';
     return hasError
       ? `${base} border-red-400 dark:border-red-500`
       : `${base} border-gray-300 dark:border-navy-600`;

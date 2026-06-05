@@ -15,11 +15,16 @@
     "system": "Switch to light mode"
   },
   "lang": {
-    "select": "Select language"
+    "select": "Select language",
+    "en": "English",
+    "nl": "Nederlands",
+    "fr": "Français"
   },
   "auth": {
     "login": {
       "title": "Welcome back",
+      "hero_title": "Your mortgage journey, simplified",
+      "hero_subtitle": "Manage your application, upload documents, and track your progress all in one place.",
       "email_label": "Email address",
       "password_label": "Password",
       "submit": "Log in",
@@ -37,6 +42,8 @@
     },
     "register": {
       "title": "Create your account",
+      "hero_title": "Start your mortgage journey today",
+      "hero_subtitle": "Join thousands of Belgian homebuyers who trust Oper to guide them through the mortgage process.",
       "full_name_label": "Full name",
       "email_label": "Email address",
       "phone_label": "Phone number",
@@ -64,7 +71,7 @@
     }
   },
   "page": {
-    "simulator":    { "placeholder": "Simulator coming soon" },
+    "simulator":    { "title": "Mortgage Simulator", "subtitle": "Our interactive mortgage calculator is coming soon." },
     "dashboard":    { "placeholder": "Dashboard coming soon" },
     "applications": { "placeholder": "Applications coming soon" },
     "documents":    { "placeholder": "Documents coming soon" }
