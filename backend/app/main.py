@@ -19,7 +19,7 @@ from app.modules.mortgage_applications.router import (
 from app.modules.documents.router import router as documents_router
 
 from app.shared.response import success_response
-
+from fastapi.middleware.cors import CORSMiddleware
 
 # Handles application startup and shutdown logic.
 # MongoDB connection is created when the FastAPI app starts
@@ -54,6 +54,18 @@ app.include_router(users_router)
 app.include_router(mortgage_simulations_router)
 app.include_router(mortgage_applications_router)
 app.include_router(documents_router)
+
+#CORS allowed
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:4200",
+        "http://127.0.0.1:4200",
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Simple endpoint used to verify that the API is running.
 @app.get("/health")
