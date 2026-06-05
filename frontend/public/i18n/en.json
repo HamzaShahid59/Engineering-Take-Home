@@ -113,6 +113,16 @@
         "epc_score_range": "EPC score must be between 0 and 2000"
       }
     },
+    "step4": {
+      "question": "How much do you contribute yourself?",
+      "hint": "Own funds include savings, gifts, or proceeds from a property sale.",
+      "own_funds_label": "Own funds (€)",
+      "own_funds_placeholder": "e.g. 50000",
+      "error": {
+        "required": "Own funds amount is required",
+        "min": "Own funds cannot be negative"
+      }
+    },
     "step_placeholder": "This step is coming soon.",
     "purpose": {
       "buy_property": "Buy property",

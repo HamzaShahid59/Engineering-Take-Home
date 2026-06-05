@@ -113,6 +113,16 @@
         "epc_score_range": "EPC-score moet tussen 0 en 2000 liggen"
       }
     },
+    "step4": {
+      "question": "Hoeveel brengt u zelf in?",
+      "hint": "Eigen inbreng omvat spaargeld, schenkingen of opbrengsten van een eigendomsverkoop.",
+      "own_funds_label": "Eigen inbreng (€)",
+      "own_funds_placeholder": "bijv. 50000",
+      "error": {
+        "required": "Eigen inbreng is verplicht",
+        "min": "Eigen inbreng kan niet negatief zijn"
+      }
+    },
     "step_placeholder": "Deze stap komt binnenkort.",
     "purpose": {
       "buy_property": "Woning kopen",

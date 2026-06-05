@@ -1,0 +1,31 @@
+<!-- Question heading -->
+<div class="mb-6">
+  <h2 class="text-lg font-semibold text-gray-900 dark:text-white sm:text-xl">
+    {{ 'simulator.step4.question' | translate }}
+  </h2>
+  <p class="mt-1 text-sm text-gray-500 dark:text-navy-400">
+    {{ 'simulator.step4.hint' | translate }}
+  </p>
+</div>
+
+<form [formGroup]="form" novalidate class="max-w-sm">
+  <div>
+    <label for="own-funds" class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">
+      {{ 'simulator.step4.own_funds_label' | translate }}
+    </label>
+    <input
+      id="own-funds"
+      type="number"
+      formControlName="own_funds"
+      min="0"
+      step="1"
+      [placeholder]="'simulator.step4.own_funds_placeholder' | translate"
+      [attr.aria-invalid]="c.own_funds.touched && c.own_funds.invalid ? true : null"
+      [class]="inputClass(c.own_funds.touched && c.own_funds.invalid)" />
+    @if (c.own_funds.touched && c.own_funds.hasError('required')) {
+      <p class="mt-1 text-xs text-red-600 dark:text-red-400">{{ 'simulator.step4.error.required' | translate }}</p>
+    } @else if (c.own_funds.touched && c.own_funds.hasError('min')) {
+      <p class="mt-1 text-xs text-red-600 dark:text-red-400">{{ 'simulator.step4.error.min' | translate }}</p>
+    }
+  </div>
+</form>

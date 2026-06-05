@@ -113,6 +113,16 @@
         "epc_score_range": "Le score PEB doit être compris entre 0 et 2000"
       }
     },
+    "step4": {
+      "question": "Quel est votre apport personnel ?",
+      "hint": "L'apport personnel comprend l'épargne, les donations ou le produit d'une vente immobilière.",
+      "own_funds_label": "Apport personnel (€)",
+      "own_funds_placeholder": "ex. 50000",
+      "error": {
+        "required": "L'apport personnel est obligatoire",
+        "min": "L'apport personnel ne peut pas être négatif"
+      }
+    },
     "step_placeholder": "Cette étape arrive bientôt.",
     "purpose": {
       "buy_property": "Acheter un bien",
