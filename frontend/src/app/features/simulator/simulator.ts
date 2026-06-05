@@ -2,6 +2,8 @@ import { Component, computed, inject } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { SimulatorStateService } from './simulator-state.service';
 import { Step1PurposeComponent } from './steps/step1-purpose/step1-purpose';
+import { Step2BorrowerComponent } from './steps/step2-borrower/step2-borrower';
+import { Step3PropertyComponent } from './steps/step3-property/step3-property';
 
 interface SimulatorStep {
   index: number;
@@ -20,7 +22,7 @@ const STEPS: SimulatorStep[] = [
 
 @Component({
   selector: 'app-simulator',
-  imports: [TranslatePipe, Step1PurposeComponent],
+  imports: [TranslatePipe, Step1PurposeComponent, Step2BorrowerComponent, Step3PropertyComponent],
   templateUrl: './simulator.html',
 })
 export class SimulatorComponent {
@@ -28,7 +30,17 @@ export class SimulatorComponent {
   protected readonly steps = STEPS;
 
   protected readonly canContinue = computed(() => {
-    if (this.state.currentStep() === 1) return this.state.projectPurpose() !== null;
+    const step = this.state.currentStep();
+    if (step === 1) return this.state.projectPurpose() !== null;
+    if (step === 2) return this.state.borrowerType() !== null;
+    if (step === 3) {
+      const pd = this.state.propertyDetails();
+      if (!pd) return false;
+      if (!pd.property_type || !pd.property_location || !pd.property_usage || !pd.sale_type) return false;
+      if ((pd.property_price ?? 0) <= 0) return false;
+      if (pd.epc_score !== null && pd.epc_score !== undefined && (pd.epc_score < 0 || pd.epc_score > 2000)) return false;
+      return true;
+    }
     return false;
   });
 

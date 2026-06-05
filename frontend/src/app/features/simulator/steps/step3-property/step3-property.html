@@ -1,0 +1,132 @@
+<!-- Question heading -->
+<div class="mb-6">
+  <h2 class="text-lg font-semibold text-gray-900 dark:text-white sm:text-xl">
+    {{ 'simulator.step3.question' | translate }}
+  </h2>
+</div>
+
+<!-- Loading skeletons -->
+@if (loading()) {
+  <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+    @for (i of [1, 2, 3, 4, 5, 6]; track i) {
+      <div [class]="i === 3 || i === 6 ? 'sm:col-span-2' : ''">
+        <div class="mb-1.5 h-4 w-24 animate-pulse rounded bg-gray-100 dark:bg-navy-800"></div>
+        <div class="h-9 animate-pulse rounded-lg bg-gray-100 dark:bg-navy-800"></div>
+      </div>
+    }
+  </div>
+}
+
+<!-- Form -->
+@else {
+  <form [formGroup]="form" novalidate>
+    <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+
+      <!-- Property type -->
+      <div>
+        <label for="property-type" class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">
+          {{ 'simulator.step3.property_type_label' | translate }}
+        </label>
+        <select id="property-type" formControlName="property_type"
+                [attr.aria-invalid]="c.property_type.touched && c.property_type.invalid ? true : null"
+                [class]="selectClass(c.property_type.touched && c.property_type.invalid)">
+          <option value="">{{ 'simulator.step3.select_placeholder' | translate }}</option>
+          @for (opt of options()!.property_types; track opt.value) {
+            <option [value]="opt.value">{{ optionKey('property_type', opt.value) | translate }}</option>
+          }
+        </select>
+        @if (c.property_type.touched && c.property_type.hasError('required')) {
+          <p class="mt-1 text-xs text-red-600 dark:text-red-400">{{ 'simulator.step3.error.property_type_required' | translate }}</p>
+        }
+      </div>
+
+      <!-- Property location -->
+      <div>
+        <label for="property-location" class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">
+          {{ 'simulator.step3.property_location_label' | translate }}
+        </label>
+        <select id="property-location" formControlName="property_location"
+                [attr.aria-invalid]="c.property_location.touched && c.property_location.invalid ? true : null"
+                [class]="selectClass(c.property_location.touched && c.property_location.invalid)">
+          <option value="">{{ 'simulator.step3.select_placeholder' | translate }}</option>
+          @for (opt of options()!.property_locations; track opt.value) {
+            <option [value]="opt.value">{{ optionKey('property_location', opt.value) | translate }}</option>
+          }
+        </select>
+        @if (c.property_location.touched && c.property_location.hasError('required')) {
+          <p class="mt-1 text-xs text-red-600 dark:text-red-400">{{ 'simulator.step3.error.property_location_required' | translate }}</p>
+        }
+      </div>
+
+      <!-- Property price (full width) -->
+      <div class="sm:col-span-2">
+        <label for="property-price" class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">
+          {{ 'simulator.step3.property_price_label' | translate }}
+        </label>
+        <input id="property-price" type="number" formControlName="property_price"
+               min="0" step="1"
+               [placeholder]="'simulator.step3.property_price_placeholder' | translate"
+               [attr.aria-invalid]="c.property_price.touched && c.property_price.invalid ? true : null"
+               [class]="inputClass(c.property_price.touched && c.property_price.invalid)" />
+        @if (c.property_price.touched && c.property_price.hasError('required')) {
+          <p class="mt-1 text-xs text-red-600 dark:text-red-400">{{ 'simulator.step3.error.property_price_required' | translate }}</p>
+        } @else if (c.property_price.touched && c.property_price.hasError('min')) {
+          <p class="mt-1 text-xs text-red-600 dark:text-red-400">{{ 'simulator.step3.error.property_price_min' | translate }}</p>
+        }
+      </div>
+
+      <!-- Property usage -->
+      <div>
+        <label for="property-usage" class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">
+          {{ 'simulator.step3.property_usage_label' | translate }}
+        </label>
+        <select id="property-usage" formControlName="property_usage"
+                [attr.aria-invalid]="c.property_usage.touched && c.property_usage.invalid ? true : null"
+                [class]="selectClass(c.property_usage.touched && c.property_usage.invalid)">
+          <option value="">{{ 'simulator.step3.select_placeholder' | translate }}</option>
+          @for (opt of options()!.property_usages; track opt.value) {
+            <option [value]="opt.value">{{ optionKey('property_usage', opt.value) | translate }}</option>
+          }
+        </select>
+        @if (c.property_usage.touched && c.property_usage.hasError('required')) {
+          <p class="mt-1 text-xs text-red-600 dark:text-red-400">{{ 'simulator.step3.error.property_usage_required' | translate }}</p>
+        }
+      </div>
+
+      <!-- Sale type -->
+      <div>
+        <label for="sale-type" class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">
+          {{ 'simulator.step3.sale_type_label' | translate }}
+        </label>
+        <select id="sale-type" formControlName="sale_type"
+                [attr.aria-invalid]="c.sale_type.touched && c.sale_type.invalid ? true : null"
+                [class]="selectClass(c.sale_type.touched && c.sale_type.invalid)">
+          <option value="">{{ 'simulator.step3.select_placeholder' | translate }}</option>
+          @for (opt of options()!.sale_types; track opt.value) {
+            <option [value]="opt.value">{{ optionKey('sale_type', opt.value) | translate }}</option>
+          }
+        </select>
+        @if (c.sale_type.touched && c.sale_type.hasError('required')) {
+          <p class="mt-1 text-xs text-red-600 dark:text-red-400">{{ 'simulator.step3.error.sale_type_required' | translate }}</p>
+        }
+      </div>
+
+      <!-- EPC score (optional) -->
+      <div>
+        <label for="epc-score" class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">
+          {{ 'simulator.step3.epc_score_label' | translate }}
+        </label>
+        <input id="epc-score" type="number" formControlName="epc_score"
+               min="0" max="2000" step="1"
+               [attr.aria-describedby]="'epc-score-hint'"
+               [class]="inputClass(c.epc_score.touched && c.epc_score.invalid)" />
+        @if (c.epc_score.touched && (c.epc_score.hasError('min') || c.epc_score.hasError('max'))) {
+          <p id="epc-score-hint" class="mt-1 text-xs text-red-600 dark:text-red-400">{{ 'simulator.step3.error.epc_score_range' | translate }}</p>
+        } @else {
+          <p id="epc-score-hint" class="mt-1 text-xs text-gray-400 dark:text-gray-500">{{ 'simulator.step3.epc_score_hint' | translate }}</p>
+        }
+      </div>
+
+    </div>
+  </form>
+}

@@ -88,6 +88,31 @@
       "question": "Quel est l'objectif de votre projet ?",
       "load_error": "Impossible de charger les options. Veuillez actualiser la page."
     },
+    "step2": {
+      "question": "Qui fait cette demande de prêt hypothécaire ?",
+      "note": "Seules les demandes individuelles sont prises en charge pour l'instant."
+    },
+    "step3": {
+      "question": "Parlez-nous du bien",
+      "property_type_label": "Type de bien",
+      "property_location_label": "Localisation",
+      "property_price_label": "Prix du bien (€)",
+      "property_price_placeholder": "ex. 250000",
+      "property_usage_label": "Usage du bien",
+      "sale_type_label": "Type de vente",
+      "epc_score_label": "Score PEB",
+      "epc_score_hint": "Optionnel · 0–2000 kWh/m²/an",
+      "select_placeholder": "Sélectionnez une option",
+      "error": {
+        "property_type_required": "Le type de bien est obligatoire",
+        "property_location_required": "La localisation est obligatoire",
+        "property_price_required": "Le prix du bien est obligatoire",
+        "property_price_min": "Le prix du bien doit être supérieur à 0",
+        "property_usage_required": "L'usage du bien est obligatoire",
+        "sale_type_required": "Le type de vente est obligatoire",
+        "epc_score_range": "Le score PEB doit être compris entre 0 et 2000"
+      }
+    },
     "step_placeholder": "Cette étape arrive bientôt.",
     "purpose": {
       "buy_property": "Acheter un bien",
@@ -95,6 +120,35 @@
       "buy_out": "Rachat",
       "renovate_property": "Rénover un bien",
       "refinance_my_mortgage": "Refinancer mon prêt hypothécaire"
+    },
+    "borrower": {
+      "only_for_myself": "Uniquement pour moi"
+    },
+    "property_type": {
+      "home": "Maison",
+      "apartment": "Appartement",
+      "studio": "Studio",
+      "construction_land": "Terrain à bâtir",
+      "investment_property": "Investissement",
+      "villa": "Villa"
+    },
+    "property_location": {
+      "brussels": "Bruxelles",
+      "flanders": "Flandre",
+      "wallonia": "Wallonie",
+      "not_sure": "Je ne sais pas"
+    },
+    "property_usage": {
+      "living": "Résidence principale",
+      "second_stay": "Résidence secondaire",
+      "commercial": "Commercial",
+      "investment_property": "Investissement",
+      "private_rent": "Location privée",
+      "professional_rent": "Location professionnelle"
+    },
+    "sale_type": {
+      "private_sale": "Vente de gré à gré",
+      "vat_regime": "Régime TVA"
     }
   },
   "page": {

@@ -88,6 +88,31 @@
       "question": "Wat is het doel van uw project?",
       "load_error": "Opties konden niet worden geladen. Vernieuw de pagina."
     },
+    "step2": {
+      "question": "Wie vraagt deze hypotheek aan?",
+      "note": "Voorlopig worden alleen individuele aanvragen ondersteund."
+    },
+    "step3": {
+      "question": "Vertel ons over het eigendom",
+      "property_type_label": "Type eigendom",
+      "property_location_label": "Locatie",
+      "property_price_label": "Aankoopprijs (€)",
+      "property_price_placeholder": "bijv. 250000",
+      "property_usage_label": "Gebruik van het eigendom",
+      "sale_type_label": "Type verkoop",
+      "epc_score_label": "EPC-score",
+      "epc_score_hint": "Optioneel · 0–2000 kWh/m²/jaar",
+      "select_placeholder": "Selecteer een optie",
+      "error": {
+        "property_type_required": "Type eigendom is verplicht",
+        "property_location_required": "Locatie is verplicht",
+        "property_price_required": "Aankoopprijs is verplicht",
+        "property_price_min": "Aankoopprijs moet groter zijn dan 0",
+        "property_usage_required": "Gebruik van het eigendom is verplicht",
+        "sale_type_required": "Type verkoop is verplicht",
+        "epc_score_range": "EPC-score moet tussen 0 en 2000 liggen"
+      }
+    },
     "step_placeholder": "Deze stap komt binnenkort.",
     "purpose": {
       "buy_property": "Woning kopen",
@@ -95,6 +120,35 @@
       "buy_out": "Uitkopen",
       "renovate_property": "Woning renoveren",
       "refinance_my_mortgage": "Hypotheek herfinancieren"
+    },
+    "borrower": {
+      "only_for_myself": "Alleen voor mezelf"
+    },
+    "property_type": {
+      "home": "Woning",
+      "apartment": "Appartement",
+      "studio": "Studio",
+      "construction_land": "Bouwgrond",
+      "investment_property": "Investering",
+      "villa": "Villa"
+    },
+    "property_location": {
+      "brussels": "Brussel",
+      "flanders": "Vlaanderen",
+      "wallonia": "Wallonië",
+      "not_sure": "Weet ik niet"
+    },
+    "property_usage": {
+      "living": "Eigen gebruik",
+      "second_stay": "Tweede verblijf",
+      "commercial": "Commercieel",
+      "investment_property": "Investering",
+      "private_rent": "Privéverhuur",
+      "professional_rent": "Professionele verhuur"
+    },
+    "sale_type": {
+      "private_sale": "Onderhandse verkoop",
+      "vat_regime": "BTW-regime"
     }
   },
   "page": {

@@ -88,6 +88,31 @@
       "question": "What is your project purpose?",
       "load_error": "Could not load options. Please refresh the page."
     },
+    "step2": {
+      "question": "Who is applying for this mortgage?",
+      "note": "Only solo applications are supported at this time."
+    },
+    "step3": {
+      "question": "Tell us about the property",
+      "property_type_label": "Property type",
+      "property_location_label": "Location",
+      "property_price_label": "Property price (€)",
+      "property_price_placeholder": "e.g. 250000",
+      "property_usage_label": "Property usage",
+      "sale_type_label": "Sale type",
+      "epc_score_label": "EPC score",
+      "epc_score_hint": "Optional · 0–2000 kWh/m²/year",
+      "select_placeholder": "Select an option",
+      "error": {
+        "property_type_required": "Property type is required",
+        "property_location_required": "Location is required",
+        "property_price_required": "Property price is required",
+        "property_price_min": "Property price must be greater than 0",
+        "property_usage_required": "Property usage is required",
+        "sale_type_required": "Sale type is required",
+        "epc_score_range": "EPC score must be between 0 and 2000"
+      }
+    },
     "step_placeholder": "This step is coming soon.",
     "purpose": {
       "buy_property": "Buy property",
@@ -95,6 +120,35 @@
       "buy_out": "Buy out",
       "renovate_property": "Renovate property",
       "refinance_my_mortgage": "Refinance my mortgage"
+    },
+    "borrower": {
+      "only_for_myself": "Only for myself"
+    },
+    "property_type": {
+      "home": "Home",
+      "apartment": "Apartment",
+      "studio": "Studio",
+      "construction_land": "Construction land",
+      "investment_property": "Investment property",
+      "villa": "Villa"
+    },
+    "property_location": {
+      "brussels": "Brussels",
+      "flanders": "Flanders",
+      "wallonia": "Wallonia",
+      "not_sure": "Not sure"
+    },
+    "property_usage": {
+      "living": "Living",
+      "second_stay": "Second stay",
+      "commercial": "Commercial",
+      "investment_property": "Investment property",
+      "private_rent": "Private rent",
+      "professional_rent": "Professional rent"
+    },
+    "sale_type": {
+      "private_sale": "Private sale",
+      "vat_regime": "VAT regime"
     }
   },
   "page": {

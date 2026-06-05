@@ -64,6 +64,14 @@
           [selected]="state.projectPurpose()"
           (select)="state.setProjectPurpose($event)" />
       }
+      @case (2) {
+        <app-step2-borrower
+          [selected]="state.borrowerType()"
+          (select)="state.setBorrowerType($event)" />
+      }
+      @case (3) {
+        <app-step3-property />
+      }
       @default {
         <div class="flex min-h-48 items-center justify-center rounded-2xl border border-dashed border-gray-200 dark:border-navy-700">
           <p class="text-sm text-gray-400 dark:text-navy-500">
