@@ -14,5 +14,11 @@
   },
   "lang": {
     "select": "Select language"
+  },
+  "page": {
+    "simulator":    { "placeholder": "Simulator coming soon" },
+    "dashboard":    { "placeholder": "Dashboard coming soon" },
+    "applications": { "placeholder": "Applications coming soon" },
+    "documents":    { "placeholder": "Documents coming soon" }
   }
 }

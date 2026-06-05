@@ -1,9 +1,9 @@
-<header class="sticky top-0 z-50 border-b border-gray-200 bg-white/90 backdrop-blur-sm dark:border-gray-700 dark:bg-gray-950/90">
+<header class="sticky top-0 z-50 border-b border-gray-200 bg-white/90 backdrop-blur-sm dark:border-navy-700 dark:bg-navy-950/90">
   <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
 
     <!-- Brand -->
     <a routerLink="/simulator"
-       class="text-lg font-bold tracking-tight text-primary-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 dark:text-primary-400">
+       class="text-lg font-bold tracking-tight text-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 dark:text-primary-400">
       Oper
     </a>
 
@@ -37,22 +37,22 @@
             (click)="setLanguage(lang)"
             [attr.aria-pressed]="languageService.language() === lang"
             [class]="languageService.language() === lang
-              ? 'px-2 py-1 text-xs font-bold uppercase text-primary-600 dark:text-primary-400'
-              : 'px-2 py-1 text-xs uppercase text-gray-500 transition-colors hover:text-gray-900 dark:text-gray-400 dark:hover:text-white'">
+              ? 'px-2 py-1 text-xs font-bold uppercase text-primary-700 dark:text-primary-400'
+              : 'px-2 py-1 text-xs uppercase text-gray-500 transition-colors hover:text-gray-900 dark:text-navy-300 dark:hover:text-white'">
             {{ lang }}
           </button>
         }
       </div>
 
       <!-- Divider -->
-      <span aria-hidden="true" class="mx-1 h-5 w-px bg-gray-200 dark:bg-gray-700"></span>
+      <span aria-hidden="true" class="mx-1 h-5 w-px bg-gray-200 dark:bg-navy-700"></span>
 
       <!-- Theme toggle -->
       <button
         type="button"
         (click)="cycleTheme()"
         [attr.aria-label]="('theme.' + themeService.theme()) | translate"
-        class="rounded-md p-1.5 text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white">
+        class="rounded-md p-1.5 text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 dark:text-navy-300 dark:hover:bg-navy-800 dark:hover:text-white">
 
         @switch (themeService.theme()) {
           @case ('light') {
@@ -93,23 +93,23 @@
       </button>
 
       <!-- Divider -->
-      <span aria-hidden="true" class="mx-1 h-5 w-px bg-gray-200 dark:bg-gray-700"></span>
+      <span aria-hidden="true" class="mx-1 h-5 w-px bg-gray-200 dark:bg-navy-700"></span>
 
       <!-- Auth actions -->
       @if (!authService.isAuthenticated()) {
         <a routerLink="/login"
-           class="rounded px-2 py-1.5 text-sm text-gray-600 transition-colors hover:text-gray-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 dark:text-gray-300 dark:hover:text-white">
+           class="rounded px-2 py-1.5 text-sm text-gray-600 transition-colors hover:text-gray-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 dark:text-navy-300 dark:hover:text-white">
           {{ 'nav.login' | translate }}
         </a>
         <a routerLink="/register"
-           class="ml-1 rounded-md bg-primary-600 px-3 py-1.5 text-sm font-medium text-white transition-colors hover:bg-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
+           class="ml-1 rounded-md bg-primary-600 px-3 py-1.5 text-sm font-medium text-white transition-colors hover:bg-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:bg-primary-500 dark:hover:bg-primary-600">
           {{ 'nav.register' | translate }}
         </a>
       } @else {
         <button
           type="button"
           (click)="authService.logout()"
-          class="rounded px-2 py-1.5 text-sm text-gray-600 transition-colors hover:text-gray-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 dark:text-gray-300 dark:hover:text-white">
+          class="rounded px-2 py-1.5 text-sm text-gray-600 transition-colors hover:text-gray-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 dark:text-navy-300 dark:hover:text-white">
           {{ 'nav.logout' | translate }}
         </button>
       }

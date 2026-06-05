@@ -4,19 +4,21 @@
 
 @layer base {
   :root {
-    --color-bg: theme('colors.white');
-    --color-bg-subtle: theme('colors.gray.50');
-    --color-text: theme('colors.gray.900');
-    --color-text-muted: theme('colors.gray.600');
-    --color-border: theme('colors.gray.200');
+    --color-bg:           #ffffff;
+    --color-bg-subtle:    #f5f6ff;
+    --color-surface:      #ffffff;
+    --color-border:       #e2e4f0;
+    --color-text:         #0f1b2d;
+    --color-text-muted:   #6b7280;
   }
 
   .dark {
-    --color-bg: theme('colors.gray.950');
-    --color-bg-subtle: theme('colors.gray.900');
-    --color-text: theme('colors.gray.50');
-    --color-text-muted: theme('colors.gray.400');
-    --color-border: theme('colors.gray.700');
+    --color-bg:           #0d1328;
+    --color-bg-subtle:    #111d38;
+    --color-surface:      #162240;
+    --color-border:       #1e2d4a;
+    --color-text:         #e8ebf5;
+    --color-text-muted:   #8a9bb5;
   }
 
   html {
@@ -25,10 +27,12 @@
   }
 
   body {
-    @apply bg-white text-gray-900 dark:bg-gray-950 dark:text-gray-50;
+    @apply font-sans;
+    background-color: var(--color-bg);
+    color: var(--color-text);
   }
 
   *:focus-visible {
-    @apply outline-none ring-2 ring-primary-500 ring-offset-2 ring-offset-white dark:ring-offset-gray-950;
+    @apply outline-none ring-2 ring-primary-500 ring-offset-2 ring-offset-white dark:ring-offset-navy-950;
   }
 }

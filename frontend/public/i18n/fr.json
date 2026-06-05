@@ -14,5 +14,11 @@
   },
   "lang": {
     "select": "Choisir la langue"
+  },
+  "page": {
+    "simulator":    { "placeholder": "Simulateur à venir" },
+    "dashboard":    { "placeholder": "Tableau de bord à venir" },
+    "applications": { "placeholder": "Demandes à venir" },
+    "documents":    { "placeholder": "Documents à venir" }
   }
 }

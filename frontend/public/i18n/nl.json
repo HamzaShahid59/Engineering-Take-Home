@@ -14,5 +14,11 @@
   },
   "lang": {
     "select": "Taal selecteren"
+  },
+  "page": {
+    "simulator":    { "placeholder": "Simulator komt binnenkort" },
+    "dashboard":    { "placeholder": "Dashboard komt binnenkort" },
+    "applications": { "placeholder": "Aanvragen komt binnenkort" },
+    "documents":    { "placeholder": "Documenten komt binnenkort" }
   }
 }
