@@ -4,6 +4,21 @@ export interface ContributionDraft {
   own_funds: number | null;
 }
 
+export interface FinancialRowDraft {
+  type: string | null;
+  monthly_amount: number | null;
+}
+
+export interface FinancialDetailsDraft {
+  incomes: FinancialRowDraft[];
+  liabilities: FinancialRowDraft[];
+}
+
+export interface PersonalDetailsDraft {
+  date_of_birth: string | null;
+  number_of_dependents: number | null;
+}
+
 export interface PropertyDetailsDraft {
   property_type: string | null;
   property_location: string | null;
@@ -19,6 +34,8 @@ interface SimulatorDraft {
   borrowerType?: string;
   propertyDetails?: PropertyDetailsDraft;
   contribution?: ContributionDraft;
+  financialDetails?: FinancialDetailsDraft;
+  personalDetails?: PersonalDetailsDraft;
 }
 
 const DRAFT_KEY = 'oper:simulator:draft';
@@ -33,12 +50,16 @@ export class SimulatorStateService {
   private readonly _borrowerType = signal<string | null>(this._draft.borrowerType ?? null);
   private readonly _propertyDetails = signal<PropertyDetailsDraft | null>(this._draft.propertyDetails ?? null);
   private readonly _contribution = signal<ContributionDraft | null>(this._draft.contribution ?? null);
+  private readonly _financialDetails = signal<FinancialDetailsDraft | null>(this._draft.financialDetails ?? null);
+  private readonly _personalDetails = signal<PersonalDetailsDraft | null>(this._draft.personalDetails ?? null);
 
   readonly currentStep = this._currentStep.asReadonly();
   readonly projectPurpose = this._projectPurpose.asReadonly();
   readonly borrowerType = this._borrowerType.asReadonly();
   readonly propertyDetails = this._propertyDetails.asReadonly();
   readonly contribution = this._contribution.asReadonly();
+  readonly financialDetails = this._financialDetails.asReadonly();
+  readonly personalDetails = this._personalDetails.asReadonly();
 
   setStep(step: number): void {
     this._currentStep.set(step);
@@ -65,12 +86,24 @@ export class SimulatorStateService {
     this.persist();
   }
 
+  setFinancialDetails(details: FinancialDetailsDraft): void {
+    this._financialDetails.set(details);
+    this.persist();
+  }
+
+  setPersonalDetails(details: PersonalDetailsDraft): void {
+    this._personalDetails.set(details);
+    this.persist();
+  }
+
   startOver(): void {
     this._currentStep.set(1);
     this._projectPurpose.set(null);
     this._borrowerType.set(null);
     this._propertyDetails.set(null);
     this._contribution.set(null);
+    this._financialDetails.set(null);
+    this._personalDetails.set(null);
     localStorage.removeItem(DRAFT_KEY);
   }
 
@@ -80,10 +113,14 @@ export class SimulatorStateService {
     const borrower = this._borrowerType();
     const property = this._propertyDetails();
     const contribution = this._contribution();
+    const financial = this._financialDetails();
+    const personal = this._personalDetails();
     if (purpose) draft.projectPurpose = purpose;
     if (borrower) draft.borrowerType = borrower;
     if (property) draft.propertyDetails = property;
     if (contribution) draft.contribution = contribution;
+    if (financial) draft.financialDetails = financial;
+    if (personal) draft.personalDetails = personal;
     localStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
   }
 
@@ -97,7 +134,9 @@ export class SimulatorStateService {
         if (step > 2 && !parsed.borrowerType) return { currentStep: 2, projectPurpose: parsed.projectPurpose };
         if (step > 3 && !parsed.propertyDetails) return { currentStep: 3, projectPurpose: parsed.projectPurpose, borrowerType: parsed.borrowerType };
         if (step > 4 && !parsed.contribution) return { currentStep: 4, projectPurpose: parsed.projectPurpose, borrowerType: parsed.borrowerType, propertyDetails: parsed.propertyDetails };
-        return { currentStep: step, projectPurpose: parsed.projectPurpose, borrowerType: parsed.borrowerType, propertyDetails: parsed.propertyDetails, contribution: parsed.contribution };
+        if (step > 5 && !parsed.financialDetails) return { currentStep: 5, projectPurpose: parsed.projectPurpose, borrowerType: parsed.borrowerType, propertyDetails: parsed.propertyDetails, contribution: parsed.contribution };
+        if (step > 6 && !parsed.personalDetails) return { currentStep: 6, projectPurpose: parsed.projectPurpose, borrowerType: parsed.borrowerType, propertyDetails: parsed.propertyDetails, contribution: parsed.contribution, financialDetails: parsed.financialDetails };
+        return { currentStep: step, projectPurpose: parsed.projectPurpose, borrowerType: parsed.borrowerType, propertyDetails: parsed.propertyDetails, contribution: parsed.contribution, financialDetails: parsed.financialDetails, personalDetails: parsed.personalDetails };
       }
     } catch {}
     return { currentStep: 1 };

@@ -75,6 +75,12 @@
       @case (4) {
         <app-step4-contribution />
       }
+      @case (5) {
+        <app-step5-financial />
+      }
+      @case (6) {
+        <app-step6-personal />
+      }
       @default {
         <div class="flex min-h-48 items-center justify-center rounded-2xl border border-dashed border-gray-200 dark:border-navy-700">
           <p class="text-sm text-gray-400 dark:text-navy-500">
@@ -90,8 +96,9 @@
         type="button"
         (click)="continue()"
         [disabled]="!canContinue()"
+        [title]="continueTitle()"
         class="inline-flex items-center gap-2 rounded-xl bg-primary-600 px-6 py-2.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-primary-700 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-primary-500 dark:hover:bg-primary-400">
-        {{ 'simulator.continue' | translate }}
+        {{ continueLabel() | translate }}
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"
              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <line x1="5" y1="12" x2="19" y2="12"/>

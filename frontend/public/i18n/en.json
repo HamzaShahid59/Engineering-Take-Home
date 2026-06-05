@@ -123,6 +123,49 @@
         "min": "Own funds cannot be negative"
       }
     },
+    "step5": {
+      "question": "Tell us about your income and expenses",
+      "income_section": "Monthly income",
+      "income_hint": "Add at least one source of income.",
+      "income_type_label": "Income type",
+      "income_amount_label": "Monthly amount (€)",
+      "income_amount_placeholder": "e.g. 3000",
+      "add_income": "Add income",
+      "remove_income": "Remove income row",
+      "liability_section": "Monthly liabilities",
+      "liability_hint": "Optional — add any existing monthly obligations.",
+      "liability_type_label": "Liability type",
+      "liability_amount_label": "Monthly amount (€)",
+      "liability_amount_placeholder": "e.g. 300",
+      "add_liability": "Add liability",
+      "remove_liability": "Remove liability row",
+      "select_placeholder": "Select type",
+      "load_error": "Could not load options. Please refresh the page.",
+      "error": {
+        "income_type_required": "Income type is required",
+        "income_amount_required": "Amount is required",
+        "income_amount_min": "Amount must be greater than 0",
+        "income_duplicate": "This income type is already added",
+        "liability_type_required": "Liability type is required",
+        "liability_amount_required": "Amount is required",
+        "liability_amount_min": "Amount must be greater than 0",
+        "liability_duplicate": "This liability type is already added"
+      }
+    },
+    "continue_incomplete": "Fill in or remove incomplete rows to continue",
+    "show_result": "Show result",
+    "step6": {
+      "question": "A few personal details",
+      "dob_label": "Date of birth",
+      "dependents_label": "Number of dependents",
+      "dependents_hint": "Children or other financial dependents living with you.",
+      "dependents_placeholder": "e.g. 0",
+      "error": {
+        "dob_required": "Date of birth is required",
+        "dependents_required": "Number of dependents is required",
+        "dependents_min": "Number of dependents cannot be negative"
+      }
+    },
     "step_placeholder": "This step is coming soon.",
     "purpose": {
       "buy_property": "Buy property",

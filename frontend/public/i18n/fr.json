@@ -123,6 +123,49 @@
         "min": "L'apport personnel ne peut pas être négatif"
       }
     },
+    "step5": {
+      "question": "Parlez-nous de vos revenus et dépenses",
+      "income_section": "Revenus mensuels",
+      "income_hint": "Ajoutez au moins une source de revenus.",
+      "income_type_label": "Type de revenu",
+      "income_amount_label": "Montant mensuel (€)",
+      "income_amount_placeholder": "ex. 3000",
+      "add_income": "Ajouter un revenu",
+      "remove_income": "Supprimer la ligne de revenu",
+      "liability_section": "Charges mensuelles",
+      "liability_hint": "Optionnel — ajoutez les obligations mensuelles existantes.",
+      "liability_type_label": "Type de charge",
+      "liability_amount_label": "Montant mensuel (€)",
+      "liability_amount_placeholder": "ex. 300",
+      "add_liability": "Ajouter une charge",
+      "remove_liability": "Supprimer la ligne de charge",
+      "select_placeholder": "Sélectionnez un type",
+      "load_error": "Impossible de charger les options. Veuillez actualiser la page.",
+      "error": {
+        "income_type_required": "Le type de revenu est obligatoire",
+        "income_amount_required": "Le montant est obligatoire",
+        "income_amount_min": "Le montant doit être supérieur à 0",
+        "income_duplicate": "Ce type de revenu est déjà ajouté",
+        "liability_type_required": "Le type de charge est obligatoire",
+        "liability_amount_required": "Le montant est obligatoire",
+        "liability_amount_min": "Le montant doit être supérieur à 0",
+        "liability_duplicate": "Ce type de charge est déjà ajouté"
+      }
+    },
+    "continue_incomplete": "Remplissez ou supprimez les lignes incomplètes pour continuer",
+    "show_result": "Voir le résultat",
+    "step6": {
+      "question": "Quelques informations personnelles",
+      "dob_label": "Date de naissance",
+      "dependents_label": "Nombre de personnes à charge",
+      "dependents_hint": "Enfants ou autres personnes financièrement à votre charge vivant avec vous.",
+      "dependents_placeholder": "ex. 0",
+      "error": {
+        "dob_required": "La date de naissance est obligatoire",
+        "dependents_required": "Le nombre de personnes à charge est obligatoire",
+        "dependents_min": "Le nombre de personnes à charge ne peut pas être négatif"
+      }
+    },
     "step_placeholder": "Cette étape arrive bientôt.",
     "purpose": {
       "buy_property": "Acheter un bien",

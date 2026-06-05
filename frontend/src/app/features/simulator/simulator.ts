@@ -1,10 +1,12 @@
 import { Component, computed, inject } from '@angular/core';
-import { TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { SimulatorStateService } from './simulator-state.service';
 import { Step1PurposeComponent } from './steps/step1-purpose/step1-purpose';
 import { Step2BorrowerComponent } from './steps/step2-borrower/step2-borrower';
 import { Step3PropertyComponent } from './steps/step3-property/step3-property';
 import { Step4ContributionComponent } from './steps/step4-contribution/step4-contribution';
+import { Step5FinancialComponent } from './steps/step5-financial/step5-financial';
+import { Step6PersonalComponent } from './steps/step6-personal/step6-personal';
 
 interface SimulatorStep {
   index: number;
@@ -23,11 +25,12 @@ const STEPS: SimulatorStep[] = [
 
 @Component({
   selector: 'app-simulator',
-  imports: [TranslatePipe, Step1PurposeComponent, Step2BorrowerComponent, Step3PropertyComponent, Step4ContributionComponent],
+  imports: [TranslatePipe, Step1PurposeComponent, Step2BorrowerComponent, Step3PropertyComponent, Step4ContributionComponent, Step5FinancialComponent, Step6PersonalComponent],
   templateUrl: './simulator.html',
 })
 export class SimulatorComponent {
   protected readonly state = inject(SimulatorStateService);
+  private readonly translate = inject(TranslateService);
   protected readonly steps = STEPS;
 
   protected readonly canContinue = computed(() => {
@@ -46,7 +49,35 @@ export class SimulatorComponent {
       const c = this.state.contribution();
       return c !== null && c.own_funds !== null && c.own_funds >= 0;
     }
+    if (step === 5) {
+      const fd = this.state.financialDetails();
+      if (!fd || fd.incomes.length === 0) return false;
+      for (const r of fd.incomes) {
+        if (!r.type || r.monthly_amount === null || r.monthly_amount <= 0) return false;
+      }
+      const incomeTypes = fd.incomes.map(r => r.type).filter((t): t is string => !!t);
+      if (new Set(incomeTypes).size !== incomeTypes.length) return false;
+      for (const r of fd.liabilities) {
+        if (!r.type || r.monthly_amount === null || r.monthly_amount <= 0) return false;
+      }
+      const liabilityTypes = fd.liabilities.map(r => r.type).filter((t): t is string => !!t);
+      if (new Set(liabilityTypes).size !== liabilityTypes.length) return false;
+      return true;
+    }
+    if (step === 6) {
+      const pd = this.state.personalDetails();
+      return pd !== null && !!pd.date_of_birth && pd.number_of_dependents !== null && pd.number_of_dependents >= 0;
+    }
     return false;
+  });
+
+  protected readonly continueLabel = computed(() =>
+    this.state.currentStep() === 6 ? 'simulator.show_result' : 'simulator.continue'
+  );
+
+  protected readonly continueTitle = computed(() => {
+    if (this.canContinue() || this.state.currentStep() !== 5) return '';
+    return this.translate.instant('simulator.continue_incomplete');
   });
 
   protected continue(): void {

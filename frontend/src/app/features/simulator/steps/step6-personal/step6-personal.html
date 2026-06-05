@@ -1,0 +1,50 @@
+<!-- Question heading -->
+<div class="mb-6">
+  <h2 class="text-lg font-semibold text-gray-900 dark:text-white sm:text-xl">
+    {{ 'simulator.step6.question' | translate }}
+  </h2>
+</div>
+
+<form [formGroup]="form" novalidate class="max-w-sm space-y-5">
+
+  <!-- Date of birth -->
+  <div>
+    <label for="date-of-birth" class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">
+      {{ 'simulator.step6.dob_label' | translate }}
+    </label>
+    <input
+      id="date-of-birth"
+      type="date"
+      formControlName="date_of_birth"
+      [attr.aria-invalid]="c.date_of_birth.touched && c.date_of_birth.invalid ? true : null"
+      [class]="inputClass(c.date_of_birth.touched && c.date_of_birth.invalid)" />
+    @if (c.date_of_birth.touched && c.date_of_birth.hasError('required')) {
+      <p class="mt-1 text-xs text-red-600 dark:text-red-400">{{ 'simulator.step6.error.dob_required' | translate }}</p>
+    }
+  </div>
+
+  <!-- Number of dependents -->
+  <div>
+    <label for="num-dependents" class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">
+      {{ 'simulator.step6.dependents_label' | translate }}
+    </label>
+    <p class="mb-1.5 text-xs text-gray-500 dark:text-navy-400">
+      {{ 'simulator.step6.dependents_hint' | translate }}
+    </p>
+    <input
+      id="num-dependents"
+      type="number"
+      formControlName="number_of_dependents"
+      min="0"
+      step="1"
+      [placeholder]="'simulator.step6.dependents_placeholder' | translate"
+      [attr.aria-invalid]="c.number_of_dependents.touched && c.number_of_dependents.invalid ? true : null"
+      [class]="inputClass(c.number_of_dependents.touched && c.number_of_dependents.invalid)" />
+    @if (c.number_of_dependents.touched && c.number_of_dependents.hasError('required')) {
+      <p class="mt-1 text-xs text-red-600 dark:text-red-400">{{ 'simulator.step6.error.dependents_required' | translate }}</p>
+    } @else if (c.number_of_dependents.touched && c.number_of_dependents.hasError('min')) {
+      <p class="mt-1 text-xs text-red-600 dark:text-red-400">{{ 'simulator.step6.error.dependents_min' | translate }}</p>
+    }
+  </div>
+
+</form>

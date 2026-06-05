@@ -123,6 +123,49 @@
         "min": "Eigen inbreng kan niet negatief zijn"
       }
     },
+    "step5": {
+      "question": "Vertel ons over uw inkomsten en uitgaven",
+      "income_section": "Maandelijks inkomen",
+      "income_hint": "Voeg minstens één inkomstenbron toe.",
+      "income_type_label": "Type inkomen",
+      "income_amount_label": "Maandbedrag (€)",
+      "income_amount_placeholder": "bijv. 3000",
+      "add_income": "Inkomen toevoegen",
+      "remove_income": "Inkomenrij verwijderen",
+      "liability_section": "Maandelijkse verplichtingen",
+      "liability_hint": "Optioneel — voeg bestaande maandelijkse verplichtingen toe.",
+      "liability_type_label": "Type verplichting",
+      "liability_amount_label": "Maandbedrag (€)",
+      "liability_amount_placeholder": "bijv. 300",
+      "add_liability": "Verplichting toevoegen",
+      "remove_liability": "Verplichtingrij verwijderen",
+      "select_placeholder": "Selecteer type",
+      "load_error": "Opties konden niet worden geladen. Vernieuw de pagina.",
+      "error": {
+        "income_type_required": "Type inkomen is verplicht",
+        "income_amount_required": "Bedrag is verplicht",
+        "income_amount_min": "Bedrag moet groter zijn dan 0",
+        "income_duplicate": "Dit type inkomen is al toegevoegd",
+        "liability_type_required": "Type verplichting is verplicht",
+        "liability_amount_required": "Bedrag is verplicht",
+        "liability_amount_min": "Bedrag moet groter zijn dan 0",
+        "liability_duplicate": "Dit type verplichting is al toegevoegd"
+      }
+    },
+    "continue_incomplete": "Vul ontbrekende rijen in of verwijder ze om door te gaan",
+    "show_result": "Resultaat bekijken",
+    "step6": {
+      "question": "Nog enkele persoonlijke gegevens",
+      "dob_label": "Geboortedatum",
+      "dependents_label": "Aantal personen ten laste",
+      "dependents_hint": "Kinderen of andere financieel afhankelijke personen bij u thuis.",
+      "dependents_placeholder": "bijv. 0",
+      "error": {
+        "dob_required": "Geboortedatum is verplicht",
+        "dependents_required": "Aantal personen ten laste is verplicht",
+        "dependents_min": "Aantal personen ten laste kan niet negatief zijn"
+      }
+    },
     "step_placeholder": "Deze stap komt binnenkort.",
     "purpose": {
       "buy_property": "Woning kopen",

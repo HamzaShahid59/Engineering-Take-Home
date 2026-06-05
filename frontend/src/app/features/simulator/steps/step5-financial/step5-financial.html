@@ -1,0 +1,189 @@
+<!-- Question heading -->
+<div class="mb-6">
+  <h2 class="text-lg font-semibold text-gray-900 dark:text-white sm:text-xl">
+    {{ 'simulator.step5.question' | translate }}
+  </h2>
+</div>
+
+@if (loading()) {
+  <div class="space-y-3">
+    @for (_ of [1, 2]; track $index) {
+      <div class="h-12 animate-pulse rounded-lg bg-gray-100 dark:bg-navy-800"></div>
+    }
+  </div>
+} @else if (loadError()) {
+  <p class="text-sm text-red-600 dark:text-red-400">{{ 'simulator.step5.load_error' | translate }}</p>
+} @else {
+
+  <!-- Income section -->
+  <div class="mb-3">
+    <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300">
+      {{ 'simulator.step5.income_section' | translate }}
+    </h3>
+    <p class="mt-0.5 text-xs text-gray-500 dark:text-navy-400">
+      {{ 'simulator.step5.income_hint' | translate }}
+    </p>
+  </div>
+
+  <div class="mb-6 space-y-2">
+    @for (row of incomeRows; track $index; let i = $index) {
+      <div [formGroup]="row">
+        <div class="grid grid-cols-[1fr_1fr_auto] items-start gap-2">
+          <!-- Type -->
+          <div>
+            <select
+              formControlName="type"
+              [attr.aria-label]="'simulator.step5.income_type_label' | translate"
+              [attr.aria-invalid]="row.controls['type'].touched && row.controls['type'].invalid ? true : null"
+              [class]="selectClass(row.controls['type'].touched && (row.controls['type'].invalid || isIncomeDuplicate(i)))">
+              <option value="" disabled>{{ 'simulator.step5.select_placeholder' | translate }}</option>
+              @for (opt of incomeTypes(); track opt.value) {
+                <option [value]="opt.value">{{ opt.label }}</option>
+              }
+            </select>
+          </div>
+          <!-- Amount -->
+          <div>
+            <input
+              type="number"
+              formControlName="monthly_amount"
+              min="0.01"
+              step="1"
+              [attr.aria-label]="'simulator.step5.income_amount_label' | translate"
+              [attr.aria-invalid]="row.controls['monthly_amount'].touched && row.controls['monthly_amount'].invalid ? true : null"
+              [placeholder]="'simulator.step5.income_amount_placeholder' | translate"
+              [class]="inputClass(row.controls['monthly_amount'].touched && row.controls['monthly_amount'].invalid)" />
+          </div>
+          <!-- Remove -->
+          <button
+            type="button"
+            (click)="removeIncomeRow(i)"
+            [attr.aria-label]="'simulator.step5.remove_income' | translate"
+            class="mt-0.5 flex h-9 w-9 items-center justify-center rounded-lg text-gray-400 transition-colors hover:bg-red-50 hover:text-red-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400 dark:hover:bg-red-950 dark:hover:text-red-400">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/>
+              <path d="M9 6V4h6v2"/>
+            </svg>
+          </button>
+        </div>
+        <!-- Row errors -->
+        <div class="mt-1 grid grid-cols-2 gap-2">
+          <div>
+            @if (row.controls['type'].touched && row.controls['type'].hasError('required')) {
+              <p class="text-xs text-red-600 dark:text-red-400">{{ 'simulator.step5.error.income_type_required' | translate }}</p>
+            } @else if (row.controls['type'].touched && isIncomeDuplicate(i)) {
+              <p class="text-xs text-red-600 dark:text-red-400">{{ 'simulator.step5.error.income_duplicate' | translate }}</p>
+            }
+          </div>
+          <div>
+            @if (row.controls['monthly_amount'].touched && row.controls['monthly_amount'].hasError('required')) {
+              <p class="text-xs text-red-600 dark:text-red-400">{{ 'simulator.step5.error.income_amount_required' | translate }}</p>
+            } @else if (row.controls['monthly_amount'].touched && row.controls['monthly_amount'].hasError('min')) {
+              <p class="text-xs text-red-600 dark:text-red-400">{{ 'simulator.step5.error.income_amount_min' | translate }}</p>
+            }
+          </div>
+        </div>
+      </div>
+    }
+
+    <button
+      type="button"
+      (click)="addIncomeRow()"
+      class="inline-flex items-center gap-1.5 rounded-lg border border-dashed border-primary-400 px-3 py-1.5 text-sm text-primary-600 transition-colors hover:border-primary-500 hover:bg-primary-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 dark:border-primary-700 dark:text-primary-400 dark:hover:bg-primary-950">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+           stroke-linecap="round" aria-hidden="true">
+        <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+      </svg>
+      {{ 'simulator.step5.add_income' | translate }}
+    </button>
+  </div>
+
+  <!-- Divider -->
+  <div class="mb-6 border-t border-gray-200 dark:border-navy-700"></div>
+
+  <!-- Liabilities section -->
+  <div class="mb-3">
+    <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300">
+      {{ 'simulator.step5.liability_section' | translate }}
+    </h3>
+    <p class="mt-0.5 text-xs text-gray-500 dark:text-navy-400">
+      {{ 'simulator.step5.liability_hint' | translate }}
+    </p>
+  </div>
+
+  <div class="space-y-2">
+    @for (row of liabilityRows; track $index; let i = $index) {
+      <div [formGroup]="row">
+        <div class="grid grid-cols-[1fr_1fr_auto] items-start gap-2">
+          <!-- Type -->
+          <div>
+            <select
+              formControlName="type"
+              [attr.aria-label]="'simulator.step5.liability_type_label' | translate"
+              [attr.aria-invalid]="row.controls['type'].touched && row.controls['type'].invalid ? true : null"
+              [class]="selectClass(row.controls['type'].touched && (row.controls['type'].invalid || isLiabilityDuplicate(i)))">
+              <option value="" disabled>{{ 'simulator.step5.select_placeholder' | translate }}</option>
+              @for (opt of liabilityTypes(); track opt.value) {
+                <option [value]="opt.value">{{ opt.label }}</option>
+              }
+            </select>
+          </div>
+          <!-- Amount -->
+          <div>
+            <input
+              type="number"
+              formControlName="monthly_amount"
+              min="0.01"
+              step="1"
+              [attr.aria-label]="'simulator.step5.liability_amount_label' | translate"
+              [attr.aria-invalid]="row.controls['monthly_amount'].touched && row.controls['monthly_amount'].invalid ? true : null"
+              [placeholder]="'simulator.step5.liability_amount_placeholder' | translate"
+              [class]="inputClass(row.controls['monthly_amount'].touched && row.controls['monthly_amount'].invalid)" />
+          </div>
+          <!-- Remove -->
+          <button
+            type="button"
+            (click)="removeLiabilityRow(i)"
+            [attr.aria-label]="'simulator.step5.remove_liability' | translate"
+            class="mt-0.5 flex h-9 w-9 items-center justify-center rounded-lg text-gray-400 transition-colors hover:bg-red-50 hover:text-red-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400 dark:hover:bg-red-950 dark:hover:text-red-400">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/>
+              <path d="M9 6V4h6v2"/>
+            </svg>
+          </button>
+        </div>
+        <!-- Row errors -->
+        <div class="mt-1 grid grid-cols-2 gap-2">
+          <div>
+            @if (row.controls['type'].touched && row.controls['type'].hasError('required')) {
+              <p class="text-xs text-red-600 dark:text-red-400">{{ 'simulator.step5.error.liability_type_required' | translate }}</p>
+            } @else if (row.controls['type'].touched && isLiabilityDuplicate(i)) {
+              <p class="text-xs text-red-600 dark:text-red-400">{{ 'simulator.step5.error.liability_duplicate' | translate }}</p>
+            }
+          </div>
+          <div>
+            @if (row.controls['monthly_amount'].touched && row.controls['monthly_amount'].hasError('required')) {
+              <p class="text-xs text-red-600 dark:text-red-400">{{ 'simulator.step5.error.liability_amount_required' | translate }}</p>
+            } @else if (row.controls['monthly_amount'].touched && row.controls['monthly_amount'].hasError('min')) {
+              <p class="text-xs text-red-600 dark:text-red-400">{{ 'simulator.step5.error.liability_amount_min' | translate }}</p>
+            }
+          </div>
+        </div>
+      </div>
+    }
+
+    <button
+      type="button"
+      (click)="addLiabilityRow()"
+      class="inline-flex items-center gap-1.5 rounded-lg border border-dashed border-gray-300 px-3 py-1.5 text-sm text-gray-500 transition-colors hover:border-gray-400 hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 dark:border-navy-600 dark:text-navy-400 dark:hover:bg-navy-800">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+           stroke-linecap="round" aria-hidden="true">
+        <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+      </svg>
+      {{ 'simulator.step5.add_liability' | translate }}
+    </button>
+  </div>
+
+}
