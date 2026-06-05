@@ -1,6 +1,7 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, map, tap } from 'rxjs';
+import { environment } from '../../../environments/environment';
 import type {
   ApiResponse,
   LoginRequest,
@@ -11,11 +12,11 @@ import type {
 
 const TOKEN_KEY = 'oper:jwt';
 const USER_KEY = 'oper:user';
-const API_BASE = '/api/auth';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private readonly http = inject(HttpClient);
+  private readonly baseUrl = `${environment.apiBaseUrl}/auth`;
 
   private readonly _currentUser = signal<User | null>(this.restoreUser());
 
@@ -24,7 +25,7 @@ export class AuthService {
 
   register(payload: RegisterRequest): Observable<User> {
     return this.http
-      .post<ApiResponse<TokenResponse>>(`${API_BASE}/register`, payload)
+      .post<ApiResponse<TokenResponse>>(`${this.baseUrl}/register`, payload)
       .pipe(
         map(res => res.data!),
         tap(tokenRes => this.persist(tokenRes)),
@@ -34,7 +35,7 @@ export class AuthService {
 
   login(payload: LoginRequest): Observable<User> {
     return this.http
-      .post<ApiResponse<TokenResponse>>(`${API_BASE}/login`, payload)
+      .post<ApiResponse<TokenResponse>>(`${this.baseUrl}/login`, payload)
       .pipe(
         map(res => res.data!),
         tap(tokenRes => this.persist(tokenRes)),

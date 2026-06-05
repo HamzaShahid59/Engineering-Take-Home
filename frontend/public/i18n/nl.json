@@ -5,7 +5,9 @@
     "applications": "Aanvragen",
     "login": "Inloggen",
     "register": "Aan de slag",
-    "logout": "Uitloggen"
+    "logout": "Uitloggen",
+    "open_menu": "Menu openen",
+    "close_menu": "Menu sluiten"
   },
   "theme": {
     "light": "Overschakelen naar donkere modus",

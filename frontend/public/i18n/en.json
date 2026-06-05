@@ -5,7 +5,9 @@
     "applications": "Applications",
     "login": "Log in",
     "register": "Get started",
-    "logout": "Log out"
+    "logout": "Log out",
+    "open_menu": "Open menu",
+    "close_menu": "Close menu"
   },
   "theme": {
     "light": "Switch to dark mode",

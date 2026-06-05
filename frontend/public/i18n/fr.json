@@ -5,7 +5,9 @@
     "applications": "Demandes",
     "login": "Se connecter",
     "register": "Commencer",
-    "logout": "Se déconnecter"
+    "logout": "Se déconnecter",
+    "open_menu": "Ouvrir le menu",
+    "close_menu": "Fermer le menu"
   },
   "theme": {
     "light": "Passer en mode sombre",
