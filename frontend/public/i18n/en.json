@@ -1,0 +1,18 @@
+{
+  "nav": {
+    "simulator": "Simulator",
+    "dashboard": "Dashboard",
+    "applications": "Applications",
+    "login": "Log in",
+    "register": "Get started",
+    "logout": "Log out"
+  },
+  "theme": {
+    "light": "Switch to dark mode",
+    "dark": "Switch to system mode",
+    "system": "Switch to light mode"
+  },
+  "lang": {
+    "select": "Select language"
+  }
+}

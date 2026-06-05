@@ -1,0 +1,18 @@
+{
+  "nav": {
+    "simulator": "Simulator",
+    "dashboard": "Dashboard",
+    "applications": "Aanvragen",
+    "login": "Inloggen",
+    "register": "Aan de slag",
+    "logout": "Uitloggen"
+  },
+  "theme": {
+    "light": "Overschakelen naar donkere modus",
+    "dark": "Overschakelen naar systeemmodus",
+    "system": "Overschakelen naar lichte modus"
+  },
+  "lang": {
+    "select": "Taal selecteren"
+  }
+}

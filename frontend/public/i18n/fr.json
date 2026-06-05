@@ -1,0 +1,18 @@
+{
+  "nav": {
+    "simulator": "Simulateur",
+    "dashboard": "Tableau de bord",
+    "applications": "Demandes",
+    "login": "Se connecter",
+    "register": "Commencer",
+    "logout": "Se déconnecter"
+  },
+  "theme": {
+    "light": "Passer en mode sombre",
+    "dark": "Passer en mode système",
+    "system": "Passer en mode clair"
+  },
+  "lang": {
+    "select": "Choisir la langue"
+  }
+}
