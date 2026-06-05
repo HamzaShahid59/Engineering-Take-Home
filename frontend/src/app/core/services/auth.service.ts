@@ -1,4 +1,5 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
+import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Observable, map, tap } from 'rxjs';
 import { environment } from '../../../environments/environment';
@@ -16,6 +17,7 @@ const USER_KEY = 'oper:user';
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private readonly http = inject(HttpClient);
+  private readonly router = inject(Router);
   private readonly baseUrl = `${environment.apiBaseUrl}/auth`;
 
   private readonly _currentUser = signal<User | null>(this.restoreUser());
@@ -47,6 +49,7 @@ export class AuthService {
     localStorage.removeItem(TOKEN_KEY);
     localStorage.removeItem(USER_KEY);
     this._currentUser.set(null);
+    this.router.navigateByUrl('/simulator');
   }
 
   private persist(tokenRes: TokenResponse): void {

@@ -13,6 +13,11 @@ export const routes: Routes = [
       import('./features/simulator/simulator').then(m => m.SimulatorComponent),
   },
   {
+    path: 'login',
+    loadComponent: () =>
+      import('./features/auth/login/login').then(m => m.LoginComponent),
+  },
+  {
     path: 'dashboard',
     canActivate: [authGuard],
     loadComponent: () =>

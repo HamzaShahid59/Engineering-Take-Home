@@ -17,6 +17,25 @@
   "lang": {
     "select": "Select language"
   },
+  "auth": {
+    "login": {
+      "title": "Welcome back",
+      "email_label": "Email address",
+      "password_label": "Password",
+      "submit": "Log in",
+      "submitting": "Logging in…",
+      "no_account": "Don't have an account?",
+      "get_started": "Get started",
+      "error": {
+        "invalid_credentials": "The email or password is incorrect.",
+        "account_inactive": "Your account is inactive. Please contact support.",
+        "generic": "Something went wrong. Please try again.",
+        "email_required": "Email is required",
+        "email_invalid": "Enter a valid email address",
+        "password_required": "Password is required"
+      }
+    }
+  },
   "page": {
     "simulator":    { "placeholder": "Simulator coming soon" },
     "dashboard":    { "placeholder": "Dashboard coming soon" },

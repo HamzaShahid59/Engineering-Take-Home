@@ -17,6 +17,25 @@
   "lang": {
     "select": "Taal selecteren"
   },
+  "auth": {
+    "login": {
+      "title": "Welkom terug",
+      "email_label": "E-mailadres",
+      "password_label": "Wachtwoord",
+      "submit": "Inloggen",
+      "submitting": "Bezig met inloggen…",
+      "no_account": "Nog geen account?",
+      "get_started": "Aan de slag",
+      "error": {
+        "invalid_credentials": "Het e-mailadres of wachtwoord is onjuist.",
+        "account_inactive": "Uw account is inactief. Neem contact op met de ondersteuning.",
+        "generic": "Er is iets misgegaan. Probeer het opnieuw.",
+        "email_required": "E-mail is verplicht",
+        "email_invalid": "Voer een geldig e-mailadres in",
+        "password_required": "Wachtwoord is verplicht"
+      }
+    }
+  },
   "page": {
     "simulator":    { "placeholder": "Simulator komt binnenkort" },
     "dashboard":    { "placeholder": "Dashboard komt binnenkort" },

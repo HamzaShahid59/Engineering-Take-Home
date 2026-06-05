@@ -17,6 +17,25 @@
   "lang": {
     "select": "Choisir la langue"
   },
+  "auth": {
+    "login": {
+      "title": "Bon retour",
+      "email_label": "Adresse e-mail",
+      "password_label": "Mot de passe",
+      "submit": "Se connecter",
+      "submitting": "Connexion en cours…",
+      "no_account": "Pas encore de compte ?",
+      "get_started": "Commencer",
+      "error": {
+        "invalid_credentials": "L'adresse e-mail ou le mot de passe est incorrect.",
+        "account_inactive": "Votre compte est inactif. Veuillez contacter le support.",
+        "generic": "Une erreur s'est produite. Veuillez réessayer.",
+        "email_required": "L'e-mail est obligatoire",
+        "email_invalid": "Entrez une adresse e-mail valide",
+        "password_required": "Le mot de passe est obligatoire"
+      }
+    }
+  },
   "page": {
     "simulator":    { "placeholder": "Simulateur à venir" },
     "dashboard":    { "placeholder": "Tableau de bord à venir" },
