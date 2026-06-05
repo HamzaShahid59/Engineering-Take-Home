@@ -82,3 +82,9 @@ Avoid unnecessary abstractions.
 Keep components small.
 Keep services explicit.
 Use typed interfaces.
+
+## Workflow Rules
+
+Do not run build, test, install, or verification commands automatically unless explicitly asked.
+After completing a task, summarize files changed and stop.
+Work in small steps. Do not jump ahead to unrelated features.

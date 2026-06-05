@@ -4,8 +4,8 @@
 
 @layer base {
   :root {
-    --color-bg:           #ffffff;
-    --color-bg-subtle:    #f5f6ff;
+    --color-bg:           #f7f8ff;
+    --color-bg-subtle:    #f0f1fb;
     --color-surface:      #ffffff;
     --color-border:       #e2e4f0;
     --color-text:         #0f1b2d;
@@ -19,10 +19,8 @@
     --color-border:       #1e2d4a;
     --color-text:         #e8ebf5;
     --color-text-muted:   #8a9bb5;
-  }
-
-  .dark body {
-    background-image: linear-gradient(160deg, #0d1328 0%, #111d38 100%);
+    color-scheme: dark;
+    scrollbar-color: #253660 #111d38;
   }
 
   html {
@@ -34,6 +32,21 @@
     @apply font-sans;
     background-color: var(--color-bg);
     color: var(--color-text);
+    background-image: linear-gradient(160deg, #f0f2ff 0%, #ffffff 60%);
+  }
+
+  .dark body {
+    background-image: linear-gradient(160deg, #0d1328 0%, #111d38 100%);
+  }
+
+  ::selection {
+    background-color: #c5c8ed;
+    color: #1a1f45;
+  }
+
+  .dark ::selection {
+    background-color: #363e7f;
+    color: #e2e4f6;
   }
 
   *:focus-visible {
