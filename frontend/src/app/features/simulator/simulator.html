@@ -1,0 +1,93 @@
+<div class="min-h-[calc(100vh-4rem)] px-4 py-8 sm:px-8 lg:px-12 xl:px-16">
+  <div class="mx-auto max-w-2xl">
+
+    <!-- Page header -->
+    <div class="mb-8 flex items-center justify-between">
+      <h1 class="text-xl font-bold text-gray-900 dark:text-white sm:text-2xl">
+        {{ 'simulator.title' | translate }}
+      </h1>
+      <button
+        type="button"
+        (click)="startOver()"
+        class="rounded text-sm text-gray-400 transition-colors hover:text-gray-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 dark:text-navy-400 dark:hover:text-navy-200">
+        {{ 'simulator.start_over' | translate }}
+      </button>
+    </div>
+
+    <!-- Progress: mobile (< sm) -->
+    <div class="mb-8 sm:hidden">
+      <div class="mb-2 flex items-center justify-between text-xs text-gray-400 dark:text-navy-400">
+        <span>{{ 'simulator.step_of' | translate:{ current: state.currentStep(), total: steps.length } }}</span>
+        <span class="font-medium text-gray-600 dark:text-navy-300">
+          {{ steps[state.currentStep() - 1].labelKey | translate }}
+        </span>
+      </div>
+      <div class="h-1.5 w-full overflow-hidden rounded-full bg-gray-200 dark:bg-navy-800">
+        <div
+          class="h-1.5 rounded-full bg-primary-600 transition-all duration-300 dark:bg-primary-500"
+          [style.width.%]="(state.currentStep() / steps.length) * 100">
+        </div>
+      </div>
+    </div>
+
+    <!-- Progress: desktop (sm+) -->
+    <div class="mb-10 hidden sm:block">
+      <ol class="flex items-start" aria-label="Progress">
+        @for (step of steps; track step.index; let last = $last) {
+          <li class="flex flex-1 flex-col items-center" [class.flex-none]="last">
+            <div class="flex w-full items-center">
+              <div [class]="stepCircleClass(step.index)" [attr.aria-current]="step.index === state.currentStep() ? 'step' : null">
+                @if (step.index < state.currentStep()) {
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                    <path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                } @else {
+                  {{ step.index }}
+                }
+              </div>
+              @if (!last) {
+                <div [class]="connectorClass(step.index)" aria-hidden="true"></div>
+              }
+            </div>
+            <span [class]="stepLabelClass(step.index)">
+              {{ step.labelKey | translate }}
+            </span>
+          </li>
+        }
+      </ol>
+    </div>
+
+    <!-- Step content -->
+    @switch (state.currentStep()) {
+      @case (1) {
+        <app-step1-purpose
+          [selected]="state.projectPurpose()"
+          (select)="state.setProjectPurpose($event)" />
+      }
+      @default {
+        <div class="flex min-h-48 items-center justify-center rounded-2xl border border-dashed border-gray-200 dark:border-navy-700">
+          <p class="text-sm text-gray-400 dark:text-navy-500">
+            {{ 'simulator.step_placeholder' | translate }}
+          </p>
+        </div>
+      }
+    }
+
+    <!-- Continue -->
+    <div class="mt-8 flex justify-end">
+      <button
+        type="button"
+        (click)="continue()"
+        [disabled]="!canContinue()"
+        class="inline-flex items-center gap-2 rounded-xl bg-primary-600 px-6 py-2.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-primary-700 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-primary-500 dark:hover:bg-primary-400">
+        {{ 'simulator.continue' | translate }}
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="5" y1="12" x2="19" y2="12"/>
+          <polyline points="12 5 19 12 12 19"/>
+        </svg>
+      </button>
+    </div>
+
+  </div>
+</div>

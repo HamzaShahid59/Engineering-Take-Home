@@ -70,6 +70,33 @@
       }
     }
   },
+  "simulator": {
+    "title": "Simulateur hypothécaire",
+    "start_over": "Recommencer",
+    "continue": "Continuer",
+    "step_of": "Étape {{current}} sur {{total}}",
+    "step": {
+      "purpose": "Objectif",
+      "borrower": "Emprunteur",
+      "property": "Bien",
+      "contribution": "Apport",
+      "financial": "Financier",
+      "personal": "Personnel",
+      "results": "Résultats"
+    },
+    "step1": {
+      "question": "Quel est l'objectif de votre projet ?",
+      "load_error": "Impossible de charger les options. Veuillez actualiser la page."
+    },
+    "step_placeholder": "Cette étape arrive bientôt.",
+    "purpose": {
+      "buy_property": "Acheter un bien",
+      "build_a_property": "Construire un bien",
+      "buy_out": "Rachat",
+      "renovate_property": "Rénover un bien",
+      "refinance_my_mortgage": "Refinancer mon prêt hypothécaire"
+    }
+  },
   "page": {
     "simulator":    { "title": "Simulateur hypothécaire", "subtitle": "Notre calculateur hypothécaire interactif arrive bientôt." },
     "dashboard":    { "placeholder": "Tableau de bord à venir" },

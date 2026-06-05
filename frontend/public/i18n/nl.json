@@ -70,6 +70,33 @@
       }
     }
   },
+  "simulator": {
+    "title": "Hypotheeksimulator",
+    "start_over": "Opnieuw beginnen",
+    "continue": "Doorgaan",
+    "step_of": "Stap {{current}} van {{total}}",
+    "step": {
+      "purpose": "Doel",
+      "borrower": "Kredietnemer",
+      "property": "Eigendom",
+      "contribution": "Bijdrage",
+      "financial": "Financieel",
+      "personal": "Persoonlijk",
+      "results": "Resultaten"
+    },
+    "step1": {
+      "question": "Wat is het doel van uw project?",
+      "load_error": "Opties konden niet worden geladen. Vernieuw de pagina."
+    },
+    "step_placeholder": "Deze stap komt binnenkort.",
+    "purpose": {
+      "buy_property": "Woning kopen",
+      "build_a_property": "Woning bouwen",
+      "buy_out": "Uitkopen",
+      "renovate_property": "Woning renoveren",
+      "refinance_my_mortgage": "Hypotheek herfinancieren"
+    }
+  },
   "page": {
     "simulator":    { "title": "Hypotheeksimulator", "subtitle": "Onze interactieve hypotheekcalculator komt binnenkort beschikbaar." },
     "dashboard":    { "placeholder": "Dashboard komt binnenkort" },

@@ -70,6 +70,33 @@
       }
     }
   },
+  "simulator": {
+    "title": "Mortgage Simulator",
+    "start_over": "Start over",
+    "continue": "Continue",
+    "step_of": "Step {{current}} of {{total}}",
+    "step": {
+      "purpose": "Purpose",
+      "borrower": "Borrower",
+      "property": "Property",
+      "contribution": "Contribution",
+      "financial": "Financial",
+      "personal": "Personal",
+      "results": "Results"
+    },
+    "step1": {
+      "question": "What is your project purpose?",
+      "load_error": "Could not load options. Please refresh the page."
+    },
+    "step_placeholder": "This step is coming soon.",
+    "purpose": {
+      "buy_property": "Buy property",
+      "build_a_property": "Build a property",
+      "buy_out": "Buy out",
+      "renovate_property": "Renovate property",
+      "refinance_my_mortgage": "Refinance my mortgage"
+    }
+  },
   "page": {
     "simulator":    { "title": "Mortgage Simulator", "subtitle": "Our interactive mortgage calculator is coming soon." },
     "dashboard":    { "placeholder": "Dashboard coming soon" },

@@ -1,0 +1,49 @@
+<!-- Question heading -->
+<div class="mb-6">
+  <h2 class="text-lg font-semibold text-gray-900 dark:text-white sm:text-xl">
+    {{ 'simulator.step1.question' | translate }}
+  </h2>
+</div>
+
+<!-- Loading skeletons -->
+@if (loading()) {
+  <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+    @for (i of [1, 2, 3, 4, 5]; track i) {
+      <div class="h-[60px] animate-pulse rounded-xl bg-gray-100 dark:bg-navy-800"></div>
+    }
+  </div>
+}
+
+<!-- Error state -->
+@else if (loadError()) {
+  <div role="alert" class="rounded-xl border border-red-200 bg-red-50 px-4 py-4 text-sm text-red-600 dark:border-red-800/40 dark:bg-red-900/10 dark:text-red-400">
+    {{ 'simulator.step1.load_error' | translate }}
+  </div>
+}
+
+<!-- Option cards -->
+@else {
+  <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+    @for (option of options(); track option.value) {
+      <button
+        type="button"
+        (click)="select.emit(option.value)"
+        [attr.aria-pressed]="option.value === selected()"
+        [class]="cardClass(option.value === selected())">
+
+        <!-- Radio indicator / check -->
+        @if (option.value === selected()) {
+          <span class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary-600 text-white dark:bg-primary-500" aria-hidden="true">
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+              <path d="M2 5l2.5 2.5L8 2.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+        } @else {
+          <span class="h-5 w-5 shrink-0 rounded-full border-2 border-gray-300 dark:border-navy-600" aria-hidden="true"></span>
+        }
+
+        <span>{{ optionKey(option.value) | translate }}</span>
+      </button>
+    }
+  </div>
+}
