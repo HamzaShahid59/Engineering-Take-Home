@@ -156,7 +156,7 @@ export class SimulatorStateService {
     });
     this._result.set(saved.calculation_result);
     this._sliderOwnFunds.set(saved.contribution.own_funds);
-    this._sliderDurationYears.set(saved.preferred_duration_years);
+    this._sliderDurationYears.set(saved.calculation_result.duration_years);
     this._currentStep.set(1);
     this.persist();
   }

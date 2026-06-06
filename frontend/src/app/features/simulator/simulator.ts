@@ -159,12 +159,12 @@ export class SimulatorComponent {
         date_of_birth: this.state.personalDetails()!.date_of_birth!,
         number_of_dependents: this.state.personalDetails()!.number_of_dependents!,
       },
-      preferred_duration_years: this.state.sliderDurationYears() ?? 25,
+      preferred_duration_years: this.state.sliderDurationYears() ?? this.state.result()?.duration_years ?? 25,
     };
 
     this.simService.calculate(payload).subscribe({
       next: result => {
-        this.state.setResultWithSliders(result, this.state.contribution()!.own_funds!, this.state.sliderDurationYears() ?? 25);
+        this.state.setResultWithSliders(result, this.state.contribution()!.own_funds!, this.state.sliderDurationYears() ?? this.state.result()?.duration_years ?? 25);
         this.state.setStep(7);
       },
       error: err => console.error('[Simulator] calculate error:', err),
@@ -213,7 +213,7 @@ export class SimulatorComponent {
         date_of_birth: this.state.personalDetails()!.date_of_birth!,
         number_of_dependents: this.state.personalDetails()!.number_of_dependents!,
       },
-      preferred_duration_years: this.state.sliderDurationYears() ?? 25,
+      preferred_duration_years: this.state.sliderDurationYears() ?? this.state.result()?.duration_years ?? 25,
     };
 
     this.simService.updateSimulation(id, payload).subscribe({
