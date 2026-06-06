@@ -1,5 +1,5 @@
 import { Injectable, signal } from '@angular/core';
-import { SimulationResult } from '../../core/models/simulation.models';
+import { SavedSimulation, SimulationResult } from '../models/simulation.models';
 
 export interface ContributionDraft {
   own_funds: number | null;
@@ -59,6 +59,8 @@ export class SimulatorStateService {
   private readonly _result = signal<SimulationResult | null>(this._draft.result ?? null);
   private readonly _sliderOwnFunds = signal<number | null>(this._draft.sliderOwnFunds ?? null);
   private readonly _sliderDurationYears = signal<number | null>(this._draft.sliderDurationYears ?? null);
+  private readonly _editMode = signal<boolean>(false);
+  private readonly _editSimulationId = signal<string | null>(null);
 
   readonly currentStep = this._currentStep.asReadonly();
   readonly projectPurpose = this._projectPurpose.asReadonly();
@@ -70,6 +72,8 @@ export class SimulatorStateService {
   readonly result = this._result.asReadonly();
   readonly sliderOwnFunds = this._sliderOwnFunds.asReadonly();
   readonly sliderDurationYears = this._sliderDurationYears.asReadonly();
+  readonly editMode = this._editMode.asReadonly();
+  readonly editSimulationId = this._editSimulationId.asReadonly();
 
   setStep(step: number): void {
     this._currentStep.set(step);
@@ -118,6 +122,45 @@ export class SimulatorStateService {
     this.persist();
   }
 
+  setEditMode(id: string): void {
+    this._editMode.set(true);
+    this._editSimulationId.set(id);
+  }
+
+  prefillFromSaved(saved: SavedSimulation): void {
+    const pd = saved.project_details;
+    this._projectPurpose.set(pd.project_purpose);
+    this._borrowerType.set(pd.borrower_type);
+    this._propertyDetails.set({
+      property_type: pd.property_type,
+      property_location: pd.property_location,
+      property_price: pd.property_price,
+      property_usage: pd.property_usage,
+      sale_type: pd.sale_type,
+      epc_score: pd.epc_score ?? null,
+    });
+    this._contribution.set({ own_funds: saved.contribution.own_funds });
+    this._financialDetails.set({
+      incomes: saved.financial_details.incomes.map(i => ({
+        type: i.income_type,
+        monthly_amount: i.monthly_amount,
+      })),
+      liabilities: (saved.financial_details.liabilities ?? []).map(l => ({
+        type: l.liability_type,
+        monthly_amount: l.monthly_amount,
+      })),
+    });
+    this._personalDetails.set({
+      date_of_birth: saved.personal_details.date_of_birth,
+      number_of_dependents: saved.personal_details.number_of_dependents,
+    });
+    this._result.set(saved.calculation_result);
+    this._sliderOwnFunds.set(saved.contribution.own_funds);
+    this._sliderDurationYears.set(saved.preferred_duration_years);
+    this._currentStep.set(1);
+    this.persist();
+  }
+
   startOver(): void {
     this._currentStep.set(1);
     this._projectPurpose.set(null);
@@ -129,6 +172,8 @@ export class SimulatorStateService {
     this._result.set(null);
     this._sliderOwnFunds.set(null);
     this._sliderDurationYears.set(null);
+    this._editMode.set(false);
+    this._editSimulationId.set(null);
     localStorage.removeItem(DRAFT_KEY);
   }
 

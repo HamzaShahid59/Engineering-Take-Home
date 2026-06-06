@@ -3,7 +3,7 @@ import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TranslatePipe } from '@ngx-translate/core';
 import { MortgageSimulationService } from '../../../../core/services/mortgage-simulation.service';
-import { SimulatorStateService, PropertyDetailsDraft } from '../../simulator-state.service';
+import { SimulatorStateService, PropertyDetailsDraft } from '../../../../core/services/simulator-state.service';
 import type { DropdownOption } from '../../../../core/models/simulation.models';
 
 interface Step3Options {

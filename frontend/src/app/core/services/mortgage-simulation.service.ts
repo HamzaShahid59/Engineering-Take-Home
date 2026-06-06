@@ -47,7 +47,7 @@ export class MortgageSimulationService {
       .pipe(map(res => res.data!));
   }
 
-  updateSimulation(simulationId: string, payload: SaveLockRequest): Observable<SavedSimulation> {
+  updateSimulation(simulationId: string, payload: SimulationCalculateRequest): Observable<SavedSimulation> {
     return this.http
       .put<ApiResponse<SavedSimulation>>(`${this.baseUrl}/${simulationId}`, payload)
       .pipe(map(res => res.data!));

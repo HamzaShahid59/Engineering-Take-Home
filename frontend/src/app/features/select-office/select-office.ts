@@ -7,7 +7,7 @@ import { MortgageSimulationService } from '../../core/services/mortgage-simulati
 import { OfficeStateService } from '../../core/services/office-state.service';
 import { SaveLockService } from '../../core/services/save-lock.service';
 import { ToastService } from '../../core/services/toast.service';
-import { SimulatorStateService } from '../simulator/simulator-state.service';
+import { SimulatorStateService } from '../../core/services/simulator-state.service';
 import type { Office, SaveLockRequest } from '../../core/models/simulation.models';
 
 @Component({

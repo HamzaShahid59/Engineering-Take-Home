@@ -2,7 +2,7 @@ import { Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TranslatePipe } from '@ngx-translate/core';
-import { SimulatorStateService, PersonalDetailsDraft } from '../../simulator-state.service';
+import { SimulatorStateService, PersonalDetailsDraft } from '../../../../core/services/simulator-state.service';
 import {
   AbstractControl,
   ValidationErrors,

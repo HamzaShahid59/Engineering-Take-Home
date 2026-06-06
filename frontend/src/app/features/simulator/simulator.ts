@@ -1,11 +1,12 @@
 import { Component, computed, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { SimulatorStateService } from './simulator-state.service';
+import { SimulatorStateService } from '../../core/services/simulator-state.service';
 import { MortgageSimulationService } from '../../core/services/mortgage-simulation.service';
 import { SimulationCalculateRequest } from '../../core/models/simulation.models';
 import { AuthService } from '../../core/services/auth.service';
 import { AuthReturnIntentService } from '../../core/services/auth-return-intent.service';
+import { ToastService } from '../../core/services/toast.service';
 import { Step1PurposeComponent } from './steps/step1-purpose/step1-purpose';
 import { Step2BorrowerComponent } from './steps/step2-borrower/step2-borrower';
 import { Step3PropertyComponent } from './steps/step3-property/step3-property';
@@ -41,6 +42,7 @@ export class SimulatorComponent {
   private readonly router = inject(Router);
   private readonly authService = inject(AuthService);
   private readonly returnIntentService = inject(AuthReturnIntentService);
+  private readonly toast = inject(ToastService);
   protected readonly steps = STEPS;
 
   protected readonly canContinue = computed(() => {
@@ -157,12 +159,12 @@ export class SimulatorComponent {
         date_of_birth: this.state.personalDetails()!.date_of_birth!,
         number_of_dependents: this.state.personalDetails()!.number_of_dependents!,
       },
-      preferred_duration_years: 25,
+      preferred_duration_years: this.state.sliderDurationYears() ?? 25,
     };
 
     this.simService.calculate(payload).subscribe({
       next: result => {
-        this.state.setResultWithSliders(result, this.state.contribution()!.own_funds!, 25);
+        this.state.setResultWithSliders(result, this.state.contribution()!.own_funds!, this.state.sliderDurationYears() ?? 25);
         this.state.setStep(7);
       },
       error: err => console.error('[Simulator] calculate error:', err),
@@ -170,12 +172,62 @@ export class SimulatorComponent {
   }
 
   protected onSaveLock(): void {
+    if (this.state.editMode()) {
+      this.performUpdate();
+      return;
+    }
     if (!this.authService.isAuthenticated()) {
       this.returnIntentService.set('save-lock');
       this.router.navigateByUrl('/register');
     } else {
       this.router.navigateByUrl('/select-office');
     }
+  }
+
+  private performUpdate(): void {
+    const pd = this.state.propertyDetails()!;
+    const fd = this.state.financialDetails()!;
+    const id = this.state.editSimulationId()!;
+
+    const payload: SimulationCalculateRequest = {
+      project_details: {
+        project_purpose: this.state.projectPurpose()!,
+        borrower_type: this.state.borrowerType()!,
+        property_type: pd.property_type!,
+        property_location: pd.property_location!,
+        property_price: pd.property_price!,
+        property_usage: pd.property_usage!,
+        sale_type: pd.sale_type!,
+        epc_score: pd.epc_score,
+      },
+      contribution: {
+        own_funds: this.state.sliderOwnFunds() ?? this.state.contribution()!.own_funds!,
+      },
+      financial_details: {
+        incomes: fd.incomes.map(r => ({ income_type: r.type!, monthly_amount: r.monthly_amount! })),
+        liabilities: fd.liabilities.length > 0
+          ? fd.liabilities.map(r => ({ liability_type: r.type!, monthly_amount: r.monthly_amount! }))
+          : undefined,
+      },
+      personal_details: {
+        date_of_birth: this.state.personalDetails()!.date_of_birth!,
+        number_of_dependents: this.state.personalDetails()!.number_of_dependents!,
+      },
+      preferred_duration_years: this.state.sliderDurationYears() ?? 25,
+    };
+
+    this.simService.updateSimulation(id, payload).subscribe({
+      next: () => {
+        this.toast.show('simulator.edit.update_success');
+        this.state.startOver();
+        this.router.navigateByUrl(`/simulations/${id}`);
+      },
+      error: () => this.toast.show('simulator.edit.update_error', 'error'),
+    });
+  }
+
+  protected jumpToStep(index: number): void {
+    this.state.setStep(index);
   }
 
   protected startOver(): void {

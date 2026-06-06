@@ -1,0 +1,13 @@
+@if (ready()) {
+  <app-simulator />
+} @else if (error()) {
+  <div class="flex min-h-[calc(100vh-4rem)] items-center justify-center px-4">
+    <p class="text-sm text-gray-500 dark:text-navy-400">
+      {{ 'simulator.edit.load_error' | translate }}
+    </p>
+  </div>
+} @else {
+  <div class="flex min-h-[calc(100vh-4rem)] items-center justify-center px-4" aria-busy="true" aria-label="Loading">
+    <div class="h-8 w-8 animate-spin rounded-full border-4 border-primary-600 border-t-transparent dark:border-primary-500 dark:border-t-transparent"></div>
+  </div>
+}

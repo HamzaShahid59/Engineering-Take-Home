@@ -236,6 +236,13 @@
     "sale_type": {
       "private_sale": "Onderhandse verkoop",
       "vat_regime": "BTW-regime"
+    },
+    "edit": {
+      "update_simulation": "Simulatie bijwerken",
+      "update_success": "Simulatie succesvol bijgewerkt.",
+      "update_error": "Simulatie kon niet worden bijgewerkt. Probeer het opnieuw.",
+      "step7_hint": "Klik eerst op 'Resultaat bekijken' in stap 6",
+      "load_error": "Simulatie kon niet worden geladen. Vernieuw de pagina."
     }
   },
   "toast": {

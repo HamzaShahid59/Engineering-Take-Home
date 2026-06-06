@@ -320,30 +320,32 @@
   </div>
 
   <!-- ═══ Save & Lock CTA ═══ -->
-  <div
-    class="overflow-hidden rounded-2xl bg-gradient-to-r from-primary-700 to-primary-500 shadow-xl shadow-primary-700/20 ring-1 ring-primary-400/30 dark:from-primary-800 dark:to-primary-600 dark:shadow-primary-950/40">
-    <div class="flex flex-col gap-4 px-6 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-8 sm:py-6">
-      <div>
-        <p class="text-sm font-semibold text-white sm:text-base">
+  @if (!editMode()) {
+    <div
+      class="overflow-hidden rounded-2xl bg-gradient-to-r from-primary-700 to-primary-500 shadow-xl shadow-primary-700/20 ring-1 ring-primary-400/30 dark:from-primary-800 dark:to-primary-600 dark:shadow-primary-950/40">
+      <div class="flex flex-col gap-4 px-6 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-8 sm:py-6">
+        <div>
+          <p class="text-sm font-semibold text-white sm:text-base">
+            {{ 'simulator.step7.save_lock' | translate }}
+          </p>
+          <p class="mt-0.5 text-[13px] text-primary-200/80">
+            {{ 'simulator.step7.save_lock_hint' | translate }}
+          </p>
+        </div>
+        <button
+          type="button"
+          (click)="onSaveLock()"
+          class="inline-flex shrink-0 items-center gap-2 rounded-xl bg-white px-6 py-2.5 text-sm font-semibold text-primary-700 shadow-sm transition-all hover:bg-primary-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary-600 dark:text-primary-800">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"
+               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+          </svg>
           {{ 'simulator.step7.save_lock' | translate }}
-        </p>
-        <p class="mt-0.5 text-[13px] text-primary-200/80">
-          {{ 'simulator.step7.save_lock_hint' | translate }}
-        </p>
+        </button>
       </div>
-      <button
-        type="button"
-        (click)="onSaveLock()"
-        class="inline-flex shrink-0 items-center gap-2 rounded-xl bg-white px-6 py-2.5 text-sm font-semibold text-primary-700 shadow-sm transition-all hover:bg-primary-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary-600 dark:text-primary-800">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"
-             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-          <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-        </svg>
-        {{ 'simulator.step7.save_lock' | translate }}
-      </button>
     </div>
-  </div>
+  }
 
   <!-- ═══ Disclaimer ═══ -->
   <p class="text-center text-[11px] text-gray-400 dark:text-navy-500">

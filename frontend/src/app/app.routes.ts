@@ -41,6 +41,12 @@ export const routes: Routes = [
       import('./features/simulations/simulation-detail/simulation-detail').then(m => m.SimulationDetailComponent),
   },
   {
+    path: 'simulations/:id/edit',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./features/simulator/edit/edit-simulator').then(m => m.EditSimulatorComponent),
+  },
+  {
     path: 'applications',
     canActivate: [authGuard],
     loadComponent: () =>

@@ -2,7 +2,7 @@ import { Component, DestroyRef, OnInit, inject, signal } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TranslatePipe } from '@ngx-translate/core';
-import { SimulatorStateService, FinancialDetailsDraft } from '../../simulator-state.service';
+import { SimulatorStateService, FinancialDetailsDraft } from '../../../../core/services/simulator-state.service';
 import { MortgageSimulationService } from '../../../../core/services/mortgage-simulation.service';
 import { DropdownOption } from '../../../../core/models/simulation.models';
 

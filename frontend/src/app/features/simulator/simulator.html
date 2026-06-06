@@ -17,15 +17,17 @@
               <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
               <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
             </svg>
-            {{ 'simulator.step7.save_lock' | translate }}
+            {{ (state.editMode() ? 'simulator.edit.update_simulation' : 'simulator.step7.save_lock') | translate }}
           </button>
         }
-        <button
-          type="button"
-          (click)="startOver()"
-          class="rounded text-sm font-medium text-primary-700 transition-colors hover:text-primary-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:text-navy-400 dark:hover:text-navy-200">
-          {{ 'simulator.start_over' | translate }}
-        </button>
+        @if (!state.editMode()) {
+          <button
+            type="button"
+            (click)="startOver()"
+            class="rounded text-sm font-medium text-primary-700 transition-colors hover:text-primary-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:text-navy-400 dark:hover:text-navy-200">
+            {{ 'simulator.start_over' | translate }}
+          </button>
+        }
       </div>
     </div>
 
@@ -51,15 +53,34 @@
         @for (step of steps; track step.index; let last = $last) {
           <li class="flex flex-1 flex-col items-center" [class.flex-none]="last">
             <div class="flex w-full items-center">
-              <div [class]="stepCircleClass(step.index)" [attr.aria-current]="step.index === state.currentStep() ? 'step' : null">
-                @if (step.index < state.currentStep()) {
-                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
-                    <path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                } @else {
-                  {{ step.index }}
-                }
-              </div>
+              @if (state.editMode() && step.index < 7) {
+                <button
+                  type="button"
+                  (click)="jumpToStep(step.index)"
+                  [class]="stepCircleClass(step.index) + ' cursor-pointer'"
+                  [attr.aria-current]="step.index === state.currentStep() ? 'step' : null">
+                  @if (step.index < state.currentStep()) {
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                      <path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  } @else {
+                    {{ step.index }}
+                  }
+                </button>
+              } @else {
+                <div
+                  [class]="stepCircleClass(step.index)"
+                  [attr.aria-current]="step.index === state.currentStep() ? 'step' : null"
+                  [attr.title]="(state.editMode() && step.index === 7) ? ('simulator.edit.step7_hint' | translate) : null">
+                  @if (step.index < state.currentStep()) {
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                      <path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  } @else {
+                    {{ step.index }}
+                  }
+                </div>
+              }
               @if (!last) {
                 <div [class]="connectorClass(step.index)" aria-hidden="true"></div>
               }

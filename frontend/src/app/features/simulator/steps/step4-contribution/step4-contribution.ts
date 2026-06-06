@@ -2,7 +2,7 @@ import { Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TranslatePipe } from '@ngx-translate/core';
-import { SimulatorStateService, ContributionDraft } from '../../simulator-state.service';
+import { SimulatorStateService, ContributionDraft } from '../../../../core/services/simulator-state.service';
 
 @Component({
   selector: 'app-step4-contribution',

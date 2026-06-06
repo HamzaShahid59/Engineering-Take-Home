@@ -43,6 +43,10 @@ export class DashboardComponent implements OnInit {
     this.router.navigate(['/simulations', id]);
   }
 
+  protected onEditSimulation(id: string): void {
+    this.router.navigate(['/simulations', id, 'edit']);
+  }
+
   protected onDeleteClick(id: string): void {
     this.confirmDeleteId.set(id);
   }

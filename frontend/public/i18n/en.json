@@ -236,6 +236,13 @@
     "sale_type": {
       "private_sale": "Private sale",
       "vat_regime": "VAT regime"
+    },
+    "edit": {
+      "update_simulation": "Update Simulation",
+      "update_success": "Simulation updated successfully.",
+      "update_error": "Could not update simulation. Please try again.",
+      "step7_hint": "Click 'Show Result' on step 6 first",
+      "load_error": "Could not load simulation. Please refresh."
     }
   },
   "toast": {

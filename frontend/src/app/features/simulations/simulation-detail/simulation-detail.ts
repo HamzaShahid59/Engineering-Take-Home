@@ -85,6 +85,11 @@ export class SimulationDetailComponent implements OnInit {
     this.router.navigateByUrl('/dashboard');
   }
 
+  protected onEditClick(): void {
+    const id = this.simulation()?.id;
+    if (id) this.router.navigate(['/simulations', id, 'edit']);
+  }
+
   protected onDeleteClick(): void {
     this.confirmDelete.set(true);
   }

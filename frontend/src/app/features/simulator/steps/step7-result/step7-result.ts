@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Subject, debounceTime, switchMap } from 'rxjs';
 import { SimulationResult } from '../../../../core/models/simulation.models';
-import { SimulatorStateService } from '../../simulator-state.service';
+import { SimulatorStateService } from '../../../../core/services/simulator-state.service';
 import { MortgageSimulationService } from '../../../../core/services/mortgage-simulation.service';
 import { AuthService } from '../../../../core/services/auth.service';
 import { AuthReturnIntentService } from '../../../../core/services/auth-return-intent.service';
@@ -18,6 +18,7 @@ export class Step7ResultComponent {
   readonly result = input.required<SimulationResult>();
 
   private readonly state = inject(SimulatorStateService);
+  protected readonly editMode = this.state.editMode;
   private readonly simService = inject(MortgageSimulationService);
   private readonly router = inject(Router);
   private readonly authService = inject(AuthService);
