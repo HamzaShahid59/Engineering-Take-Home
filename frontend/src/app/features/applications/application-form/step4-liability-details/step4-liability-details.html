@@ -33,9 +33,10 @@
               formControlName="monthly_repayment"
               [attr.aria-invalid]="hasError(i, 'monthly_repayment') ? true : null"
               [class]="inputClass(hasError(i, 'monthly_repayment'))" />
-            @if (hasError(i, 'monthly_repayment')) {
+            @let mrErr = getErrorInfo(i, 'monthly_repayment');
+            @if (mrErr) {
               <p class="mt-1 text-xs text-red-600 dark:text-red-400" role="alert">
-                {{ 'application_form.error.required' | translate }}
+                {{ mrErr.key | translate: mrErr.params }}
               </p>
             }
           </div>
@@ -55,9 +56,10 @@
               formControlName="outstanding_balance"
               [attr.aria-invalid]="hasError(i, 'outstanding_balance') ? true : null"
               [class]="inputClass(hasError(i, 'outstanding_balance'))" />
-            @if (hasError(i, 'outstanding_balance')) {
+            @let obErr = getErrorInfo(i, 'outstanding_balance');
+            @if (obErr) {
               <p class="mt-1 text-xs text-red-600 dark:text-red-400" role="alert">
-                {{ 'application_form.error.required' | translate }}
+                {{ obErr.key | translate: obErr.params }}
               </p>
             }
           </div>

@@ -1,4 +1,4 @@
-import { Component, DestroyRef, OnInit, inject } from '@angular/core';
+import { Component, DestroyRef, OnInit, inject, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -9,6 +9,11 @@ import type {
 
 interface LiabilityRow {
   liability_type: string;
+}
+
+interface ErrorInfo {
+  key: string;
+  params?: Record<string, number>;
 }
 
 @Component({
@@ -22,6 +27,9 @@ export class Step4LiabilityDetailsComponent implements OnInit {
 
   protected liabilityRows: LiabilityRow[] = [];
   protected groups: FormGroup<Record<string, FormControl<string | null>>>[] = [];
+
+  private readonly _formValid = signal(false);
+  readonly isValid = this._formValid.asReadonly();
 
   ngOnInit(): void {
     const draft = this.formState.draftFormData()?.liability_details;
@@ -46,17 +54,22 @@ export class Step4LiabilityDetailsComponent implements OnInit {
       const group: Record<string, FormControl<string | null>> = {
         monthly_repayment: new FormControl<string | null>(
           item.monthly_repayment != null ? String(item.monthly_repayment) : null,
-          Validators.required,
+          [Validators.required, Validators.min(0)],
         ),
         outstanding_balance: new FormControl<string | null>(
           item.outstanding_balance != null ? String(item.outstanding_balance) : null,
-          Validators.required,
+          [Validators.required, Validators.min(0)],
         ),
       };
       return new FormGroup(group);
     });
 
+    this._formValid.set(this.liabilityRows.length > 0 && this.groups.every(g => g.valid));
+
     for (const grp of this.groups) {
+      grp.statusChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
+        this._formValid.set(this.liabilityRows.length > 0 && this.groups.every(g => g.valid));
+      });
       grp.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
         this.saveDraft();
       });
@@ -88,6 +101,14 @@ export class Step4LiabilityDetailsComponent implements OnInit {
   protected hasError(groupIndex: number, name: string): boolean {
     const c = this.groups[groupIndex]?.get(name);
     return !!c && c.invalid && c.touched;
+  }
+
+  protected getErrorInfo(groupIndex: number, name: string): ErrorInfo | null {
+    const c = this.groups[groupIndex]?.get(name);
+    if (!c || !c.invalid || !c.touched) return null;
+    if (c.errors?.['required']) return { key: 'application_form.error.required' };
+    if (c.errors?.['min']) return { key: 'application_form.error.min_value', params: { min: c.errors['min'].min } };
+    return null;
   }
 
   protected inputClass(hasError: boolean): string {

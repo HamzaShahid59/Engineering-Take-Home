@@ -338,7 +338,10 @@
     },
     "select_placeholder": "Select an option",
     "error": {
-      "required": "This field is required"
+      "required": "This field is required",
+      "min_length": "Must be at least {{min}} characters",
+      "max_length": "Cannot exceed {{max}} characters",
+      "min_value": "Must be greater than {{min}}"
     },
     "borrower_details": {
       "heading": "Tell us about yourself",

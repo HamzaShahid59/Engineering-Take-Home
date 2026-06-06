@@ -1,5 +1,5 @@
-import { Component, DestroyRef, OnInit, inject, input } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, DestroyRef, OnInit, inject, input, signal } from '@angular/core';
+import { FormControl, FormGroup, ReactiveFormsModule, ValidatorFn, Validators } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TranslatePipe } from '@ngx-translate/core';
 import { ApplicationFormStateService } from '../../../../core/services/application-form-state.service';
@@ -12,6 +12,21 @@ import type {
 } from '../../../../core/models/application.models';
 
 type IncomeSchema = ApplicationFieldSchema['income_details'];
+
+// Length validators per detail field name; required is driven by field.required from schema
+const DETAIL_LENGTH_VALIDATORS: Record<string, ValidatorFn[]> = {
+  employer_name: [Validators.minLength(2), Validators.maxLength(100)],
+  profession: [Validators.minLength(2), Validators.maxLength(100)],
+  business_name: [Validators.minLength(2), Validators.maxLength(100)],
+  rental_property_address: [Validators.minLength(2), Validators.maxLength(150)],
+  additional_income_information: [Validators.maxLength(500)],
+  income_stability_notes: [Validators.maxLength(500)],
+};
+
+interface ErrorInfo {
+  key: string;
+  params?: Record<string, number>;
+}
 
 interface IncomeRow {
   income_type: string;
@@ -31,6 +46,9 @@ export class Step3IncomeDetailsComponent implements OnInit {
 
   protected incomeRows: IncomeRow[] = [];
   protected groups: FormGroup<Record<string, FormControl<string | null>>>[] = [];
+
+  private readonly _formValid = signal(false);
+  readonly isValid = this._formValid.asReadonly();
 
   ngOnInit(): void {
     const schema = this.incomeSchema();
@@ -62,22 +80,29 @@ export class Step3IncomeDetailsComponent implements OnInit {
 
       group['monthly_amount'] = new FormControl<string | null>(
         item.monthly_amount != null ? String(item.monthly_amount) : null,
-        Validators.required,
+        [Validators.required, Validators.min(0.01)],
       );
 
       const details = item.details as unknown as Record<string, unknown>;
       for (const field of row.detailFields) {
         const val = details?.[field.name];
+        const lengthValidators = DETAIL_LENGTH_VALIDATORS[field.name] ?? [];
+        const validators = field.required ? [Validators.required, ...lengthValidators] : lengthValidators;
         group[field.name] = new FormControl<string | null>(
           val != null ? String(val) : null,
-          field.required ? Validators.required : [],
+          validators,
         );
       }
 
       return new FormGroup(group);
     });
 
+    this._formValid.set(this.incomeRows.length > 0 && this.groups.every(g => g.valid));
+
     for (const grp of this.groups) {
+      grp.statusChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
+        this._formValid.set(this.incomeRows.length > 0 && this.groups.every(g => g.valid));
+      });
       grp.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
         this.saveDraft();
       });
@@ -106,6 +131,16 @@ export class Step3IncomeDetailsComponent implements OnInit {
   protected hasError(groupIndex: number, name: string): boolean {
     const c = this.groups[groupIndex]?.get(name);
     return !!c && c.invalid && c.touched;
+  }
+
+  protected getErrorInfo(groupIndex: number, name: string): ErrorInfo | null {
+    const c = this.groups[groupIndex]?.get(name);
+    if (!c || !c.invalid || !c.touched) return null;
+    if (c.errors?.['required']) return { key: 'application_form.error.required' };
+    if (c.errors?.['minlength']) return { key: 'application_form.error.min_length', params: { min: c.errors['minlength'].requiredLength } };
+    if (c.errors?.['maxlength']) return { key: 'application_form.error.max_length', params: { max: c.errors['maxlength'].requiredLength } };
+    if (c.errors?.['min']) return { key: 'application_form.error.min_value', params: { min: c.errors['min'].min } };
+    return null;
   }
 
   protected inputClass(hasError: boolean): string {

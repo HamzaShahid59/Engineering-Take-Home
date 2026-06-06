@@ -1,5 +1,5 @@
-import { Component, DestroyRef, OnInit, inject, input } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, DestroyRef, OnInit, inject, input, signal } from '@angular/core';
+import { FormControl, FormGroup, ReactiveFormsModule, ValidatorFn, Validators } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TranslatePipe } from '@ngx-translate/core';
 import { ApplicationFormStateService } from '../../../../core/services/application-form-state.service';
@@ -7,6 +7,15 @@ import type {
   ApplicationDetails,
   ApplicationFormField,
 } from '../../../../core/models/application.models';
+
+const FIELD_VALIDATORS: Record<string, ValidatorFn[]> = {
+  description: [Validators.required, Validators.minLength(5), Validators.maxLength(1000)],
+};
+
+interface ErrorInfo {
+  key: string;
+  params?: Record<string, number>;
+}
 
 @Component({
   selector: 'app-step5-description',
@@ -21,17 +30,17 @@ export class Step5DescriptionComponent implements OnInit {
 
   protected form!: FormGroup;
 
+  private readonly _formValid = signal(false);
+  readonly isValid = this._formValid.asReadonly();
+
   ngOnInit(): void {
     const group: Record<string, FormControl<string | null>> = {};
     for (const field of this.fields()) {
-      group[field.name] = new FormControl<string | null>(
-        null,
-        field.required ? Validators.required : [],
-      );
+      const validators = FIELD_VALIDATORS[field.name] ?? (field.required ? [Validators.required] : []);
+      group[field.name] = new FormControl<string | null>(null, validators);
     }
     this.form = new FormGroup(group);
 
-    // Prefill from draft (application_details fields are top-level on ApplicationDetails)
     const draft = this.formState.draftFormData() as unknown as Record<string, unknown>;
     const seed: Record<string, unknown> = {};
     for (const field of this.fields()) {
@@ -41,6 +50,11 @@ export class Step5DescriptionComponent implements OnInit {
     if (Object.keys(seed).length) {
       this.form.patchValue(seed, { emitEvent: false });
     }
+
+    this._formValid.set(this.form.valid);
+    this.form.statusChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
+      this._formValid.set(this.form.valid);
+    });
 
     this.form.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
       const raw = this.form.getRawValue() as unknown as Partial<ApplicationDetails>;
@@ -52,8 +66,17 @@ export class Step5DescriptionComponent implements OnInit {
   }
 
   protected hasError(name: string): boolean {
-    const c = this.form.get(name);
+    const c = this.form?.get(name);
     return !!c && c.invalid && c.touched;
+  }
+
+  protected getErrorInfo(name: string): ErrorInfo | null {
+    const c = this.form?.get(name);
+    if (!c || !c.invalid || !c.touched) return null;
+    if (c.errors?.['required']) return { key: 'application_form.error.required' };
+    if (c.errors?.['minlength']) return { key: 'application_form.error.min_length', params: { min: c.errors['minlength'].requiredLength } };
+    if (c.errors?.['maxlength']) return { key: 'application_form.error.max_length', params: { max: c.errors['maxlength'].requiredLength } };
+    return null;
   }
 
   protected labelKey(name: string): string {

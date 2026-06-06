@@ -38,9 +38,10 @@
               [class]="inputClass(hasError(field.name))" />
           }
 
-          @if (hasError(field.name)) {
+          @let err = getErrorInfo(field.name);
+          @if (err) {
             <p class="mt-1 text-xs text-red-600 dark:text-red-400" role="alert">
-              {{ 'application_form.error.required' | translate }}
+              {{ err.key | translate: err.params }}
             </p>
           }
 

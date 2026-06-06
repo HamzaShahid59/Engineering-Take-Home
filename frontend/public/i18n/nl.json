@@ -338,7 +338,10 @@
     },
     "select_placeholder": "Selecteer een optie",
     "error": {
-      "required": "Dit veld is verplicht"
+      "required": "Dit veld is verplicht",
+      "min_length": "Minimaal {{min}} tekens vereist",
+      "max_length": "Mag niet meer dan {{max}} tekens bevatten",
+      "min_value": "Moet groter zijn dan {{min}}"
     },
     "borrower_details": {
       "heading": "Vertel ons over uzelf",

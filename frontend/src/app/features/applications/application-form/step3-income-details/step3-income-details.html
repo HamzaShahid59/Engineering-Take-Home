@@ -40,9 +40,10 @@
                 formControlName="monthly_amount"
                 [attr.aria-invalid]="hasError(i, 'monthly_amount') ? true : null"
                 [class]="inputClass(hasError(i, 'monthly_amount'))" />
-              @if (hasError(i, 'monthly_amount')) {
+              @let amtErr = getErrorInfo(i, 'monthly_amount');
+              @if (amtErr) {
                 <p class="mt-1 text-xs text-red-600 dark:text-red-400" role="alert">
-                  {{ 'application_form.error.required' | translate }}
+                  {{ amtErr.key | translate: amtErr.params }}
                 </p>
               }
             </div>
@@ -95,9 +96,10 @@
                     [class]="inputClass(hasError(i, field.name))" />
                 }
 
-                @if (hasError(i, field.name)) {
+                @let fldErr = getErrorInfo(i, field.name);
+                @if (fldErr) {
                   <p class="mt-1 text-xs text-red-600 dark:text-red-400" role="alert">
-                    {{ 'application_form.error.required' | translate }}
+                    {{ fldErr.key | translate: fldErr.params }}
                   </p>
                 }
               </div>

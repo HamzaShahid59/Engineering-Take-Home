@@ -1,4 +1,4 @@
-import { Component, DestroyRef, OnInit, computed, effect, inject, signal } from '@angular/core';
+import { Component, DestroyRef, OnInit, computed, effect, inject, signal, viewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import type { Observable } from 'rxjs';
@@ -11,10 +11,7 @@ import { Step2BorrowerDetailsComponent } from './step2-borrower-details/step2-bo
 import { Step3IncomeDetailsComponent } from './step3-income-details/step3-income-details';
 import { Step4LiabilityDetailsComponent } from './step4-liability-details/step4-liability-details';
 import { Step5DescriptionComponent } from './step5-description/step5-description';
-import type {
-  ApplicationFormField,
-  SubmitMortgageApplicationRequest,
-} from '../../../core/models/application.models';
+import type { SubmitMortgageApplicationRequest } from '../../../core/models/application.models';
 import { JsonPipe } from '@angular/common';
 interface AppFormStep {
   index: number;
@@ -49,6 +46,12 @@ export class ApplicationFormComponent implements OnInit {
   private readonly appService = inject(MortgageApplicationService);
   private readonly authService = inject(AuthService);
   protected readonly formState = inject(ApplicationFormStateService);
+
+  private readonly step1Ref = viewChild(Step1ProjectDetailsComponent);
+  private readonly step2Ref = viewChild(Step2BorrowerDetailsComponent);
+  private readonly step3Ref = viewChild(Step3IncomeDetailsComponent);
+  private readonly step4Ref = viewChild(Step4LiabilityDetailsComponent);
+  private readonly step5Ref = viewChild(Step5DescriptionComponent);
 
   protected readonly steps = STEPS;
   protected readonly loading = signal(true);
@@ -96,59 +99,13 @@ export class ApplicationFormComponent implements OnInit {
 
   protected readonly canContinue = computed(() => {
     const step = this.currentStep();
-    const draft = this.formState.draftFormData();
-    if (step === 1) return this.allRequiredFilled(this.step1Fields(), draft?.project_details);
-    if (step === 2) return this.allRequiredFilled(this.step2Fields(), draft?.borrower_details);
-    if (step === 3) return this.incomeDetailsFilled();
-    if (step === 4) return this.liabilityDetailsFilled();
-    if (step === 5) return this.applicationDetailsFilled();
+    if (step === 1) return this.step1Ref()?.isValid() ?? false;
+    if (step === 2) return this.step2Ref()?.isValid() ?? false;
+    if (step === 3) return this.step3Ref()?.isValid() ?? false;
+    if (step === 4) return this.step4Ref()?.isValid() ?? false;
+    if (step === 5) return this.step5Ref()?.isValid() ?? false;
     return false;
   });
-
-  private applicationDetailsFilled(): boolean {
-    const fields = this.step5Fields();
-    const draft = this.formState.draftFormData() as unknown as Record<string, unknown>;
-    return fields.filter(f => f.required).every(f => {
-      const v = draft?.[f.name];
-      return v !== null && v !== undefined && String(v).trim() !== '';
-    });
-  }
-
-  private liabilityDetailsFilled(): boolean {
-    const liabilities = this.formState.draftFormData()?.liability_details?.liabilities;
-    if (!liabilities || liabilities.length === 0) return false;
-    return liabilities.every(item => item.monthly_repayment > 0);
-  }
-
-  private incomeDetailsFilled(): boolean {
-    const schema = this.formState.fieldSchema()?.income_details;
-    const items = this.formState.draftFormData()?.income_details;
-    if (!schema || !items || items.length === 0) return false;
-    for (const item of items) {
-      if (!item.monthly_amount || item.monthly_amount <= 0) return false;
-      const detailFields = schema.details_by_income_type[item.income_type] ?? [];
-      const details = item.details as unknown as Record<string, unknown>;
-      const allFilled = detailFields
-        .filter((f: ApplicationFormField) => f.required)
-        .every((f: ApplicationFormField) => {
-          const v = details?.[f.name];
-          return v !== null && v !== undefined && String(v).trim() !== '';
-        });
-      if (!allFilled) return false;
-    }
-    return true;
-  }
-
-  private allRequiredFilled(fields: ApplicationFormField[], section: unknown): boolean {
-    if (!fields.length || !section) return false;
-    const map = section as Record<string, unknown>;
-    return fields
-      .filter(f => f.required)
-      .every(f => {
-        const v = map[f.name];
-        return v !== null && v !== undefined && String(v).trim() !== '';
-      });
-  }
 
   ngOnInit(): void {
     const handler = (e: BeforeUnloadEvent) => {
@@ -244,7 +201,11 @@ export class ApplicationFormComponent implements OnInit {
         project_details: draft.project_details!,
         borrower_details: draft.borrower_details!,
         income_details: draft.income_details ?? [],
-        liability_details: draft.liability_details!,
+        liability_details: draft.liability_details ?? {
+          has_existing_loans: false,
+          liabilities: [],
+          additional_financial_obligations: null,
+        },
         description: draft.description ?? '',
       },
     };
