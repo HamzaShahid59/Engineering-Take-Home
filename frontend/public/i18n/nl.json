@@ -295,11 +295,27 @@
     "back": "Terug",
     "continue": "Doorgaan",
     "load_error": "Aanvraag kon niet worden geladen. Vernieuw de pagina.",
+    "leave_confirm": {
+      "title": "Formulier verlaten?",
+      "message": "Uw conceptgegevens worden verwijderd als u het formulier verlaat. Deze actie kan niet ongedaan worden gemaakt.",
+      "confirm": "Verlaten & verwijderen",
+      "cancel": "Blijven"
+    },
+    "submit": "Aanvraag indienen",
+    "submit_error": "Aanvraag kon niet worden ingediend. Probeer het opnieuw.",
+    "submit_confirm": {
+      "title": "Uw aanvraag indienen",
+      "message": "Eenmaal ingediend kunnen de gegevens van uw aanvraag niet meer worden gewijzigd. Controleer alle informatie zorgvuldig voordat u verdergaat.",
+      "confirm": "Indienen",
+      "submitting": "Indienen…",
+      "cancel": "Annuleren"
+    },
     "step": {
       "project_details": "Projectdetails",
       "borrower_details": "Leninggegevens",
       "income": "Inkomen",
       "liabilities": "Verplichtingen",
+      "description": "Beschrijving",
       "review": "Overzicht"
     },
     "project_details": {
@@ -342,6 +358,16 @@
       "rental_contract_start_date": "Startdatum huurcontract",
       "additional_income_information": "Aanvullende informatie",
       "income_stability_notes": "Opmerkingen over inkomensstabiliteit"
+    },
+    "liability_details": {
+      "heading": "Uw bestaande schulden",
+      "monthly_repayment": "Maandelijkse aflossing (€)",
+      "outstanding_balance": "Openstaand saldo (€)"
+    },
+    "application_details": {
+      "heading": "Vertel ons over uw project",
+      "hint": "Beschrijf uw hypotheekproject en eventuele aanvullende informatie die u wilt delen.",
+      "description": "Projectbeschrijving"
     }
   },
   "simulation_detail": {

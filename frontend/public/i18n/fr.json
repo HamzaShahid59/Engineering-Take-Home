@@ -295,11 +295,27 @@
     "back": "Retour",
     "continue": "Continuer",
     "load_error": "Impossible de charger votre demande. Veuillez actualiser la page.",
+    "leave_confirm": {
+      "title": "Quitter le formulaire ?",
+      "message": "Vos données de brouillon seront supprimées si vous quittez. Cette action est irréversible.",
+      "confirm": "Quitter et supprimer",
+      "cancel": "Rester"
+    },
+    "submit": "Soumettre la demande",
+    "submit_error": "Impossible de soumettre votre demande. Veuillez réessayer.",
+    "submit_confirm": {
+      "title": "Soumettre votre demande",
+      "message": "Une fois soumises, les données de votre demande ne pourront plus être modifiées. Veuillez vérifier toutes les informations avant de continuer.",
+      "confirm": "Soumettre",
+      "submitting": "Envoi en cours…",
+      "cancel": "Annuler"
+    },
     "step": {
       "project_details": "Détails du projet",
       "borrower_details": "Informations emprunteur",
       "income": "Revenus",
       "liabilities": "Obligations",
+      "description": "Description",
       "review": "Récapitulatif"
     },
     "project_details": {
@@ -342,6 +358,16 @@
       "rental_contract_start_date": "Date de début du contrat de location",
       "additional_income_information": "Informations complémentaires",
       "income_stability_notes": "Notes sur la stabilité des revenus"
+    },
+    "liability_details": {
+      "heading": "Vos obligations financières existantes",
+      "monthly_repayment": "Remboursement mensuel (€)",
+      "outstanding_balance": "Solde restant dû (€)"
+    },
+    "application_details": {
+      "heading": "Parlez-nous de votre projet",
+      "hint": "Décrivez votre projet hypothécaire et toute information supplémentaire que vous souhaitez partager.",
+      "description": "Description du projet"
     }
   },
   "simulation_detail": {

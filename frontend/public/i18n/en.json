@@ -295,11 +295,27 @@
     "back": "Back",
     "continue": "Continue",
     "load_error": "Could not load your application. Please refresh.",
+    "leave_confirm": {
+      "title": "Leave application form?",
+      "message": "Your draft data will be deleted if you leave. This action cannot be undone.",
+      "confirm": "Leave & discard",
+      "cancel": "Stay"
+    },
+    "submit": "Submit Application",
+    "submit_error": "Could not submit your application. Please try again.",
+    "submit_confirm": {
+      "title": "Submit your application",
+      "message": "Once submitted, your application data cannot be changed. Please make sure all the information is correct before proceeding.",
+      "confirm": "Submit",
+      "submitting": "Submitting…",
+      "cancel": "Cancel"
+    },
     "step": {
       "project_details": "Project details",
       "borrower_details": "Borrower details",
       "income": "Income",
       "liabilities": "Liabilities",
+      "description": "Description",
       "review": "Review"
     },
     "project_details": {
@@ -342,6 +358,16 @@
       "rental_contract_start_date": "Rental contract start date",
       "additional_income_information": "Additional information",
       "income_stability_notes": "Income stability notes"
+    },
+    "liability_details": {
+      "heading": "Your existing liabilities",
+      "monthly_repayment": "Monthly repayment (€)",
+      "outstanding_balance": "Outstanding balance (€)"
+    },
+    "application_details": {
+      "heading": "Tell us about your project",
+      "hint": "Describe your mortgage project and any additional information you would like to share.",
+      "description": "Project description"
     }
   },
   "simulation_detail": {

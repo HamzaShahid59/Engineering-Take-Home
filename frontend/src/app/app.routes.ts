@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './core/guards/auth.guard';
+import { hasUnsavedChangesGuard } from './core/guards/has-unsaved-changes.guard';
 
 export const routes: Routes = [
   {
@@ -55,6 +56,7 @@ export const routes: Routes = [
   {
     path: 'applications/:id/form',
     canActivate: [authGuard],
+    canDeactivate: [hasUnsavedChangesGuard],
     loadComponent: () =>
       import('./features/applications/application-form/application-form').then(m => m.ApplicationFormComponent),
   },

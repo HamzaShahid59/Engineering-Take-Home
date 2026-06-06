@@ -1,0 +1,60 @@
+<div class="mb-6">
+  <h2 class="text-lg font-semibold text-gray-900 dark:text-white sm:text-xl">
+    {{ 'application_form.application_details.heading' | translate }}
+  </h2>
+  <p class="mt-1 text-sm text-gray-500 dark:text-navy-400">
+    {{ 'application_form.application_details.hint' | translate }}
+  </p>
+</div>
+
+@if (form) {
+  <form [formGroup]="form" novalidate>
+    <div class="space-y-5">
+
+      @for (field of fields(); track field.name) {
+        <div>
+          <label
+            [for]="'appd-' + field.name"
+            class="mb-1.5 flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-300">
+            {{ labelKey(field.name) | translate }}
+            @if (!field.required) {
+              <span class="text-xs font-normal text-gray-400 dark:text-navy-500">
+                {{ 'application_form.project_details.optional' | translate }}
+              </span>
+            }
+          </label>
+
+          @if (field.type === 'textarea') {
+            <textarea
+              [id]="'appd-' + field.name"
+              rows="5"
+              [formControlName]="field.name"
+              [attr.aria-invalid]="hasError(field.name) ? true : null"
+              [class]="textareaClass(hasError(field.name))"></textarea>
+          } @else if (field.type === 'date') {
+            <input
+              [id]="'appd-' + field.name"
+              type="date"
+              [formControlName]="field.name"
+              [attr.aria-invalid]="hasError(field.name) ? true : null"
+              [class]="inputClass(hasError(field.name))" />
+          } @else {
+            <input
+              [id]="'appd-' + field.name"
+              type="text"
+              [formControlName]="field.name"
+              [attr.aria-invalid]="hasError(field.name) ? true : null"
+              [class]="inputClass(hasError(field.name))" />
+          }
+
+          @if (hasError(field.name)) {
+            <p class="mt-1 text-xs text-red-600 dark:text-red-400" role="alert">
+              {{ 'application_form.error.required' | translate }}
+            </p>
+          }
+        </div>
+      }
+
+    </div>
+  </form>
+}

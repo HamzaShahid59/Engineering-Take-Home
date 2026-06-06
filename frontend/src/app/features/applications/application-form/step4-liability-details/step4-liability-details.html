@@ -1,0 +1,70 @@
+<div class="mb-6">
+  <h2 class="text-lg font-semibold text-gray-900 dark:text-white sm:text-xl">
+    {{ 'application_form.liability_details.heading' | translate }}
+  </h2>
+</div>
+
+<div class="space-y-6">
+  @for (row of liabilityRows; track row.liability_type; let i = $index) {
+    <div class="rounded-2xl bg-white p-6 ring-1 ring-gray-100 shadow-sm dark:bg-navy-800 dark:ring-navy-700/60">
+
+      <!-- Liability type badge -->
+      <div class="mb-5 flex items-center gap-2">
+        <span class="inline-flex items-center rounded-full bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-700 dark:bg-amber-900/30 dark:text-amber-300">
+          {{ row.liability_type }}
+        </span>
+      </div>
+
+      <div [formGroup]="groups[i]">
+        <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+
+          <!-- Monthly repayment -->
+          <div>
+            <label
+              [for]="'liab-' + i + '-monthly_repayment'"
+              class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">
+              {{ 'application_form.liability_details.monthly_repayment' | translate }}
+            </label>
+            <input
+              [id]="'liab-' + i + '-monthly_repayment'"
+              type="number"
+              min="0"
+              step="0.01"
+              formControlName="monthly_repayment"
+              [attr.aria-invalid]="hasError(i, 'monthly_repayment') ? true : null"
+              [class]="inputClass(hasError(i, 'monthly_repayment'))" />
+            @if (hasError(i, 'monthly_repayment')) {
+              <p class="mt-1 text-xs text-red-600 dark:text-red-400" role="alert">
+                {{ 'application_form.error.required' | translate }}
+              </p>
+            }
+          </div>
+
+          <!-- Outstanding balance -->
+          <div>
+            <label
+              [for]="'liab-' + i + '-outstanding_balance'"
+              class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">
+              {{ 'application_form.liability_details.outstanding_balance' | translate }}
+            </label>
+            <input
+              [id]="'liab-' + i + '-outstanding_balance'"
+              type="number"
+              min="0"
+              step="0.01"
+              formControlName="outstanding_balance"
+              [attr.aria-invalid]="hasError(i, 'outstanding_balance') ? true : null"
+              [class]="inputClass(hasError(i, 'outstanding_balance'))" />
+            @if (hasError(i, 'outstanding_balance')) {
+              <p class="mt-1 text-xs text-red-600 dark:text-red-400" role="alert">
+                {{ 'application_form.error.required' | translate }}
+              </p>
+            }
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  }
+</div>

@@ -141,11 +141,18 @@ export interface PrefilledIncome {
   monthly_amount: number;
 }
 
+export interface PrefilledLiability {
+  liability_type: string;
+  monthly_repayment: number;
+  outstanding_balance: number;
+}
+
 export interface ApplicationFormResponse extends MortgageApplicationResponse {
   field_schema: ApplicationFieldSchema;
   prefilled_data?: {
     financial_details?: {
       incomes?: PrefilledIncome[];
+      liabilities?: PrefilledLiability[];
     };
   } | null;
 }
