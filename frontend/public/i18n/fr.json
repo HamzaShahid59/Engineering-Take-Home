@@ -290,13 +290,75 @@
       "cancel": "Annuler"
     }
   },
+  "application_form": {
+    "title": "Demande de prêt hypothécaire",
+    "back": "Retour",
+    "continue": "Continuer",
+    "load_error": "Impossible de charger votre demande. Veuillez actualiser la page.",
+    "step": {
+      "project_details": "Détails du projet",
+      "borrower_details": "Informations emprunteur",
+      "income": "Revenus",
+      "liabilities": "Obligations",
+      "review": "Récapitulatif"
+    },
+    "project_details": {
+      "heading": "Parlez-nous du bien immobilier",
+      "optional": "Optionnel",
+      "property_address": "Adresse du bien",
+      "house_number": "Numéro de maison",
+      "box_number": "Boîte",
+      "postal_code": "Code postal",
+      "city": "Ville",
+      "country": "Pays",
+      "estimated_purchase_date": "Date d'achat estimée",
+      "notary_name": "Nom du notaire",
+      "real_estate_agency": "Agence immobilière"
+    },
+    "select_placeholder": "Sélectionner une option",
+    "error": {
+      "required": "Ce champ est obligatoire"
+    },
+    "borrower_details": {
+      "heading": "Parlez-nous de vous",
+      "nationality": "Nationalité",
+      "marital_status": "État civil",
+      "current_residential_address": "Adresse résidentielle actuelle",
+      "current_postal_code": "Code postal actuel",
+      "current_city": "Ville actuelle",
+      "current_country": "Pays actuel"
+    },
+    "income_details": {
+      "heading": "Vos informations de revenus",
+      "no_income": "Aucune source de revenus trouvée. Veuillez revenir en arrière et compléter le simulateur.",
+      "monthly_amount": "Montant mensuel (€)",
+      "employer_name": "Nom de l'employeur",
+      "profession": "Profession",
+      "contract_type": "Type de contrat",
+      "employment_start_date": "Date de début d'emploi",
+      "business_name": "Nom de l'entreprise",
+      "business_start_date": "Date de début d'activité",
+      "rental_property_address": "Adresse du bien en location",
+      "rental_contract_start_date": "Date de début du contrat de location",
+      "additional_income_information": "Informations complémentaires",
+      "income_stability_notes": "Notes sur la stabilité des revenus"
+    }
+  },
   "simulation_detail": {
     "back": "Retour au tableau de bord",
     "load_error": "Impossible de charger la simulation. Veuillez actualiser la page.",
     "rate_locked": "Taux fixé jusqu'au",
     "action_review": "Examiner & Soumettre",
     "action_edit": "Modifier",
-    "action_delete": "Supprimer"
+    "action_delete": "Supprimer",
+    "apply_error": "Impossible de créer votre demande. Veuillez réessayer.",
+    "apply_confirm": {
+      "title": "Démarrer votre demande",
+      "message": "Une demande provisoire sera créée à partir de cette simulation. Vous pouvez compléter et vérifier les informations avant de la soumettre. Une fois soumise, les données ne pourront plus être modifiées.",
+      "confirm": "Créer le brouillon",
+      "creating": "Création…",
+      "cancel": "Annuler"
+    }
   },
   "page": {
     "simulator": {

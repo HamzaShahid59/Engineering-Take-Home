@@ -53,6 +53,12 @@ export const routes: Routes = [
       import('./features/applications/applications').then(m => m.ApplicationsComponent),
   },
   {
+    path: 'applications/:id/form',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./features/applications/application-form/application-form').then(m => m.ApplicationFormComponent),
+  },
+  {
     path: 'documents',
     canActivate: [authGuard],
     loadComponent: () =>

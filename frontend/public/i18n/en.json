@@ -290,13 +290,75 @@
       "cancel": "Cancel"
     }
   },
+  "application_form": {
+    "title": "Mortgage Application",
+    "back": "Back",
+    "continue": "Continue",
+    "load_error": "Could not load your application. Please refresh.",
+    "step": {
+      "project_details": "Project details",
+      "borrower_details": "Borrower details",
+      "income": "Income",
+      "liabilities": "Liabilities",
+      "review": "Review"
+    },
+    "project_details": {
+      "heading": "Tell us about the property",
+      "optional": "Optional",
+      "property_address": "Property address",
+      "house_number": "House number",
+      "box_number": "Box number",
+      "postal_code": "Postal code",
+      "city": "City",
+      "country": "Country",
+      "estimated_purchase_date": "Estimated purchase date",
+      "notary_name": "Notary name",
+      "real_estate_agency": "Real estate agency"
+    },
+    "select_placeholder": "Select an option",
+    "error": {
+      "required": "This field is required"
+    },
+    "borrower_details": {
+      "heading": "Tell us about yourself",
+      "nationality": "Nationality",
+      "marital_status": "Marital status",
+      "current_residential_address": "Current residential address",
+      "current_postal_code": "Current postal code",
+      "current_city": "Current city",
+      "current_country": "Current country"
+    },
+    "income_details": {
+      "heading": "Your income details",
+      "no_income": "No income sources found. Please go back and complete the simulator.",
+      "monthly_amount": "Monthly amount (€)",
+      "employer_name": "Employer name",
+      "profession": "Profession",
+      "contract_type": "Contract type",
+      "employment_start_date": "Employment start date",
+      "business_name": "Business name",
+      "business_start_date": "Business start date",
+      "rental_property_address": "Rental property address",
+      "rental_contract_start_date": "Rental contract start date",
+      "additional_income_information": "Additional information",
+      "income_stability_notes": "Income stability notes"
+    }
+  },
   "simulation_detail": {
     "back": "Back to dashboard",
     "load_error": "Could not load simulation. Please refresh.",
     "rate_locked": "Rate locked until",
     "action_review": "Review & Apply",
     "action_edit": "Edit",
-    "action_delete": "Delete"
+    "action_delete": "Delete",
+    "apply_error": "Could not create your application. Please try again.",
+    "apply_confirm": {
+      "title": "Start your application",
+      "message": "A draft application will be created from this simulation. You can review and fill in the details before submitting. Once submitted, your application data cannot be changed.",
+      "confirm": "Create draft",
+      "creating": "Creating…",
+      "cancel": "Cancel"
+    }
   },
   "page": {
     "simulator": {

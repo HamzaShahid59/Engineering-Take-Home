@@ -1,6 +1,7 @@
 import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
+import { MortgageApplicationService } from '../../../core/services/mortgage-application.service';
 import { MortgageSimulationService } from '../../../core/services/mortgage-simulation.service';
 import { ToastService } from '../../../core/services/toast.service';
 import type { SavedSimulation } from '../../../core/models/simulation.models';
@@ -14,6 +15,7 @@ export class SimulationDetailComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly simService = inject(MortgageSimulationService);
+  private readonly appService = inject(MortgageApplicationService);
   private readonly toastService = inject(ToastService);
 
   protected readonly simulation = signal<SavedSimulation | null>(null);
@@ -21,6 +23,8 @@ export class SimulationDetailComponent implements OnInit {
   protected readonly loadError = signal(false);
   protected readonly confirmDelete = signal(false);
   protected readonly deleting = signal(false);
+  protected readonly confirmApply = signal(false);
+  protected readonly applying = signal(false);
 
   protected readonly ltv = computed(() => {
     const r = this.simulation()?.calculation_result;
@@ -88,6 +92,32 @@ export class SimulationDetailComponent implements OnInit {
   protected onEditClick(): void {
     const id = this.simulation()?.id;
     if (id) this.router.navigate(['/simulations', id, 'edit']);
+  }
+
+  protected onReviewApplyClick(): void {
+    this.confirmApply.set(true);
+  }
+
+  protected onApplyCancel(): void {
+    this.confirmApply.set(false);
+  }
+
+  protected onApplyConfirm(): void {
+    const id = this.simulation()?.id;
+    if (!id) return;
+    this.applying.set(true);
+    this.appService.createFromSimulation(id).subscribe({
+      next: app => {
+        this.applying.set(false);
+        this.confirmApply.set(false);
+        this.router.navigate(['/applications', app.id, 'form']);
+      },
+      error: () => {
+        this.applying.set(false);
+        this.confirmApply.set(false);
+        this.toastService.show('simulation_detail.apply_error', 'error');
+      },
+    });
   }
 
   protected onDeleteClick(): void {

@@ -1,0 +1,52 @@
+<div class="mb-6">
+  <h2 class="text-lg font-semibold text-gray-900 dark:text-white sm:text-xl">
+    {{ 'application_form.project_details.heading' | translate }}
+  </h2>
+</div>
+
+@if (form) {
+  <form [formGroup]="form" novalidate>
+    <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+
+      @for (field of fields(); track field.name) {
+        <div [class]="isFullWidth(field.name) ? 'sm:col-span-2' : ''">
+
+          <label
+            [for]="'appf-' + field.name"
+            class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">
+            {{ labelKey(field.name) | translate }}
+            @if (!field.required) {
+              <span class="ml-1 text-xs font-normal text-gray-400 dark:text-navy-500">
+                · {{ 'application_form.project_details.optional' | translate }}
+              </span>
+            }
+          </label>
+
+          @if (field.type === 'date') {
+            <input
+              [id]="'appf-' + field.name"
+              type="date"
+              [formControlName]="field.name"
+              [attr.aria-invalid]="hasError(field.name) ? true : null"
+              [class]="inputClass(hasError(field.name))" />
+          } @else {
+            <input
+              [id]="'appf-' + field.name"
+              type="text"
+              [formControlName]="field.name"
+              [attr.aria-invalid]="hasError(field.name) ? true : null"
+              [class]="inputClass(hasError(field.name))" />
+          }
+
+          @if (hasError(field.name)) {
+            <p class="mt-1 text-xs text-red-600 dark:text-red-400" role="alert">
+              {{ 'application_form.error.required' | translate }}
+            </p>
+          }
+
+        </div>
+      }
+
+    </div>
+  </form>
+}

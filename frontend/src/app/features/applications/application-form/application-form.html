@@ -1,0 +1,154 @@
+<div class="min-h-[calc(100vh-4rem)] px-4 py-8 sm:px-8 lg:px-12 xl:px-16">
+  <div class="mx-auto max-w-2xl">
+
+    <!-- Loading skeleton -->
+    @if (loading()) {
+      <div class="space-y-8" aria-busy="true" aria-label="Loading application form">
+        <div class="flex items-center justify-between">
+          <div class="h-7 w-48 animate-pulse rounded-lg bg-gray-200 dark:bg-navy-800"></div>
+          <div class="h-6 w-16 animate-pulse rounded bg-gray-200 dark:bg-navy-800"></div>
+        </div>
+        <div class="flex gap-2">
+          @for (_ of [1,2,3,4,5]; track $index) {
+            <div class="h-8 w-8 animate-pulse rounded-full bg-gray-200 dark:bg-navy-800"></div>
+            @if ($index < 4) {
+              <div class="mt-3.5 h-px flex-1 animate-pulse bg-gray-200 dark:bg-navy-800"></div>
+            }
+          }
+        </div>
+        <div class="space-y-5">
+          <div class="h-6 w-52 animate-pulse rounded-lg bg-gray-200 dark:bg-navy-800"></div>
+          <div class="grid grid-cols-2 gap-5">
+            @for (_ of [1,2,3,4,5,6]; track $index) {
+              <div [class]="$index === 0 ? 'col-span-2' : ''">
+                <div class="mb-1.5 h-4 w-24 animate-pulse rounded bg-gray-100 dark:bg-navy-800"></div>
+                <div class="h-9 animate-pulse rounded-lg bg-gray-100 dark:bg-navy-800"></div>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- Error state -->
+    @else if (loadError()) {
+      <div class="space-y-4">
+        <button
+          type="button"
+          class="inline-flex items-center gap-2 text-sm font-medium text-gray-500 transition-colors hover:text-gray-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 dark:text-navy-400 dark:hover:text-white"
+          (click)="goBack()">
+          <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd"/>
+          </svg>
+          {{ 'application_form.back' | translate }}
+        </button>
+        <div class="rounded-2xl border border-red-200 bg-red-50 px-6 py-4 dark:border-red-800 dark:bg-red-900/20">
+          <p class="text-sm text-red-600 dark:text-red-400">{{ 'application_form.load_error' | translate }}</p>
+        </div>
+      </div>
+    }
+
+    <!-- Form content -->
+    @else {
+
+      <!-- Header -->
+      <div class="mb-8 flex items-center justify-between">
+        <h1 class="text-xl font-bold text-gray-900 dark:text-white sm:text-2xl">
+          {{ 'application_form.title' | translate }}
+        </h1>
+        <button
+          type="button"
+          class="rounded text-sm font-medium text-gray-500 transition-colors hover:text-gray-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 dark:text-navy-400 dark:hover:text-white"
+          (click)="goBack()">
+          {{ 'application_form.back' | translate }}
+        </button>
+      </div>
+
+      <!-- Mobile progress bar -->
+      <div class="mb-8 sm:hidden">
+        <div class="mb-2 flex items-center justify-between text-xs text-gray-400 dark:text-navy-400">
+          <span>{{ 'simulator.step_of' | translate:{ current: currentStep(), total: steps.length } }}</span>
+          <span class="font-medium text-gray-600 dark:text-navy-300">
+            {{ steps[currentStep() - 1].labelKey | translate }}
+          </span>
+        </div>
+        <div class="h-1.5 w-full overflow-hidden rounded-full bg-gray-200 dark:bg-navy-800">
+          <div
+            class="h-1.5 rounded-full bg-primary-600 transition-all duration-300 dark:bg-primary-500"
+            [style.width.%]="(currentStep() / steps.length) * 100">
+          </div>
+        </div>
+      </div>
+
+      <!-- Desktop step indicators -->
+      <div class="mb-10 hidden sm:block">
+        <ol class="flex items-start" aria-label="Application form progress">
+          @for (step of steps; track step.index; let last = $last) {
+            <li class="flex flex-1 flex-col items-center" [class.flex-none]="last">
+              <div class="flex w-full items-center">
+                <div
+                  [class]="stepCircleClass(step.index)"
+                  [attr.aria-current]="step.index === currentStep() ? 'step' : null">
+                  @if (step.index < currentStep()) {
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                      <path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  } @else {
+                    {{ step.index }}
+                  }
+                </div>
+                @if (!last) {
+                  <div [class]="connectorClass(step.index)" aria-hidden="true"></div>
+                }
+              </div>
+              <span [class]="stepLabelClass(step.index)">
+                {{ step.labelKey | translate }}
+              </span>
+            </li>
+          }
+        </ol>
+      </div>
+
+      <!-- Step content -->
+      @switch (currentStep()) {
+        @case (1) {
+          <app-step1-project-details [fields]="step1Fields()" />
+        }
+        @case (2) {
+          <app-step2-borrower-details [fields]="step2Fields()" />
+        }
+        @case (3) {
+          @let schema = step3IncomeSchema();
+          @if (schema) {
+            <app-step3-income-details [incomeSchema]="schema" />
+          }
+        }
+        @default {
+          <div class="rounded-2xl bg-white p-6 text-center ring-1 ring-gray-100 shadow-sm dark:bg-navy-800 dark:ring-navy-700/60">
+            <p class="text-sm text-gray-400 dark:text-navy-500">
+              {{ 'page.applications.placeholder' | translate }}
+            </p>
+          </div>
+        }
+      }
+
+      <!-- Continue button -->
+      <div class="mt-8 flex justify-end">
+        <button
+          type="button"
+          (click)="onContinue()"
+          [disabled]="!canContinue()"
+          class="inline-flex items-center gap-2 rounded-xl bg-primary-600 px-6 py-2.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-primary-700 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-primary-500 dark:hover:bg-primary-400">
+          {{ 'application_form.continue' | translate }}
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"
+               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"/>
+            <polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </button>
+      </div>
+
+    }
+
+  </div>
+</div>

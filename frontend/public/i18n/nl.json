@@ -290,13 +290,75 @@
       "cancel": "Annuleren"
     }
   },
+  "application_form": {
+    "title": "Hypotheekaanvraag",
+    "back": "Terug",
+    "continue": "Doorgaan",
+    "load_error": "Aanvraag kon niet worden geladen. Vernieuw de pagina.",
+    "step": {
+      "project_details": "Projectdetails",
+      "borrower_details": "Leninggegevens",
+      "income": "Inkomen",
+      "liabilities": "Verplichtingen",
+      "review": "Overzicht"
+    },
+    "project_details": {
+      "heading": "Vertel ons over de woning",
+      "optional": "Optioneel",
+      "property_address": "Adres van het pand",
+      "house_number": "Huisnummer",
+      "box_number": "Busnummer",
+      "postal_code": "Postcode",
+      "city": "Stad",
+      "country": "Land",
+      "estimated_purchase_date": "Geschatte aankoopdatum",
+      "notary_name": "Naam notaris",
+      "real_estate_agency": "Vastgoedkantoor"
+    },
+    "select_placeholder": "Selecteer een optie",
+    "error": {
+      "required": "Dit veld is verplicht"
+    },
+    "borrower_details": {
+      "heading": "Vertel ons over uzelf",
+      "nationality": "Nationaliteit",
+      "marital_status": "Burgerlijke staat",
+      "current_residential_address": "Huidig woonadres",
+      "current_postal_code": "Huidige postcode",
+      "current_city": "Huidige stad",
+      "current_country": "Huidig land"
+    },
+    "income_details": {
+      "heading": "Uw inkomensgegevens",
+      "no_income": "Geen inkomensbronnen gevonden. Ga terug en voltooi de simulator.",
+      "monthly_amount": "Maandelijks bedrag (€)",
+      "employer_name": "Naam werkgever",
+      "profession": "Beroep",
+      "contract_type": "Contracttype",
+      "employment_start_date": "Startdatum dienstverband",
+      "business_name": "Bedrijfsnaam",
+      "business_start_date": "Startdatum bedrijf",
+      "rental_property_address": "Adres verhuurpand",
+      "rental_contract_start_date": "Startdatum huurcontract",
+      "additional_income_information": "Aanvullende informatie",
+      "income_stability_notes": "Opmerkingen over inkomensstabiliteit"
+    }
+  },
   "simulation_detail": {
     "back": "Terug naar dashboard",
     "load_error": "Simulatie kon niet worden geladen. Vernieuw de pagina.",
     "rate_locked": "Tarief vastgezet tot",
     "action_review": "Beoordelen & Aanvragen",
     "action_edit": "Bewerken",
-    "action_delete": "Verwijderen"
+    "action_delete": "Verwijderen",
+    "apply_error": "Aanvraag kon niet worden aangemaakt. Probeer het opnieuw.",
+    "apply_confirm": {
+      "title": "Uw aanvraag starten",
+      "message": "Er wordt een conceptaanvraag aangemaakt op basis van deze simulatie. U kunt de details invullen en controleren vóór indiening. Eenmaal ingediend kunnen de gegevens niet meer worden gewijzigd.",
+      "confirm": "Concept aanmaken",
+      "creating": "Aanmaken…",
+      "cancel": "Annuleren"
+    }
   },
   "page": {
     "simulator": {

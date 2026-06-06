@@ -1,0 +1,112 @@
+<div class="mb-6">
+  <h2 class="text-lg font-semibold text-gray-900 dark:text-white sm:text-xl">
+    {{ 'application_form.income_details.heading' | translate }}
+  </h2>
+</div>
+
+@if (incomeRows.length === 0) {
+  <div class="rounded-2xl bg-white p-6 text-center ring-1 ring-gray-100 shadow-sm dark:bg-navy-800 dark:ring-navy-700/60">
+    <p class="text-sm text-gray-400 dark:text-navy-400">
+      {{ 'application_form.income_details.no_income' | translate }}
+    </p>
+  </div>
+} @else {
+  <div class="space-y-6">
+    @for (row of incomeRows; track row.income_type; let i = $index) {
+      <div class="rounded-2xl bg-white p-6 ring-1 ring-gray-100 shadow-sm dark:bg-navy-800 dark:ring-navy-700/60">
+
+        <!-- Income type badge -->
+        <div class="mb-5 flex items-center gap-2">
+          <span class="inline-flex items-center rounded-full bg-primary-50 px-3 py-1 text-xs font-semibold text-primary-700 dark:bg-primary-900/30 dark:text-primary-300">
+            {{ row.income_type }}
+          </span>
+        </div>
+
+        <div [formGroup]="groups[i]">
+          <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+
+            <!-- Monthly amount (always first, full-width) -->
+            <div class="sm:col-span-2">
+              <label
+                [for]="'inc-' + i + '-monthly_amount'"
+                class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">
+                {{ 'application_form.income_details.monthly_amount' | translate }}
+              </label>
+              <input
+                [id]="'inc-' + i + '-monthly_amount'"
+                type="number"
+                min="0"
+                step="0.01"
+                formControlName="monthly_amount"
+                [attr.aria-invalid]="hasError(i, 'monthly_amount') ? true : null"
+                [class]="inputClass(hasError(i, 'monthly_amount'))" />
+              @if (hasError(i, 'monthly_amount')) {
+                <p class="mt-1 text-xs text-red-600 dark:text-red-400" role="alert">
+                  {{ 'application_form.error.required' | translate }}
+                </p>
+              }
+            </div>
+
+            <!-- Dynamic detail fields -->
+            @for (field of row.detailFields; track field.name) {
+              <div>
+                <label
+                  [for]="'inc-' + i + '-' + field.name"
+                  class="mb-1.5 flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-300">
+                  {{ labelKey(field.name) | translate }}
+                  @if (!field.required) {
+                    <span class="text-xs font-normal text-gray-400 dark:text-navy-500">
+                      {{ 'application_form.project_details.optional' | translate }}
+                    </span>
+                  }
+                </label>
+
+                @if (field.type === 'select') {
+                  <select
+                    [id]="'inc-' + i + '-' + field.name"
+                    [formControlName]="field.name"
+                    [attr.aria-invalid]="hasError(i, field.name) ? true : null"
+                    [class]="selectClass(hasError(i, field.name))">
+                    <option value="">{{ 'application_form.select_placeholder' | translate }}</option>
+                    @for (opt of field.options ?? []; track opt) {
+                      <option [value]="opt">{{ opt }}</option>
+                    }
+                  </select>
+                } @else if (field.type === 'date') {
+                  <input
+                    [id]="'inc-' + i + '-' + field.name"
+                    type="date"
+                    [formControlName]="field.name"
+                    [attr.aria-invalid]="hasError(i, field.name) ? true : null"
+                    [class]="inputClass(hasError(i, field.name))" />
+                } @else if (field.type === 'textarea') {
+                  <textarea
+                    [id]="'inc-' + i + '-' + field.name"
+                    rows="3"
+                    [formControlName]="field.name"
+                    [attr.aria-invalid]="hasError(i, field.name) ? true : null"
+                    [class]="textareaClass(hasError(i, field.name))"></textarea>
+                } @else {
+                  <input
+                    [id]="'inc-' + i + '-' + field.name"
+                    type="text"
+                    [formControlName]="field.name"
+                    [attr.aria-invalid]="hasError(i, field.name) ? true : null"
+                    [class]="inputClass(hasError(i, field.name))" />
+                }
+
+                @if (hasError(i, field.name)) {
+                  <p class="mt-1 text-xs text-red-600 dark:text-red-400" role="alert">
+                    {{ 'application_form.error.required' | translate }}
+                  </p>
+                }
+              </div>
+            }
+
+          </div>
+        </div>
+
+      </div>
+    }
+  </div>
+}
