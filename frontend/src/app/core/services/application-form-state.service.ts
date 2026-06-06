@@ -58,7 +58,7 @@ export class ApplicationFormStateService {
     this._status.set(app.status);
     this._fieldSchema.set(app.field_schema);
     this._prefilledData.set(app.application_details ?? null);
-    const incomes = app.prefilled_data?.incomes ?? null;
+    const incomes = app.prefilled_data?.financial_details?.incomes ?? null;
     console.log('[FormState] prefilled_data.incomes from API:', incomes);
     this._prefilledIncomes.set(incomes);
 

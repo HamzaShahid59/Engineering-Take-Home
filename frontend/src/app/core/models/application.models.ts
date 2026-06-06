@@ -144,6 +144,8 @@ export interface PrefilledIncome {
 export interface ApplicationFormResponse extends MortgageApplicationResponse {
   field_schema: ApplicationFieldSchema;
   prefilled_data?: {
-    incomes?: PrefilledIncome[];
+    financial_details?: {
+      incomes?: PrefilledIncome[];
+    };
   } | null;
 }
