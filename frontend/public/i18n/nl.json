@@ -301,6 +301,11 @@
       "confirm": "Verlaten & verwijderen",
       "cancel": "Blijven"
     },
+    "logout_confirm": {
+      "title": "Uitloggen?",
+      "message": "Uw conceptgegevens worden verwijderd als u uitlogt. Deze actie kan niet ongedaan worden gemaakt.",
+      "confirm": "Uitloggen & verwijderen"
+    },
     "submit": "Aanvraag indienen",
     "submit_error": "Aanvraag kon niet worden ingediend. Probeer het opnieuw.",
     "submit_confirm": {

@@ -137,6 +137,7 @@
           </div>
         }
       }
+      
 
       <!-- Action button -->
       <div class="mt-8 flex justify-end">
@@ -183,10 +184,10 @@
     <div class="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl dark:bg-navy-800">
 
       <h3 id="leave-dialog-title" class="text-base font-semibold text-gray-900 dark:text-white">
-        {{ 'application_form.leave_confirm.title' | translate }}
+        {{ (isLogoutConfirm() ? 'application_form.logout_confirm.title' : 'application_form.leave_confirm.title') | translate }}
       </h3>
       <p class="mt-2 text-sm text-gray-500 dark:text-navy-400">
-        {{ 'application_form.leave_confirm.message' | translate }}
+        {{ (isLogoutConfirm() ? 'application_form.logout_confirm.message' : 'application_form.leave_confirm.message') | translate }}
       </p>
 
       <div class="mt-6 flex justify-end gap-3">
@@ -200,7 +201,7 @@
           type="button"
           (click)="onLeaveConfirm()"
           class="rounded-lg bg-red-600 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-red-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2 dark:bg-red-700 dark:hover:bg-red-600">
-          {{ 'application_form.leave_confirm.confirm' | translate }}
+          {{ (isLogoutConfirm() ? 'application_form.logout_confirm.confirm' : 'application_form.leave_confirm.confirm') | translate }}
         </button>
       </div>
 

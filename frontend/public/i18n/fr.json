@@ -301,6 +301,11 @@
       "confirm": "Quitter et supprimer",
       "cancel": "Rester"
     },
+    "logout_confirm": {
+      "title": "Se déconnecter ?",
+      "message": "Vos données de brouillon seront supprimées si vous vous déconnectez. Cette action est irréversible.",
+      "confirm": "Se déconnecter et supprimer"
+    },
     "submit": "Soumettre la demande",
     "submit_error": "Impossible de soumettre votre demande. Veuillez réessayer.",
     "submit_confirm": {

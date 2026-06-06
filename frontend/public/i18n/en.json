@@ -301,6 +301,11 @@
       "confirm": "Leave & discard",
       "cancel": "Stay"
     },
+    "logout_confirm": {
+      "title": "Logout?",
+      "message": "Your draft data will be discarded if you logout. This action cannot be undone.",
+      "confirm": "Logout & discard"
+    },
     "submit": "Submit Application",
     "submit_error": "Could not submit your application. Please try again.",
     "submit_confirm": {

@@ -1,9 +1,10 @@
-import { Component, DestroyRef, OnInit, computed, inject, signal } from '@angular/core';
+import { Component, DestroyRef, OnInit, computed, effect, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import type { Observable } from 'rxjs';
 import { TranslatePipe } from '@ngx-translate/core';
 import { ApplicationFormStateService } from '../../../core/services/application-form-state.service';
+import { AuthService } from '../../../core/services/auth.service';
 import { MortgageApplicationService } from '../../../core/services/mortgage-application.service';
 import { Step1ProjectDetailsComponent } from './step1-project-details/step1-project-details';
 import { Step2BorrowerDetailsComponent } from './step2-borrower-details/step2-borrower-details';
@@ -38,6 +39,7 @@ export class ApplicationFormComponent implements OnInit {
   private readonly router = inject(Router);
   private readonly destroyRef = inject(DestroyRef);
   private readonly appService = inject(MortgageApplicationService);
+  private readonly authService = inject(AuthService);
   protected readonly formState = inject(ApplicationFormStateService);
 
   protected readonly steps = STEPS;
@@ -48,7 +50,19 @@ export class ApplicationFormComponent implements OnInit {
   protected readonly submitting = signal(false);
   protected readonly submitError = signal(false);
   protected readonly confirmLeave = signal(false);
+  protected readonly isLogoutConfirm = signal(false);
   private deactivateSubject: Subject<boolean> | null = null;
+
+  private readonly logoutEffect = effect(() => {
+    if (this.authService.pendingLogout()) {
+      if (!this.formState.draftFormData()) {
+        this.authService.logout();
+        return;
+      }
+      this.isLogoutConfirm.set(true);
+      this.confirmLeave.set(true);
+    }
+  });
 
   protected readonly step1Fields = computed(
     () => this.formState.fieldSchema()?.project_details ?? [],
@@ -178,6 +192,11 @@ export class ApplicationFormComponent implements OnInit {
   protected onLeaveConfirm(): void {
     this.formState.clear();
     this.confirmLeave.set(false);
+    if (this.isLogoutConfirm()) {
+      this.isLogoutConfirm.set(false);
+      this.authService.logout();
+      return;
+    }
     this.deactivateSubject?.next(true);
     this.deactivateSubject?.complete();
     this.deactivateSubject = null;
@@ -185,6 +204,11 @@ export class ApplicationFormComponent implements OnInit {
 
   protected onLeaveCancel(): void {
     this.confirmLeave.set(false);
+    if (this.isLogoutConfirm()) {
+      this.isLogoutConfirm.set(false);
+      this.authService.cancelLogout();
+      return;
+    }
     this.deactivateSubject?.next(false);
     this.deactivateSubject?.complete();
     this.deactivateSubject = null;
@@ -214,6 +238,7 @@ export class ApplicationFormComponent implements OnInit {
       },
     };
 
+    console.log('Submit payload:', payload);
     this.submitting.set(true);
     this.submitError.set(false);
 
@@ -222,7 +247,8 @@ export class ApplicationFormComponent implements OnInit {
         this.formState.clear();
         this.router.navigateByUrl('/applications');
       },
-      error: () => {
+      error: (err) => {
+        console.error('Submit failed:', err);
         this.submitting.set(false);
         this.submitError.set(true);
       },

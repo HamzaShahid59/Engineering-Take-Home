@@ -24,6 +24,7 @@ export class AuthService {
 
   readonly currentUser = this._currentUser.asReadonly();
   readonly isAuthenticated = computed(() => this._currentUser() !== null);
+  readonly pendingLogout = signal(false);
 
   register(payload: RegisterRequest): Observable<User> {
     return this.http
@@ -45,7 +46,16 @@ export class AuthService {
       );
   }
 
+  requestLogout(): void {
+    this.pendingLogout.set(true);
+  }
+
+  cancelLogout(): void {
+    this.pendingLogout.set(false);
+  }
+
   logout(): void {
+    this.pendingLogout.set(false);
     localStorage.removeItem(TOKEN_KEY);
     localStorage.removeItem(USER_KEY);
     this._currentUser.set(null);
