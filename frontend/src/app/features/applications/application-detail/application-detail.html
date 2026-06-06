@@ -87,7 +87,7 @@
                 {{ statusKey(app.status) | translate }}
               </span>
               <p class="text-[10px] font-semibold uppercase tracking-[0.15em] text-white/50">
-                {{ purposeKey(app.simulation_snapshot.project_details.project_purpose) | translate }}
+                {{ propertyTypeKey(app.simulation_snapshot.project_details.property_type) | translate }}
               </p>
               <p class="text-2xl font-bold tabular-nums text-white sm:text-3xl">
                 {{ fmt(app.simulation_snapshot.project_details.property_price) }}

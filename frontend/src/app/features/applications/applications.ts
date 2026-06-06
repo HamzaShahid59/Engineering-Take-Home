@@ -85,6 +85,11 @@ export class ApplicationsComponent implements OnInit {
     return `simulator.purpose.${slug}`;
   }
 
+  protected propertyTypeKey(value: string): string {
+    const slug = value.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, '');
+    return `simulator.property_type.${slug}`;
+  }
+
   protected fmt(value: number): string {
     return new Intl.NumberFormat('nl-BE', {
       style: 'currency',

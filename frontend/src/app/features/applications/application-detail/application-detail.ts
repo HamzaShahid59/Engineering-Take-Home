@@ -119,6 +119,11 @@ export class ApplicationDetailComponent implements OnInit {
     return `simulator.purpose.${slug}`;
   }
 
+  protected propertyTypeKey(value: string): string {
+    const slug = value.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, '');
+    return `simulator.property_type.${slug}`;
+  }
+
   protected incomeDetailFields(item: ApplicationIncomeItem): Array<{ labelKey: string; value: string }> {
     const d = item.details as unknown as Record<string, unknown>;
     const fields: Array<{ labelKey: string; value: string }> = [];
