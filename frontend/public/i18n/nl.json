@@ -290,6 +290,78 @@
       "cancel": "Annuleren"
     }
   },
+  "applications": {
+    "title": "Mijn aanvragen",
+    "loading": "Aanvragen laden…",
+    "load_error": "Kon uw aanvragen niet laden. Vernieuw de pagina.",
+    "empty": "Nog geen aanvragen.",
+    "empty_hint": "Maak een aanvraag aan vanuit een van uw opgeslagen simulaties.",
+    "card": {
+      "loan_amount": "Leenbedrag",
+      "monthly_payment": "Maandelijkse betaling",
+      "office": "Kantoor",
+      "created": "Aangemaakt op",
+      "submitted": "Ingediend op",
+      "fill_info": "Gegevens invullen"
+    },
+    "status": {
+      "draft": "Concept",
+      "submitted": "Ingediend",
+      "in_review": "In behandeling",
+      "approved": "Goedgekeurd",
+      "rejected": "Afgewezen"
+    }
+  },
+  "application_detail": {
+    "back": "Terug naar aanvragen",
+    "load_error": "Kon de aanvraag niet laden. Vernieuw de pagina.",
+    "fill_info": "Gegevens invullen",
+    "tab_details": "Details",
+    "tab_documents": "Documenten",
+    "tabs_label": "Secties aanvraag",
+    "key_metrics": "Kerngegevens",
+    "info_created": "Aangemaakt op",
+    "info_submitted": "Ingediend op",
+    "section_application": "Aanvraaggegevens",
+    "section_project": "Vastgoedinformatie",
+    "section_borrower": "Leningnemersinformatie",
+    "section_income": "Inkomensgegevens",
+    "section_liabilities": "Bestaande schulden",
+    "section_description": "Beschrijving",
+    "section_documents": "Documenten",
+    "documents_coming_soon": "Documenten uploaden komt binnenkort beschikbaar.",
+    "project": {
+      "address": "Adres",
+      "city": "Stad / Postcode",
+      "purchase_date": "Geschatte aankoopdatum",
+      "notary": "Notaris",
+      "agency": "Vastgoedkantoor"
+    },
+    "borrower": {
+      "nationality": "Nationaliteit",
+      "marital_status": "Burgerlijke staat",
+      "address": "Huidig adres",
+      "city": "Stad / Postcode"
+    },
+    "income": {
+      "employer_name": "Werkgever",
+      "profession": "Beroep",
+      "contract_type": "Contracttype",
+      "employment_start_date": "Datum indiensttreding",
+      "business_name": "Bedrijfsnaam",
+      "business_start_date": "Startdatum bedrijf",
+      "rental_property_address": "Adres verhuurde woning",
+      "rental_contract_start_date": "Startdatum huurovereenkomst",
+      "additional_info": "Aanvullende informatie",
+      "stability_notes": "Opmerkingen over inkomensstabiliteit"
+    },
+    "liabilities": {
+      "no_loans": "Geen bestaande leningen opgegeven.",
+      "monthly_repayment": "Maandelijkse aflossing",
+      "outstanding_balance": "Openstaand saldo",
+      "additional_obligations": "Aanvullende financiële verplichtingen"
+    }
+  },
   "application_form": {
     "title": "Hypotheekaanvraag",
     "back": "Terug",

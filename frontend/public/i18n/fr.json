@@ -290,6 +290,78 @@
       "cancel": "Annuler"
     }
   },
+  "applications": {
+    "title": "Mes demandes",
+    "loading": "Chargement de vos demandes…",
+    "load_error": "Impossible de charger vos demandes. Veuillez rafraîchir.",
+    "empty": "Aucune demande pour l'instant.",
+    "empty_hint": "Créez une demande à partir d'une de vos simulations enregistrées.",
+    "card": {
+      "loan_amount": "Montant du prêt",
+      "monthly_payment": "Mensualité",
+      "office": "Agence",
+      "created": "Créé le",
+      "submitted": "Soumis le",
+      "fill_info": "Remplir les informations"
+    },
+    "status": {
+      "draft": "Brouillon",
+      "submitted": "Soumis",
+      "in_review": "En cours d'examen",
+      "approved": "Approuvé",
+      "rejected": "Rejeté"
+    }
+  },
+  "application_detail": {
+    "back": "Retour aux demandes",
+    "load_error": "Impossible de charger la demande. Veuillez rafraîchir.",
+    "fill_info": "Remplir les informations",
+    "tab_details": "Détails",
+    "tab_documents": "Documents",
+    "tabs_label": "Sections de la demande",
+    "key_metrics": "Indicateurs clés",
+    "info_created": "Créé le",
+    "info_submitted": "Soumis le",
+    "section_application": "Détails de la demande",
+    "section_project": "Informations sur le bien",
+    "section_borrower": "Informations sur l'emprunteur",
+    "section_income": "Détails des revenus",
+    "section_liabilities": "Dettes existantes",
+    "section_description": "Description",
+    "section_documents": "Documents",
+    "documents_coming_soon": "Le téléchargement de documents sera bientôt disponible.",
+    "project": {
+      "address": "Adresse",
+      "city": "Ville / Code postal",
+      "purchase_date": "Date d'achat estimée",
+      "notary": "Notaire",
+      "agency": "Agence immobilière"
+    },
+    "borrower": {
+      "nationality": "Nationalité",
+      "marital_status": "État civil",
+      "address": "Adresse actuelle",
+      "city": "Ville / Code postal"
+    },
+    "income": {
+      "employer_name": "Employeur",
+      "profession": "Profession",
+      "contract_type": "Type de contrat",
+      "employment_start_date": "Date de début d'emploi",
+      "business_name": "Nom de l'entreprise",
+      "business_start_date": "Date de création de l'entreprise",
+      "rental_property_address": "Adresse du bien loué",
+      "rental_contract_start_date": "Date de début du bail",
+      "additional_info": "Informations complémentaires",
+      "stability_notes": "Notes sur la stabilité des revenus"
+    },
+    "liabilities": {
+      "no_loans": "Aucun prêt existant déclaré.",
+      "monthly_repayment": "Remboursement mensuel",
+      "outstanding_balance": "Solde restant dû",
+      "additional_obligations": "Obligations financières supplémentaires"
+    }
+  },
   "application_form": {
     "title": "Demande de prêt hypothécaire",
     "back": "Retour",

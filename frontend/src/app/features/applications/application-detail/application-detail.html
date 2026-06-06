@@ -1,0 +1,522 @@
+<div class="min-h-[calc(100vh-4rem)] bg-gray-50 px-4 py-8 dark:bg-navy-950 sm:px-6 sm:py-12">
+  <div class="mx-auto max-w-4xl">
+
+    <!-- Loading skeleton -->
+    @if (loading()) {
+      <div class="space-y-5 sm:space-y-6" aria-busy="true" aria-label="Loading application">
+        <div class="h-8 w-44 animate-pulse rounded-lg bg-gray-200 dark:bg-navy-800"></div>
+        <div class="h-52 animate-pulse rounded-2xl bg-gradient-to-br from-primary-800/20 to-navy-900/20 dark:from-navy-800 dark:to-navy-900"></div>
+        <div class="h-12 w-52 animate-pulse self-center rounded-xl bg-gray-200 dark:bg-navy-800 mx-auto"></div>
+        <div class="grid grid-cols-2 gap-3 lg:grid-cols-4 sm:gap-4">
+          @for (_ of [1, 2, 3, 4]; track $index) {
+            <div class="h-24 animate-pulse rounded-2xl bg-gray-200 dark:bg-navy-800"></div>
+          }
+        </div>
+        <div class="grid gap-4 sm:gap-5 lg:grid-cols-2">
+          <div class="h-56 animate-pulse rounded-2xl bg-gray-200 dark:bg-navy-800"></div>
+          <div class="h-56 animate-pulse rounded-2xl bg-gray-200 dark:bg-navy-800"></div>
+        </div>
+      </div>
+    }
+
+    <!-- Error -->
+    @else if (loadError()) {
+      <div class="space-y-4">
+        <button
+          type="button"
+          class="inline-flex items-center gap-2 text-sm font-medium text-gray-500 transition-colors hover:text-gray-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 dark:text-navy-400 dark:hover:text-white"
+          (click)="goBack()">
+          <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd"/>
+          </svg>
+          {{ 'application_detail.back' | translate }}
+        </button>
+        <div class="rounded-2xl border border-red-200 bg-red-50 px-6 py-4 dark:border-red-800 dark:bg-red-900/20">
+          <p class="text-sm text-red-600 dark:text-red-400">{{ 'application_detail.load_error' | translate }}</p>
+        </div>
+      </div>
+    }
+
+    <!-- Content -->
+    @else if (application(); as app) {
+      <div class="space-y-5 sm:space-y-6">
+
+        <!-- Top bar: back + Fill Info button -->
+        <div class="flex flex-wrap items-center justify-between gap-3">
+          <button
+            type="button"
+            class="inline-flex items-center gap-2 text-sm font-medium text-gray-500 transition-colors hover:text-gray-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 dark:text-navy-400 dark:hover:text-white"
+            (click)="goBack()">
+            <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd"/>
+            </svg>
+            {{ 'application_detail.back' | translate }}
+          </button>
+
+          @if (app.status.toLowerCase() === 'draft') {
+            <button
+              type="button"
+              class="inline-flex items-center gap-1.5 rounded-xl bg-primary-600 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 dark:bg-primary-500 dark:hover:bg-primary-400"
+              (click)="onFillInfo(app.id)">
+              <svg class="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"/>
+              </svg>
+              {{ 'application_detail.fill_info' | translate }}
+            </button>
+          }
+        </div>
+
+        <!-- Hero -->
+        <section
+          class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary-700 via-primary-800 to-navy-900 p-6 shadow-xl shadow-primary-900/20 dark:shadow-navy-950/50 sm:p-8"
+          aria-label="Application summary">
+          <div
+            class="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full bg-primary-400/10 blur-3xl"
+            aria-hidden="true"></div>
+          <div
+            class="pointer-events-none absolute -bottom-16 left-4 h-40 w-56 rounded-full bg-white/[0.03] blur-2xl"
+            aria-hidden="true"></div>
+
+          <div class="relative flex flex-wrap items-start justify-between gap-5 sm:items-center">
+            <div class="space-y-2.5">
+              <span [class]="statusBadgeClass(app.status)">
+                <span
+                  class="h-1.5 w-1.5 shrink-0 rounded-full"
+                  [class]="statusDotClass(app.status)"
+                  aria-hidden="true"></span>
+                {{ statusKey(app.status) | translate }}
+              </span>
+              <p class="text-[10px] font-semibold uppercase tracking-[0.15em] text-white/50">
+                {{ purposeKey(app.simulation_snapshot.project_details.project_purpose) | translate }}
+              </p>
+              <p class="text-2xl font-bold tabular-nums text-white sm:text-3xl">
+                {{ fmt(app.simulation_snapshot.project_details.property_price) }}
+              </p>
+            </div>
+
+            <!-- Monthly payment chip -->
+            <div class="shrink-0 rounded-2xl bg-white/[0.1] px-5 py-4 ring-1 ring-inset ring-white/[0.15] backdrop-blur-sm">
+              <p class="text-[10px] font-semibold uppercase tracking-wider text-white/55">
+                {{ 'simulator.step7.monthly_payment' | translate }}
+              </p>
+              <p class="mt-1 text-2xl font-bold tabular-nums text-white sm:text-3xl">
+                {{ fmt(app.simulation_snapshot.calculation_result.monthly_payment) }}
+              </p>
+              <p class="mt-0.5 text-[10px] font-medium text-white/40">
+                {{ 'simulator.step7.per_month' | translate }}
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Tab bar -->
+        <div class="flex justify-center" role="tablist" [attr.aria-label]="'application_detail.tabs_label' | translate">
+          <div class="inline-flex rounded-xl bg-white p-1 ring-1 ring-gray-100 shadow-sm dark:bg-navy-800 dark:ring-navy-700/60">
+            <button
+              type="button"
+              role="tab"
+              [attr.aria-selected]="activeTab() === 'details'"
+              [attr.aria-controls]="'tab-panel-details'"
+              [class]="activeTab() === 'details'
+                ? 'rounded-lg bg-primary-600 px-6 py-2 text-sm font-semibold text-white shadow-sm transition-colors'
+                : 'rounded-lg px-6 py-2 text-sm font-medium text-gray-500 transition-colors hover:text-gray-800 dark:text-navy-400 dark:hover:text-white'"
+              (click)="activeTab.set('details')">
+              {{ 'application_detail.tab_details' | translate }}
+            </button>
+            <button
+              type="button"
+              role="tab"
+              [attr.aria-selected]="activeTab() === 'documents'"
+              [attr.aria-controls]="'tab-panel-documents'"
+              [class]="activeTab() === 'documents'
+                ? 'rounded-lg bg-primary-600 px-6 py-2 text-sm font-semibold text-white shadow-sm transition-colors'
+                : 'rounded-lg px-6 py-2 text-sm font-medium text-gray-500 transition-colors hover:text-gray-800 dark:text-navy-400 dark:hover:text-white'"
+              (click)="activeTab.set('documents')">
+              {{ 'application_detail.tab_documents' | translate }}
+            </button>
+          </div>
+        </div>
+
+        <!-- Details tab panel -->
+        @if (activeTab() === 'details') {
+          <div id="tab-panel-details" role="tabpanel" class="space-y-5 sm:space-y-6">
+
+            <!-- Key metrics strip -->
+            <div
+              class="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4"
+              role="list"
+              [attr.aria-label]="'application_detail.key_metrics' | translate">
+
+              <div
+                class="rounded-2xl bg-white p-4 ring-1 ring-primary-100 shadow-[0_2px_12px_rgba(54,62,127,0.08),0_1px_3px_rgba(0,0,0,0.04)] dark:bg-navy-800 dark:ring-navy-700/60 dark:shadow-none sm:p-5"
+                role="listitem">
+                <p class="text-[10px] font-semibold uppercase tracking-wider text-primary-400 dark:text-primary-500">
+                  {{ 'simulator.step7.loan_amount' | translate }}
+                </p>
+                <p class="mt-2 text-xl font-bold tabular-nums text-primary-700 dark:text-primary-400 sm:text-2xl">
+                  {{ fmt(app.simulation_snapshot.calculation_result.loan_amount) }}
+                </p>
+                <div class="mt-3 h-0.5 w-10 rounded-full bg-gradient-to-r from-primary-500 to-primary-300 dark:from-primary-600 dark:to-primary-400" aria-hidden="true"></div>
+              </div>
+
+              <div
+                class="rounded-2xl bg-white p-4 ring-1 ring-gray-100 shadow-[0_2px_12px_rgba(54,62,127,0.07),0_1px_3px_rgba(0,0,0,0.04)] dark:bg-navy-800 dark:ring-navy-700/60 dark:shadow-none sm:p-5"
+                role="listitem">
+                <p class="text-[10px] font-semibold uppercase tracking-wider text-gray-400 dark:text-navy-400">
+                  {{ 'simulator.step7.duration' | translate }}
+                </p>
+                <p class="mt-2 text-xl font-bold tabular-nums text-gray-900 dark:text-white sm:text-2xl">
+                  {{ app.simulation_snapshot.calculation_result.duration_years }}<span class="ml-1 text-sm font-medium text-gray-400 dark:text-navy-400">{{ 'simulator.step7.years' | translate }}</span>
+                </p>
+                <div class="mt-3 h-0.5 w-10 rounded-full bg-gray-100 dark:bg-navy-700" aria-hidden="true"></div>
+              </div>
+
+              <div
+                class="rounded-2xl bg-white p-4 ring-1 ring-gray-100 shadow-[0_2px_12px_rgba(54,62,127,0.07),0_1px_3px_rgba(0,0,0,0.04)] dark:bg-navy-800 dark:ring-navy-700/60 dark:shadow-none sm:p-5"
+                role="listitem">
+                <p class="text-[10px] font-semibold uppercase tracking-wider text-gray-400 dark:text-navy-400">
+                  {{ 'simulator.step7.interest_rate' | translate }}
+                </p>
+                <p class="mt-2 text-xl font-bold tabular-nums text-gray-900 dark:text-white sm:text-2xl">
+                  {{ fmtRate(app.simulation_snapshot.calculation_result.interest_rate) }}
+                </p>
+                <div class="mt-3 h-0.5 w-10 rounded-full bg-gray-100 dark:bg-navy-700" aria-hidden="true"></div>
+              </div>
+
+              <div
+                class="rounded-2xl bg-white p-4 ring-1 ring-gray-100 shadow-[0_2px_12px_rgba(54,62,127,0.07),0_1px_3px_rgba(0,0,0,0.04)] dark:bg-navy-800 dark:ring-navy-700/60 dark:shadow-none sm:p-5"
+                role="listitem">
+                <p class="text-[10px] font-semibold uppercase tracking-wider text-gray-400 dark:text-navy-400">
+                  {{ 'simulator.step7.ltv' | translate }}
+                </p>
+                <p class="mt-2 text-xl font-bold tabular-nums text-gray-900 dark:text-white sm:text-2xl">
+                  {{ fmtPct(ltv()) }}
+                </p>
+                <div class="mt-3 h-0.5 w-10 rounded-full bg-gray-100 dark:bg-navy-700" aria-hidden="true"></div>
+              </div>
+            </div>
+
+            <!-- Mortgage overview + Monthly finances -->
+            <div class="grid gap-4 sm:gap-5 lg:grid-cols-2">
+
+              <!-- Mortgage overview -->
+              <div class="rounded-2xl bg-white p-6 ring-1 ring-gray-100 shadow-[0_2px_12px_rgba(54,62,127,0.07),0_1px_3px_rgba(0,0,0,0.04)] dark:bg-navy-800 dark:ring-navy-700/60 dark:shadow-none">
+                <h2 class="mb-5 text-[10px] font-semibold uppercase tracking-wider text-gray-400 dark:text-navy-400">
+                  {{ 'simulator.step7.section_overview' | translate }}
+                </h2>
+                <dl class="space-y-3.5">
+                  <div class="flex items-center justify-between gap-4">
+                    <dt class="text-sm text-gray-500 dark:text-navy-300">{{ 'simulator.step7.property_price' | translate }}</dt>
+                    <dd class="text-sm font-semibold tabular-nums text-gray-800 dark:text-white">{{ fmt(app.simulation_snapshot.calculation_result.property_price) }}</dd>
+                  </div>
+                  <div class="flex items-center justify-between gap-4">
+                    <dt class="text-sm text-gray-500 dark:text-navy-300">{{ 'simulator.step7.own_funds' | translate }}</dt>
+                    <dd class="text-sm font-semibold tabular-nums text-emerald-600 dark:text-emerald-400">{{ fmt(app.simulation_snapshot.calculation_result.own_funds) }}</dd>
+                  </div>
+                  <div class="border-t border-gray-100 pt-3.5 dark:border-navy-700/50">
+                    <div class="flex items-center justify-between gap-4">
+                      <dt class="text-sm font-medium text-gray-700 dark:text-navy-200">{{ 'simulator.step7.loan_amount' | translate }}</dt>
+                      <dd class="text-base font-bold tabular-nums text-primary-700 dark:text-primary-400">{{ fmt(app.simulation_snapshot.calculation_result.loan_amount) }}</dd>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="mb-2 flex items-center justify-between text-[11px]">
+                      <span class="font-medium text-gray-400 dark:text-navy-400">{{ 'simulator.step7.ltv' | translate }}</span>
+                      <span class="font-semibold text-gray-600 dark:text-navy-300">{{ fmtPct(ltv()) }}</span>
+                    </div>
+                    <div
+                      class="h-1.5 overflow-hidden rounded-full bg-gray-100 dark:bg-navy-700/80"
+                      role="progressbar"
+                      [attr.aria-valuenow]="ltv()"
+                      aria-valuemin="0"
+                      aria-valuemax="100"
+                      [attr.aria-label]="'simulator.step7.ltv' | translate">
+                      <div
+                        class="h-1.5 rounded-full bg-gradient-to-r from-primary-600 to-primary-400 transition-all duration-500 dark:from-primary-500 dark:to-primary-300"
+                        [style.width]="ltvWidth()"
+                        aria-hidden="true"></div>
+                    </div>
+                  </div>
+                  <div class="border-t border-gray-100 pt-3.5 dark:border-navy-700/50">
+                    <div class="flex items-center justify-between gap-4">
+                      <dt class="text-sm text-gray-500 dark:text-navy-300">{{ 'simulator.step7.total_repayable' | translate }}</dt>
+                      <dd class="text-sm font-semibold tabular-nums text-gray-800 dark:text-white">{{ fmt(totalRepayable()) }}</dd>
+                    </div>
+                  </div>
+                </dl>
+              </div>
+
+              <!-- Monthly finances -->
+              <div class="rounded-2xl bg-white p-6 ring-1 ring-gray-100 shadow-[0_2px_12px_rgba(54,62,127,0.07),0_1px_3px_rgba(0,0,0,0.04)] dark:bg-navy-800 dark:ring-navy-700/60 dark:shadow-none">
+                <h2 class="mb-5 text-[10px] font-semibold uppercase tracking-wider text-gray-400 dark:text-navy-400">
+                  {{ 'simulator.step7.section_finances' | translate }}
+                </h2>
+                <dl class="space-y-3.5">
+                  <div class="flex items-center justify-between gap-4">
+                    <dt class="text-sm text-gray-500 dark:text-navy-300">{{ 'simulator.step7.monthly_income' | translate }}</dt>
+                    <dd class="text-sm font-semibold tabular-nums text-gray-800 dark:text-white">{{ fmt(app.simulation_snapshot.calculation_result.monthly_income) }}</dd>
+                  </div>
+                  <div class="flex items-center justify-between gap-4">
+                    <dt class="text-sm text-gray-500 dark:text-navy-300">{{ 'simulator.step7.monthly_liabilities' | translate }}</dt>
+                    <dd class="text-sm font-semibold tabular-nums text-red-500 dark:text-red-400">{{ liabilitiesDisplay() }}</dd>
+                  </div>
+                  <div class="border-t border-gray-100 pt-3.5 dark:border-navy-700/50">
+                    <div class="flex items-center justify-between gap-4">
+                      <dt class="text-sm font-medium text-gray-700 dark:text-navy-200">{{ 'simulator.step7.net_income' | translate }}</dt>
+                      <dd class="text-base font-bold tabular-nums text-gray-900 dark:text-white">{{ fmt(app.simulation_snapshot.calculation_result.net_available_income) }}</dd>
+                    </div>
+                  </div>
+                  <div class="border-t border-gray-100 pt-3.5 dark:border-navy-700/50">
+                    <div class="flex items-center justify-between gap-4">
+                      <dt class="text-sm text-gray-500 dark:text-navy-300">{{ 'simulator.step7.monthly_payment' | translate }}</dt>
+                      <dd class="text-sm font-semibold tabular-nums text-primary-700 dark:text-primary-400">{{ fmt(app.simulation_snapshot.calculation_result.monthly_payment) }}</dd>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="mb-2 flex items-center justify-between text-[11px]">
+                      <span class="font-medium text-gray-400 dark:text-navy-400">{{ 'simulator.step7.debt_ratio' | translate }}</span>
+                      <span [class]="debtRatioValueClass()">{{ fmtPct(debtRatio()) }}</span>
+                    </div>
+                    <div
+                      class="h-1.5 overflow-hidden rounded-full bg-gray-100 dark:bg-navy-700/80"
+                      role="progressbar"
+                      [attr.aria-valuenow]="debtRatio()"
+                      aria-valuemin="0"
+                      aria-valuemax="100"
+                      [attr.aria-label]="'simulator.step7.debt_ratio' | translate">
+                      <div
+                        class="h-1.5 rounded-full transition-all duration-500"
+                        [class]="debtRatioBarClass()"
+                        [style.width]="debtRatioWidth()"
+                        aria-hidden="true"></div>
+                    </div>
+                  </div>
+                </dl>
+              </div>
+            </div>
+
+            <!-- Application info strip -->
+            <div class="rounded-2xl bg-white px-5 py-4 ring-1 ring-gray-100 shadow-[0_2px_12px_rgba(54,62,127,0.07),0_1px_3px_rgba(0,0,0,0.04)] dark:bg-navy-800 dark:ring-navy-700/60 dark:shadow-none sm:px-6">
+              <div class="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-gray-500 dark:text-navy-400">
+
+                @if (app.simulation_snapshot.selected_office) {
+                  <span class="flex items-center gap-2">
+                    <svg class="h-4 w-4 shrink-0 text-primary-400 dark:text-primary-500" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                      <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a1 1 0 110 2h-3a1 1 0 01-1-1v-2a1 1 0 00-1-1H9a1 1 0 00-1 1v2a1 1 0 01-1 1H4a1 1 0 110-2V4zm3 1h2v2H7V5zm2 4H7v2h2V9zm2-4h2v2h-2V5zm2 4h-2v2h2V9z" clip-rule="evenodd"/>
+                    </svg>
+                    <span class="font-semibold text-gray-800 dark:text-white">{{ app.simulation_snapshot.selected_office.name }}</span>
+                    @if (app.simulation_snapshot.selected_office.city) {
+                      <span class="text-gray-400 dark:text-navy-500">· {{ app.simulation_snapshot.selected_office.city }}</span>
+                    }
+                  </span>
+                }
+
+                <span class="flex items-center gap-2">
+                  <svg class="h-4 w-4 shrink-0 text-primary-400 dark:text-primary-500" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"/>
+                  </svg>
+                  {{ 'application_detail.info_created' | translate }}:
+                  <span class="font-semibold text-gray-800 dark:text-white">{{ fmtDate(app.created_at) }}</span>
+                </span>
+
+                @if (app.submitted_at) {
+                  <span class="flex items-center gap-2">
+                    <svg class="h-4 w-4 shrink-0 text-primary-400 dark:text-primary-500" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                      <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                    </svg>
+                    {{ 'application_detail.info_submitted' | translate }}:
+                    <span class="font-semibold text-gray-800 dark:text-white">{{ fmtDate(app.submitted_at) }}</span>
+                  </span>
+                }
+              </div>
+            </div>
+
+            <!-- Application details (when filled) -->
+            @if (app.application_details) {
+              <div class="space-y-4 sm:space-y-5">
+                <h2 class="text-[10px] font-semibold uppercase tracking-wider text-gray-400 dark:text-navy-400">
+                  {{ 'application_detail.section_application' | translate }}
+                </h2>
+
+                <!-- Property info + Borrower info -->
+                <div class="grid gap-4 sm:gap-5 lg:grid-cols-2">
+
+                  <!-- Property information -->
+                  <div class="rounded-2xl bg-white p-6 ring-1 ring-gray-100 shadow-[0_2px_12px_rgba(54,62,127,0.07),0_1px_3px_rgba(0,0,0,0.04)] dark:bg-navy-800 dark:ring-navy-700/60 dark:shadow-none">
+                    <h3 class="mb-5 text-[10px] font-semibold uppercase tracking-wider text-gray-400 dark:text-navy-400">
+                      {{ 'application_detail.section_project' | translate }}
+                    </h3>
+                    <dl class="space-y-3.5">
+                      <div class="flex items-start justify-between gap-4">
+                        <dt class="text-sm text-gray-500 dark:text-navy-300">{{ 'application_detail.project.address' | translate }}</dt>
+                        <dd class="text-right text-sm font-semibold text-gray-800 dark:text-white">
+                          {{ app.application_details.project_details.property_address }} {{ app.application_details.project_details.house_number }}
+                          @if (app.application_details.project_details.box_number) {
+                            <span class="font-normal text-gray-500 dark:text-navy-400"> / {{ app.application_details.project_details.box_number }}</span>
+                          }
+                        </dd>
+                      </div>
+                      <div class="flex items-start justify-between gap-4">
+                        <dt class="text-sm text-gray-500 dark:text-navy-300">{{ 'application_detail.project.city' | translate }}</dt>
+                        <dd class="text-right text-sm font-semibold text-gray-800 dark:text-white">
+                          {{ app.application_details.project_details.postal_code }} {{ app.application_details.project_details.city }}, {{ app.application_details.project_details.country }}
+                        </dd>
+                      </div>
+                      <div class="flex items-center justify-between gap-4">
+                        <dt class="text-sm text-gray-500 dark:text-navy-300">{{ 'application_detail.project.purchase_date' | translate }}</dt>
+                        <dd class="text-sm font-semibold text-gray-800 dark:text-white">{{ fmtDate(app.application_details.project_details.estimated_purchase_date) }}</dd>
+                      </div>
+                      @if (app.application_details.project_details.notary_name) {
+                        <div class="flex items-center justify-between gap-4">
+                          <dt class="text-sm text-gray-500 dark:text-navy-300">{{ 'application_detail.project.notary' | translate }}</dt>
+                          <dd class="text-right text-sm font-semibold text-gray-800 dark:text-white">{{ app.application_details.project_details.notary_name }}</dd>
+                        </div>
+                      }
+                      @if (app.application_details.project_details.real_estate_agency) {
+                        <div class="flex items-center justify-between gap-4">
+                          <dt class="text-sm text-gray-500 dark:text-navy-300">{{ 'application_detail.project.agency' | translate }}</dt>
+                          <dd class="text-right text-sm font-semibold text-gray-800 dark:text-white">{{ app.application_details.project_details.real_estate_agency }}</dd>
+                        </div>
+                      }
+                    </dl>
+                  </div>
+
+                  <!-- Borrower information -->
+                  <div class="rounded-2xl bg-white p-6 ring-1 ring-gray-100 shadow-[0_2px_12px_rgba(54,62,127,0.07),0_1px_3px_rgba(0,0,0,0.04)] dark:bg-navy-800 dark:ring-navy-700/60 dark:shadow-none">
+                    <h3 class="mb-5 text-[10px] font-semibold uppercase tracking-wider text-gray-400 dark:text-navy-400">
+                      {{ 'application_detail.section_borrower' | translate }}
+                    </h3>
+                    <dl class="space-y-3.5">
+                      <div class="flex items-center justify-between gap-4">
+                        <dt class="text-sm text-gray-500 dark:text-navy-300">{{ 'application_detail.borrower.nationality' | translate }}</dt>
+                        <dd class="text-sm font-semibold text-gray-800 dark:text-white">{{ app.application_details.borrower_details.nationality }}</dd>
+                      </div>
+                      <div class="flex items-center justify-between gap-4">
+                        <dt class="text-sm text-gray-500 dark:text-navy-300">{{ 'application_detail.borrower.marital_status' | translate }}</dt>
+                        <dd class="text-sm font-semibold text-gray-800 dark:text-white">{{ app.application_details.borrower_details.marital_status }}</dd>
+                      </div>
+                      <div class="border-t border-gray-100 pt-3.5 dark:border-navy-700/50">
+                        <div class="flex items-start justify-between gap-4">
+                          <dt class="text-sm text-gray-500 dark:text-navy-300">{{ 'application_detail.borrower.address' | translate }}</dt>
+                          <dd class="text-right text-sm font-semibold text-gray-800 dark:text-white">
+                            {{ app.application_details.borrower_details.current_residential_address }}
+                          </dd>
+                        </div>
+                      </div>
+                      <div class="flex items-start justify-between gap-4">
+                        <dt class="text-sm text-gray-500 dark:text-navy-300">{{ 'application_detail.borrower.city' | translate }}</dt>
+                        <dd class="text-right text-sm font-semibold text-gray-800 dark:text-white">
+                          {{ app.application_details.borrower_details.current_postal_code }} {{ app.application_details.borrower_details.current_city }}, {{ app.application_details.borrower_details.current_country }}
+                        </dd>
+                      </div>
+                    </dl>
+                  </div>
+                </div>
+
+                <!-- Income details -->
+                @if (app.application_details.income_details.length > 0) {
+                  <div class="rounded-2xl bg-white p-6 ring-1 ring-gray-100 shadow-[0_2px_12px_rgba(54,62,127,0.07),0_1px_3px_rgba(0,0,0,0.04)] dark:bg-navy-800 dark:ring-navy-700/60 dark:shadow-none">
+                    <h3 class="mb-5 text-[10px] font-semibold uppercase tracking-wider text-gray-400 dark:text-navy-400">
+                      {{ 'application_detail.section_income' | translate }}
+                    </h3>
+                    <div class="space-y-5">
+                      @for (item of app.application_details.income_details; track $index; let last = $last) {
+                        <div [class]="last ? '' : 'border-b border-gray-100 pb-5 dark:border-navy-700/50'">
+                          <div class="mb-3 flex items-center justify-between">
+                            <span class="inline-flex items-center rounded-full bg-primary-50 px-2.5 py-0.5 text-[11px] font-semibold text-primary-700 ring-1 ring-inset ring-primary-200 dark:bg-primary-900/30 dark:text-primary-300 dark:ring-primary-700/50">
+                              {{ item.income_type }}
+                            </span>
+                            <span class="text-base font-bold tabular-nums text-primary-700 dark:text-primary-400">{{ fmt(item.monthly_amount) }}</span>
+                          </div>
+                          @if (incomeDetailFields(item).length > 0) {
+                            <dl class="space-y-2">
+                              @for (field of incomeDetailFields(item); track field.labelKey) {
+                                <div class="flex items-start justify-between gap-4">
+                                  <dt class="text-xs text-gray-400 dark:text-navy-500">{{ field.labelKey | translate }}</dt>
+                                  <dd class="text-right text-xs font-medium text-gray-700 dark:text-navy-200">{{ field.value }}</dd>
+                                </div>
+                              }
+                            </dl>
+                          }
+                        </div>
+                      }
+                    </div>
+                  </div>
+                }
+
+                <!-- Liability details -->
+                <div class="rounded-2xl bg-white p-6 ring-1 ring-gray-100 shadow-[0_2px_12px_rgba(54,62,127,0.07),0_1px_3px_rgba(0,0,0,0.04)] dark:bg-navy-800 dark:ring-navy-700/60 dark:shadow-none">
+                  <h3 class="mb-5 text-[10px] font-semibold uppercase tracking-wider text-gray-400 dark:text-navy-400">
+                    {{ 'application_detail.section_liabilities' | translate }}
+                  </h3>
+                  @if (!app.application_details.liability_details.has_existing_loans) {
+                    <p class="text-sm text-gray-500 dark:text-navy-400">{{ 'application_detail.liabilities.no_loans' | translate }}</p>
+                  } @else {
+                    <div class="space-y-4">
+                      @for (liability of app.application_details.liability_details.liabilities; track $index; let last = $last) {
+                        <div [class]="last ? '' : 'border-b border-gray-100 pb-4 dark:border-navy-700/50'">
+                          <div class="mb-2">
+                            <span class="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-0.5 text-[11px] font-semibold text-gray-600 dark:bg-navy-700 dark:text-navy-300">
+                              {{ liability.liability_type }}
+                            </span>
+                          </div>
+                          <dl class="space-y-2">
+                            <div class="flex items-center justify-between gap-4">
+                              <dt class="text-sm text-gray-500 dark:text-navy-300">{{ 'application_detail.liabilities.monthly_repayment' | translate }}</dt>
+                              <dd class="text-sm font-semibold tabular-nums text-gray-800 dark:text-white">{{ fmt(liability.monthly_repayment) }}</dd>
+                            </div>
+                            <div class="flex items-center justify-between gap-4">
+                              <dt class="text-sm text-gray-500 dark:text-navy-300">{{ 'application_detail.liabilities.outstanding_balance' | translate }}</dt>
+                              <dd class="text-sm font-semibold tabular-nums text-gray-800 dark:text-white">{{ fmt(liability.outstanding_balance) }}</dd>
+                            </div>
+                          </dl>
+                        </div>
+                      }
+                      @if (app.application_details.liability_details.additional_financial_obligations) {
+                        <div class="border-t border-gray-100 pt-4 dark:border-navy-700/50">
+                          <dt class="mb-1.5 text-sm text-gray-500 dark:text-navy-300">{{ 'application_detail.liabilities.additional_obligations' | translate }}</dt>
+                          <dd class="text-sm font-medium text-gray-800 dark:text-white">{{ app.application_details.liability_details.additional_financial_obligations }}</dd>
+                        </div>
+                      }
+                    </div>
+                  }
+                </div>
+
+                <!-- Description -->
+                @if (app.application_details.description) {
+                  <div class="rounded-2xl bg-white p-6 ring-1 ring-gray-100 shadow-[0_2px_12px_rgba(54,62,127,0.07),0_1px_3px_rgba(0,0,0,0.04)] dark:bg-navy-800 dark:ring-navy-700/60 dark:shadow-none">
+                    <h3 class="mb-3 text-[10px] font-semibold uppercase tracking-wider text-gray-400 dark:text-navy-400">
+                      {{ 'application_detail.section_description' | translate }}
+                    </h3>
+                    <p class="whitespace-pre-wrap text-sm leading-relaxed text-gray-700 dark:text-navy-200">{{ app.application_details.description }}</p>
+                  </div>
+                }
+              </div>
+            }
+
+          </div>
+        }
+
+        <!-- Documents tab panel -->
+        @if (activeTab() === 'documents') {
+          <div id="tab-panel-documents" role="tabpanel">
+            <div class="flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-gray-200 bg-white px-6 py-16 text-center dark:border-navy-700/60 dark:bg-navy-800/40">
+              <svg
+                class="mb-4 h-10 w-10 text-gray-300 dark:text-navy-600"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+                aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m6.75 12l-3-3m0 0l-3 3m3-3v6m-1.5-15H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/>
+              </svg>
+              <p class="text-base font-semibold text-gray-600 dark:text-navy-300">{{ 'application_detail.documents_coming_soon' | translate }}</p>
+            </div>
+          </div>
+        }
+
+      </div>
+    }
+
+  </div>
+</div>

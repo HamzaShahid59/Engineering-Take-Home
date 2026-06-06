@@ -290,6 +290,78 @@
       "cancel": "Cancel"
     }
   },
+  "applications": {
+    "title": "My Applications",
+    "loading": "Loading your applications…",
+    "load_error": "Could not load your applications. Please refresh.",
+    "empty": "No applications yet.",
+    "empty_hint": "Create an application from one of your saved simulations.",
+    "card": {
+      "loan_amount": "Loan amount",
+      "monthly_payment": "Monthly payment",
+      "office": "Office",
+      "created": "Created",
+      "submitted": "Submitted",
+      "fill_info": "Fill Info"
+    },
+    "status": {
+      "draft": "Draft",
+      "submitted": "Submitted",
+      "in_review": "In Review",
+      "approved": "Approved",
+      "rejected": "Rejected"
+    }
+  },
+  "application_detail": {
+    "back": "Back to Applications",
+    "load_error": "Could not load the application. Please refresh.",
+    "fill_info": "Fill Info",
+    "tab_details": "Details",
+    "tab_documents": "Documents",
+    "tabs_label": "Application sections",
+    "key_metrics": "Key metrics",
+    "info_created": "Created",
+    "info_submitted": "Submitted",
+    "section_application": "Application Details",
+    "section_project": "Property Information",
+    "section_borrower": "Borrower Information",
+    "section_income": "Income Details",
+    "section_liabilities": "Existing Liabilities",
+    "section_description": "Description",
+    "section_documents": "Documents",
+    "documents_coming_soon": "Document upload is coming soon.",
+    "project": {
+      "address": "Address",
+      "city": "City / Postal Code",
+      "purchase_date": "Estimated Purchase Date",
+      "notary": "Notary",
+      "agency": "Real Estate Agency"
+    },
+    "borrower": {
+      "nationality": "Nationality",
+      "marital_status": "Marital Status",
+      "address": "Current Address",
+      "city": "City / Postal Code"
+    },
+    "income": {
+      "employer_name": "Employer",
+      "profession": "Profession",
+      "contract_type": "Contract Type",
+      "employment_start_date": "Employment Start Date",
+      "business_name": "Business Name",
+      "business_start_date": "Business Start Date",
+      "rental_property_address": "Rental Property Address",
+      "rental_contract_start_date": "Rental Contract Start Date",
+      "additional_info": "Additional Information",
+      "stability_notes": "Income Stability Notes"
+    },
+    "liabilities": {
+      "no_loans": "No existing liabilities reported.",
+      "monthly_repayment": "Monthly Repayment",
+      "outstanding_balance": "Outstanding Balance",
+      "additional_obligations": "Additional Obligations"
+    }
+  },
   "application_form": {
     "title": "Mortgage Application",
     "back": "Back",
