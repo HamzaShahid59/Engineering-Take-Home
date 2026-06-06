@@ -112,7 +112,8 @@
                     <button
                       type="button"
                       class="rounded-lg p-1.5 text-white/40 transition-colors hover:text-red-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400/50"
-                      [attr.aria-label]="'dashboard.card.delete' | translate">
+                      [attr.aria-label]="'dashboard.card.delete' | translate"
+                      (click)="onDeleteClick(sim.id)">
                       <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                         <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"/>
                       </svg>
@@ -148,3 +149,49 @@
 
   </div>
 </div>
+
+<!-- Delete confirmation dialog -->
+@if (confirmDeleteId()) {
+  <div
+    class="fixed inset-0 z-50 flex items-center justify-center p-4"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="delete-dialog-title">
+    <!-- Backdrop -->
+    <div
+      class="absolute inset-0 bg-black/50 backdrop-blur-sm"
+      aria-hidden="true"
+      (click)="onDeleteCancel()"></div>
+
+    <!-- Dialog card -->
+    <div class="relative w-full max-w-sm rounded-2xl bg-white p-6 shadow-2xl ring-1 ring-gray-100 dark:bg-navy-800 dark:ring-navy-700/60">
+      <h2
+        id="delete-dialog-title"
+        class="text-base font-semibold text-gray-900 dark:text-white">
+        {{ 'dashboard.delete_confirm.title' | translate }}
+      </h2>
+      <p class="mt-2 text-sm text-gray-500 dark:text-navy-300">
+        {{ 'dashboard.delete_confirm.message' | translate }}
+      </p>
+      <div class="mt-5 flex justify-end gap-3">
+        <button
+          type="button"
+          class="rounded-lg px-4 py-2 text-sm font-medium text-gray-700 ring-1 ring-inset ring-gray-300 transition-colors hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 dark:text-navy-200 dark:ring-navy-600 dark:hover:bg-navy-700"
+          (click)="onDeleteCancel()">
+          {{ 'dashboard.delete_confirm.cancel' | translate }}
+        </button>
+        <button
+          type="button"
+          class="rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-red-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2 disabled:opacity-60"
+          [disabled]="deleting()"
+          (click)="onDeleteConfirm()">
+          @if (deleting()) {
+            {{ 'dashboard.delete_confirm.deleting' | translate }}
+          } @else {
+            {{ 'dashboard.delete_confirm.confirm' | translate }}
+          }
+        </button>
+      </div>
+    </div>
+  </div>
+}

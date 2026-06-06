@@ -265,6 +265,8 @@
     "empty": "Nog geen simulaties.",
     "empty_hint": "Voltooi de simulator en sla een tarief op om het hier te zien.",
     "load_error": "Uw simulaties konden niet worden geladen. Vernieuw de pagina.",
+    "toast_deleted": "Simulatie verwijderd.",
+    "toast_delete_error": "Simulatie kon niet worden verwijderd. Probeer het opnieuw.",
     "card": {
       "property_price": "Aankoopprijs",
       "monthly_payment": "Maandbetaling",
@@ -272,6 +274,13 @@
       "office": "Kantoor",
       "edit": "Simulatie bewerken",
       "delete": "Simulatie verwijderen"
+    },
+    "delete_confirm": {
+      "title": "Simulatie verwijderen",
+      "message": "Weet u zeker dat u deze simulatie wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.",
+      "confirm": "Verwijderen",
+      "deleting": "Bezig met verwijderen…",
+      "cancel": "Annuleren"
     }
   },
   "page": {

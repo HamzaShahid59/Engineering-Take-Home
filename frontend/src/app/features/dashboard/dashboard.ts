@@ -2,6 +2,7 @@ import { Component, OnInit, inject, signal } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { AuthService } from '../../core/services/auth.service';
 import { MortgageSimulationService } from '../../core/services/mortgage-simulation.service';
+import { ToastService } from '../../core/services/toast.service';
 import type { SavedSimulation } from '../../core/models/simulation.models';
 
 @Component({
@@ -12,12 +13,16 @@ import type { SavedSimulation } from '../../core/models/simulation.models';
 export class DashboardComponent implements OnInit {
   private readonly authService = inject(AuthService);
   private readonly simService = inject(MortgageSimulationService);
+  private readonly toastService = inject(ToastService);
 
   protected readonly currentUser = this.authService.currentUser;
   protected readonly simulations = signal<SavedSimulation[]>([]);
   protected readonly loading = signal(true);
   protected readonly loadError = signal(false);
   protected readonly skeletons = [1, 2, 3];
+
+  protected readonly confirmDeleteId = signal<string | null>(null);
+  protected readonly deleting = signal(false);
 
   ngOnInit(): void {
     this.simService.getMySimulations().subscribe({
@@ -28,6 +33,33 @@ export class DashboardComponent implements OnInit {
       error: () => {
         this.loading.set(false);
         this.loadError.set(true);
+      },
+    });
+  }
+
+  protected onDeleteClick(id: string): void {
+    this.confirmDeleteId.set(id);
+  }
+
+  protected onDeleteCancel(): void {
+    this.confirmDeleteId.set(null);
+  }
+
+  protected onDeleteConfirm(): void {
+    const id = this.confirmDeleteId();
+    if (!id) return;
+    this.deleting.set(true);
+    this.simService.deleteSimulation(id).subscribe({
+      next: () => {
+        this.simulations.update(list => list.filter(s => s.id !== id));
+        this.confirmDeleteId.set(null);
+        this.deleting.set(false);
+        this.toastService.show('dashboard.toast_deleted');
+      },
+      error: () => {
+        this.confirmDeleteId.set(null);
+        this.deleting.set(false);
+        this.toastService.show('dashboard.toast_delete_error', 'error');
       },
     });
   }

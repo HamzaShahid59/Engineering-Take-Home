@@ -265,6 +265,8 @@
     "empty": "Aucune simulation pour l'instant.",
     "empty_hint": "Complétez le simulateur et enregistrez un taux pour le voir ici.",
     "load_error": "Impossible de charger vos simulations. Veuillez actualiser.",
+    "toast_deleted": "Simulation supprimée avec succès.",
+    "toast_delete_error": "Impossible de supprimer la simulation. Veuillez réessayer.",
     "card": {
       "property_price": "Prix du bien",
       "monthly_payment": "Mensualité",
@@ -272,6 +274,13 @@
       "office": "Agence",
       "edit": "Modifier la simulation",
       "delete": "Supprimer la simulation"
+    },
+    "delete_confirm": {
+      "title": "Supprimer la simulation",
+      "message": "Êtes-vous sûr de vouloir supprimer cette simulation ? Cette action est irréversible.",
+      "confirm": "Supprimer",
+      "deleting": "Suppression…",
+      "cancel": "Annuler"
     }
   },
   "page": {
