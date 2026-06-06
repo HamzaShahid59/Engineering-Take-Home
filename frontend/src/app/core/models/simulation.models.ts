@@ -74,6 +74,16 @@ export interface Office {
   city: string;
 }
 
+export interface SaveLockRequest {
+  project_details: ProjectDetails;
+  contribution: Contribution;
+  financial_details: FinancialDetails;
+  personal_details: PersonalDetails;
+  preferred_duration_years: number;
+  calculation_result: SimulationResult;
+  selected_office: Office;
+}
+
 export interface SimulationOptions {
   project_purposes: DropdownOption[];
   borrower_types: DropdownOption[];

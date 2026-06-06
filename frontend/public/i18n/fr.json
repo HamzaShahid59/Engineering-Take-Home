@@ -238,6 +238,26 @@
       "vat_regime": "Régime TVA"
     }
   },
+  "toast": {
+    "dismiss": "Fermer la notification"
+  },
+  "save_lock": {
+    "save_and_lock": "Enregistrer & Fixer le taux",
+    "saving": "Enregistrement…",
+    "error": "Impossible d'enregistrer. Veuillez réessayer.",
+    "toast_success": "Votre simulation a été enregistrée et le taux fixé avec succès."
+  },
+  "select_office": {
+    "title": "Sélectionnez votre agence",
+    "subtitle": "Choisissez l'agence qui traitera votre demande de prêt hypothécaire.",
+    "office_label": "Agence",
+    "select_placeholder": "Sélectionnez une agence",
+    "load_error": "Impossible de charger les agences. Veuillez actualiser la page.",
+    "selected": "Agence sélectionnée",
+    "error": {
+      "required": "Veuillez sélectionner une agence"
+    }
+  },
   "page": {
     "simulator": {
       "title": "Simulateur hypothécaire",

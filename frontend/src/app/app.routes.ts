@@ -23,6 +23,12 @@ export const routes: Routes = [
       import('./features/auth/register/register').then(m => m.RegisterComponent),
   },
   {
+    path: 'select-office',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./features/select-office/select-office').then(m => m.SelectOfficeComponent),
+  },
+  {
     path: 'dashboard',
     canActivate: [authGuard],
     loadComponent: () =>

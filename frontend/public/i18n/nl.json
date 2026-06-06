@@ -238,6 +238,26 @@
       "vat_regime": "BTW-regime"
     }
   },
+  "toast": {
+    "dismiss": "Melding sluiten"
+  },
+  "save_lock": {
+    "save_and_lock": "Tarief opslaan & vastzetten",
+    "saving": "Bezig met opslaan…",
+    "error": "Opslaan mislukt. Probeer het opnieuw.",
+    "toast_success": "Uw simulatie is opgeslagen en het tarief is vastgezet."
+  },
+  "select_office": {
+    "title": "Selecteer uw kantoor",
+    "subtitle": "Kies het kantoor dat uw hypotheekaanvraag zal behandelen.",
+    "office_label": "Kantoor",
+    "select_placeholder": "Selecteer een kantoor",
+    "load_error": "Kantoren konden niet worden geladen. Vernieuw de pagina.",
+    "selected": "Kantoor geselecteerd",
+    "error": {
+      "required": "Selecteer een kantoor"
+    }
+  },
   "page": {
     "simulator": {
       "title": "Hypotheeksimulator",

@@ -4,6 +4,7 @@ import { Observable, map } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import type { ApiResponse } from '../models/auth.models';
 import type {
+  Office,
   SimulationCalculateRequest,
   SimulationOptions,
   SimulationResult,
@@ -17,6 +18,12 @@ export class MortgageSimulationService {
   getOptions(): Observable<SimulationOptions> {
     return this.http
       .get<ApiResponse<SimulationOptions>>(`${this.baseUrl}/options`)
+      .pipe(map(res => res.data!));
+  }
+
+  getOffices(): Observable<Office[]> {
+    return this.http
+      .get<ApiResponse<Office[]>>(`${this.baseUrl}/options/offices`)
       .pipe(map(res => res.data!));
   }
 

@@ -1,10 +1,13 @@
 import { Component, computed, inject, input, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Router } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Subject, debounceTime, switchMap } from 'rxjs';
 import { SimulationResult } from '../../../../core/models/simulation.models';
 import { SimulatorStateService } from '../../simulator-state.service';
 import { MortgageSimulationService } from '../../../../core/services/mortgage-simulation.service';
+import { AuthService } from '../../../../core/services/auth.service';
+import { AuthReturnIntentService } from '../../../../core/services/auth-return-intent.service';
 
 @Component({
   selector: 'app-step7-result',
@@ -16,6 +19,9 @@ export class Step7ResultComponent {
 
   private readonly state = inject(SimulatorStateService);
   private readonly simService = inject(MortgageSimulationService);
+  private readonly router = inject(Router);
+  private readonly authService = inject(AuthService);
+  private readonly returnIntentService = inject(AuthReturnIntentService);
 
   protected readonly ownFunds = signal(this.state.sliderOwnFunds() ?? this.state.contribution()!.own_funds!);
   protected readonly durationYears = signal(this.state.sliderDurationYears() ?? 25);
@@ -137,6 +143,15 @@ export class Step7ResultComponent {
       },
       preferred_duration_years: this.durationYears(),
     };
+  }
+
+  protected onSaveLock(): void {
+    if (!this.authService.isAuthenticated()) {
+      this.returnIntentService.set('save-lock');
+      this.router.navigateByUrl('/register');
+    } else {
+      this.router.navigateByUrl('/select-office');
+    }
   }
 
   protected fmt(value: number): string {

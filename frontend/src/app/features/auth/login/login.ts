@@ -4,6 +4,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import { TranslatePipe } from '@ngx-translate/core';
 import { AuthService } from '../../../core/services/auth.service';
+import { AuthReturnIntentService } from '../../../core/services/auth-return-intent.service';
 
 @Component({
   selector: 'app-login',
@@ -12,6 +13,7 @@ import { AuthService } from '../../../core/services/auth.service';
 })
 export class LoginComponent {
   private readonly authService = inject(AuthService);
+  private readonly returnIntentService = inject(AuthReturnIntentService);
   private readonly router = inject(Router);
   private readonly fb = inject(FormBuilder);
 
@@ -39,7 +41,8 @@ export class LoginComponent {
     this.authService.login({ email: email!, password: password! }).subscribe({
       next: () => {
         this.loading.set(false);
-        this.router.navigateByUrl('/dashboard');
+        const intent = this.returnIntentService.consume();
+        this.router.navigateByUrl(intent === 'save-lock' ? '/select-office' : '/dashboard');
       },
       error: (err: HttpErrorResponse) => {
         this.loading.set(false);

@@ -10,6 +10,7 @@ import {
 import { HttpErrorResponse } from '@angular/common/http';
 import { TranslatePipe } from '@ngx-translate/core';
 import { AuthService } from '../../../core/services/auth.service';
+import { AuthReturnIntentService } from '../../../core/services/auth-return-intent.service';
 import type { RegisterRequest } from '../../../core/models/auth.models';
 
 function passwordStrength(ctrl: AbstractControl): ValidationErrors | null {
@@ -35,6 +36,7 @@ function belgianPhone(ctrl: AbstractControl): ValidationErrors | null {
 })
 export class RegisterComponent {
   private readonly authService = inject(AuthService);
+  private readonly returnIntentService = inject(AuthReturnIntentService);
   private readonly router = inject(Router);
   private readonly fb = inject(FormBuilder);
 
@@ -74,7 +76,8 @@ export class RegisterComponent {
     this.authService.register(payload).subscribe({
       next: () => {
         this.loading.set(false);
-        this.router.navigateByUrl('/dashboard');
+        const intent = this.returnIntentService.consume();
+        this.router.navigateByUrl(intent === 'save-lock' ? '/select-office' : '/dashboard');
       },
       error: (err: HttpErrorResponse) => {
         this.loading.set(false);

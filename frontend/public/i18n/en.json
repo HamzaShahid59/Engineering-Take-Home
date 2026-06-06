@@ -238,6 +238,26 @@
       "vat_regime": "VAT regime"
     }
   },
+  "toast": {
+    "dismiss": "Dismiss notification"
+  },
+  "save_lock": {
+    "save_and_lock": "Save & Lock Rate",
+    "saving": "Saving…",
+    "error": "Could not save. Please try again.",
+    "toast_success": "Your simulation has been saved and the rate locked successfully."
+  },
+  "select_office": {
+    "title": "Select your office",
+    "subtitle": "Choose the office that will handle your mortgage application.",
+    "office_label": "Office",
+    "select_placeholder": "Select an office",
+    "load_error": "Could not load offices. Please refresh the page.",
+    "selected": "Office selected",
+    "error": {
+      "required": "Please select an office"
+    }
+  },
   "page": {
     "simulator": {
       "title": "Mortgage Simulator",
