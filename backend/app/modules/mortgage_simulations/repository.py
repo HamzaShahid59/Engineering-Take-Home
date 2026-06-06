@@ -28,7 +28,13 @@ class MortgageSimulationRepository:
         )
 
     async def find_by_user_id(self, user_id: ObjectId):
-        cursor = self.collection.find({"user_id": user_id})
+        cursor = self.collection.find(
+            {
+                "user_id": user_id,
+                "status": "locked",
+            }
+        ).sort("created_at", -1)
+
         return await cursor.to_list(length=100)
 
     async def update_simulation(
