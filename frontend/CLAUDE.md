@@ -1,11 +1,14 @@
 # CLAUDE.md
 
-Read this file before generating or modifying Angular frontend code.
+Read before modifying frontend code.
 
 ## Project
 
-This is the Angular frontend for the Oper mortgage borrower portal.
-The Mortgage Simulator is the main entry point. There is no marketing landing page.
+Angular frontend for the Oper mortgage borrower portal.
+
+Main flow:
+
+Simulator → Login/Register → Save & Lock → Dashboard → Applications → Documents
 
 ## Stack
 
@@ -14,14 +17,13 @@ Standalone Components
 TypeScript
 Tailwind CSS
 Reactive Forms
-JWT Authentication
-HTTP Interceptors
+JWT
 Route Guards
+HTTP Interceptors
 ngx-translate
 
 ## Architecture
 
-Use:
 src/app/
 - core
 - features
@@ -29,17 +31,31 @@ src/app/
 - app.routes.ts
 
 Keep code feature-based.
-Use standalone components only.
-Keep API communication inside services.
-Keep authentication inside guards and interceptors.
-Keep reusable UI inside shared components.
+
+## File Rules
+
+Services must live in:
+
+src/app/core/services
+
+Do not create services inside feature folders.
+
+Components must use:
+
+- component.ts
+- component.html
+
+Do not use inline templates for feature components.
+
+Follow existing folder structure and naming conventions before creating new files.
 
 ## Forms
 
 Use Reactive Forms.
-Large forms use stepper flows.
-Persist draft progress in localStorage.
-Provide a Start Over action.
+
+Use stepper flows for large forms.
+
+Persist simulator drafts in localStorage.
 
 ## Authentication
 
@@ -52,9 +68,12 @@ Protected:
 - Dashboard
 - Applications
 - Documents
+- Simulation Detail
+- Simulation Edit
 
 Store JWT in localStorage.
-Attach tokens through an interceptor.
+
+Use interceptors for bearer tokens.
 
 ## Theme
 
@@ -65,6 +84,8 @@ Support:
 
 Persist theme in localStorage.
 
+Use the existing premium glassmorphism design style.
+
 ## Languages
 
 Support:
@@ -72,19 +93,37 @@ Support:
 - Dutch
 - French
 
-Use translation keys from day one.
 Never hardcode UI text.
+
+Always add new translation keys to:
+- en.json
+- nl.json
+- fr.json
 
 ## Coding Style
 
-Prefer simple and readable code.
-Avoid unnecessary abstractions.
-Keep components small.
-Keep services explicit.
+Keep code simple and readable.
+
 Use typed interfaces.
 
-## Workflow Rules
+Avoid any.
 
-Do not run build, test, install, or verification commands automatically unless explicitly asked.
-After completing a task, summarize files changed and stop.
-Work in small steps. Do not jump ahead to unrelated features.
+Use inject().
+
+Use signals and computed() when appropriate.
+
+Use @if, @for, @switch.
+
+## Workflow
+
+Do not run build, test, install, or verification commands unless explicitly asked.
+
+After completing a task:
+- summarize files changed
+- stop
+
+Work in small steps.
+
+Do not modify unrelated features.
+
+Do not read unrelated files unless required.
