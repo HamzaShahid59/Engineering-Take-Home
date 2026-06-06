@@ -1,0 +1,350 @@
+<div class="min-h-[calc(100vh-4rem)] bg-gray-50 px-4 py-8 dark:bg-navy-950 sm:px-6 sm:py-12">
+  <div class="mx-auto max-w-4xl">
+
+    <!-- Loading skeleton -->
+    @if (loading()) {
+      <div class="space-y-5 sm:space-y-6" aria-busy="true" aria-label="Loading simulation">
+        <div class="h-8 w-44 animate-pulse rounded-lg bg-gray-200 dark:bg-navy-800"></div>
+        <div class="h-52 animate-pulse rounded-2xl bg-gradient-to-br from-primary-800/20 to-navy-900/20 dark:from-navy-800 dark:to-navy-900"></div>
+        <div class="grid grid-cols-2 gap-3 lg:grid-cols-4 sm:gap-4">
+          @for (_ of [1, 2, 3, 4]; track $index) {
+            <div class="h-24 animate-pulse rounded-2xl bg-gray-200 dark:bg-navy-800"></div>
+          }
+        </div>
+        <div class="grid gap-4 sm:gap-5 lg:grid-cols-2">
+          <div class="h-56 animate-pulse rounded-2xl bg-gray-200 dark:bg-navy-800"></div>
+          <div class="h-56 animate-pulse rounded-2xl bg-gray-200 dark:bg-navy-800"></div>
+        </div>
+      </div>
+    }
+
+    <!-- Error -->
+    @else if (loadError()) {
+      <div class="space-y-4">
+        <button
+          type="button"
+          class="inline-flex items-center gap-2 text-sm font-medium text-gray-500 transition-colors hover:text-gray-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 dark:text-navy-400 dark:hover:text-white"
+          (click)="goBack()">
+          <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd"/>
+          </svg>
+          {{ 'simulation_detail.back' | translate }}
+        </button>
+        <div class="rounded-2xl border border-red-200 bg-red-50 px-6 py-4 dark:border-red-800 dark:bg-red-900/20">
+          <p class="text-sm text-red-600 dark:text-red-400">{{ 'simulation_detail.load_error' | translate }}</p>
+        </div>
+      </div>
+    }
+
+    <!-- Content -->
+    @else if (simulation(); as sim) {
+      <div class="space-y-5 sm:space-y-6">
+
+        <!-- Top bar: back + action buttons -->
+        <div class="flex flex-wrap items-center justify-between gap-3">
+          <button
+            type="button"
+            class="inline-flex items-center gap-2 text-sm font-medium text-gray-500 transition-colors hover:text-gray-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 dark:text-navy-400 dark:hover:text-white"
+            (click)="goBack()">
+            <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd"/>
+            </svg>
+            {{ 'simulation_detail.back' | translate }}
+          </button>
+
+          <div class="flex items-center gap-2">
+            <button
+              type="button"
+              disabled
+              class="inline-flex items-center gap-1.5 rounded-xl bg-primary-600 px-4 py-2 text-sm font-semibold text-white opacity-40 cursor-not-allowed focus-visible:outline-none dark:bg-primary-500">
+              <svg class="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+              </svg>
+              {{ 'simulation_detail.action_review' | translate }}
+            </button>
+            <button
+              type="button"
+              disabled
+              class="inline-flex items-center gap-1.5 rounded-xl px-4 py-2 text-sm font-semibold text-gray-600 opacity-40 cursor-not-allowed ring-1 ring-inset ring-gray-300 focus-visible:outline-none dark:text-navy-300 dark:ring-navy-600">
+              <svg class="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"/>
+              </svg>
+              {{ 'simulation_detail.action_edit' | translate }}
+            </button>
+            <button
+              type="button"
+              class="inline-flex items-center gap-1.5 rounded-xl px-4 py-2 text-sm font-semibold text-red-600 ring-1 ring-inset ring-red-200 transition-colors hover:bg-red-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500 dark:text-red-400 dark:ring-red-800 dark:hover:bg-red-900/20"
+              (click)="onDeleteClick()">
+              <svg class="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"/>
+              </svg>
+              {{ 'simulation_detail.action_delete' | translate }}
+            </button>
+          </div>
+        </div>
+
+        <!-- Hero (same gradient as Step 7) -->
+        <section
+          class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary-700 via-primary-800 to-navy-900 p-6 shadow-xl shadow-primary-900/20 dark:shadow-navy-950/50 sm:p-8"
+          aria-label="Simulation summary">
+          <div
+            class="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full bg-primary-400/10 blur-3xl"
+            aria-hidden="true"></div>
+          <div
+            class="pointer-events-none absolute -bottom-16 left-4 h-40 w-56 rounded-full bg-white/[0.03] blur-2xl"
+            aria-hidden="true"></div>
+          <div class="relative flex flex-wrap items-start justify-between gap-5 sm:items-center">
+            <div class="space-y-2.5">
+              <p class="text-[10px] font-semibold uppercase tracking-[0.15em] text-white/50">
+                {{ purposeKey(sim.project_details.project_purpose) | translate }}
+              </p>
+              <p class="text-2xl font-bold tabular-nums text-white sm:text-3xl">
+                {{ fmt(sim.project_details.property_price) }}
+              </p>
+              <span [class]="feasibilityBadgeClass(sim.calculation_result.feasibility_status)">
+                <span [class]="feasibilityDotClass(sim.calculation_result.feasibility_status)" aria-hidden="true"></span>
+                {{ feasibilityKey(sim.calculation_result.feasibility_status) | translate }}
+              </span>
+            </div>
+            <!-- Monthly payment chip -->
+            <div class="shrink-0 rounded-2xl bg-white/[0.1] px-5 py-4 ring-1 ring-inset ring-white/[0.15] backdrop-blur-sm">
+              <p class="text-[10px] font-semibold uppercase tracking-wider text-white/55">
+                {{ 'simulator.step7.monthly_payment' | translate }}
+              </p>
+              <p class="mt-1 text-2xl font-bold tabular-nums text-white sm:text-3xl">
+                {{ fmt(sim.calculation_result.monthly_payment) }}
+              </p>
+              <p class="mt-0.5 text-[10px] font-medium text-white/40">
+                {{ 'simulator.step7.per_month' | translate }}
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Key metrics strip -->
+        <div
+          class="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4"
+          role="list"
+          aria-label="Key metrics">
+
+          <div
+            class="rounded-2xl bg-white p-4 ring-1 ring-primary-100 shadow-[0_2px_12px_rgba(54,62,127,0.08),0_1px_3px_rgba(0,0,0,0.04)] dark:bg-navy-800 dark:ring-navy-700/60 dark:shadow-none sm:p-5"
+            role="listitem">
+            <p class="text-[10px] font-semibold uppercase tracking-wider text-primary-400 dark:text-primary-500">
+              {{ 'simulator.step7.loan_amount' | translate }}
+            </p>
+            <p class="mt-2 text-xl font-bold tabular-nums text-primary-700 dark:text-primary-400 sm:text-2xl">
+              {{ fmt(sim.calculation_result.loan_amount) }}
+            </p>
+            <div class="mt-3 h-0.5 w-10 rounded-full bg-gradient-to-r from-primary-500 to-primary-300 dark:from-primary-600 dark:to-primary-400" aria-hidden="true"></div>
+          </div>
+
+          <div
+            class="rounded-2xl bg-white p-4 ring-1 ring-gray-100 shadow-[0_2px_12px_rgba(54,62,127,0.07),0_1px_3px_rgba(0,0,0,0.04)] dark:bg-navy-800 dark:ring-navy-700/60 dark:shadow-none sm:p-5"
+            role="listitem">
+            <p class="text-[10px] font-semibold uppercase tracking-wider text-gray-400 dark:text-navy-400">
+              {{ 'simulator.step7.duration' | translate }}
+            </p>
+            <p class="mt-2 text-xl font-bold tabular-nums text-gray-900 dark:text-white sm:text-2xl">
+              {{ sim.calculation_result.duration_years }}<span class="ml-1 text-sm font-medium text-gray-400 dark:text-navy-400">{{ 'simulator.step7.years' | translate }}</span>
+            </p>
+            <div class="mt-3 h-0.5 w-10 rounded-full bg-gray-100 dark:bg-navy-700" aria-hidden="true"></div>
+          </div>
+
+          <div
+            class="rounded-2xl bg-white p-4 ring-1 ring-gray-100 shadow-[0_2px_12px_rgba(54,62,127,0.07),0_1px_3px_rgba(0,0,0,0.04)] dark:bg-navy-800 dark:ring-navy-700/60 dark:shadow-none sm:p-5"
+            role="listitem">
+            <p class="text-[10px] font-semibold uppercase tracking-wider text-gray-400 dark:text-navy-400">
+              {{ 'simulator.step7.interest_rate' | translate }}
+            </p>
+            <p class="mt-2 text-xl font-bold tabular-nums text-gray-900 dark:text-white sm:text-2xl">
+              {{ fmtRate(sim.calculation_result.interest_rate) }}
+            </p>
+            <div class="mt-3 h-0.5 w-10 rounded-full bg-gray-100 dark:bg-navy-700" aria-hidden="true"></div>
+          </div>
+
+          <div
+            class="rounded-2xl bg-white p-4 ring-1 ring-gray-100 shadow-[0_2px_12px_rgba(54,62,127,0.07),0_1px_3px_rgba(0,0,0,0.04)] dark:bg-navy-800 dark:ring-navy-700/60 dark:shadow-none sm:p-5"
+            role="listitem">
+            <p class="text-[10px] font-semibold uppercase tracking-wider text-gray-400 dark:text-navy-400">
+              {{ 'simulator.step7.ltv' | translate }}
+            </p>
+            <p class="mt-2 text-xl font-bold tabular-nums text-gray-900 dark:text-white sm:text-2xl">
+              {{ fmtPct(ltv()) }}
+            </p>
+            <div class="mt-3 h-0.5 w-10 rounded-full bg-gray-100 dark:bg-navy-700" aria-hidden="true"></div>
+          </div>
+        </div>
+
+        <!-- Detail cards -->
+        <div class="grid gap-4 sm:gap-5 lg:grid-cols-2">
+
+          <!-- Mortgage overview -->
+          <div class="rounded-2xl bg-white p-6 ring-1 ring-gray-100 shadow-[0_2px_12px_rgba(54,62,127,0.07),0_1px_3px_rgba(0,0,0,0.04)] dark:bg-navy-800 dark:ring-navy-700/60 dark:shadow-none">
+            <h2 class="mb-5 text-[10px] font-semibold uppercase tracking-wider text-gray-400 dark:text-navy-400">
+              {{ 'simulator.step7.section_overview' | translate }}
+            </h2>
+            <dl class="space-y-3.5">
+              <div class="flex items-center justify-between gap-4">
+                <dt class="text-sm text-gray-500 dark:text-navy-300">{{ 'simulator.step7.property_price' | translate }}</dt>
+                <dd class="text-sm font-semibold tabular-nums text-gray-800 dark:text-white">{{ fmt(sim.calculation_result.property_price) }}</dd>
+              </div>
+              <div class="flex items-center justify-between gap-4">
+                <dt class="text-sm text-gray-500 dark:text-navy-300">{{ 'simulator.step7.own_funds' | translate }}</dt>
+                <dd class="text-sm font-semibold tabular-nums text-emerald-600 dark:text-emerald-400">{{ fmt(sim.calculation_result.own_funds) }}</dd>
+              </div>
+              <div class="border-t border-gray-100 pt-3.5 dark:border-navy-700/50">
+                <div class="flex items-center justify-between gap-4">
+                  <dt class="text-sm font-medium text-gray-700 dark:text-navy-200">{{ 'simulator.step7.loan_amount' | translate }}</dt>
+                  <dd class="text-base font-bold tabular-nums text-primary-700 dark:text-primary-400">{{ fmt(sim.calculation_result.loan_amount) }}</dd>
+                </div>
+              </div>
+              <div>
+                <div class="mb-2 flex items-center justify-between text-[11px]">
+                  <span class="font-medium text-gray-400 dark:text-navy-400">{{ 'simulator.step7.ltv' | translate }}</span>
+                  <span class="font-semibold text-gray-600 dark:text-navy-300">{{ fmtPct(ltv()) }}</span>
+                </div>
+                <div
+                  class="h-1.5 overflow-hidden rounded-full bg-gray-100 dark:bg-navy-700/80"
+                  role="progressbar"
+                  [attr.aria-valuenow]="ltv()"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                  [attr.aria-label]="'simulator.step7.ltv' | translate">
+                  <div
+                    class="h-1.5 rounded-full bg-gradient-to-r from-primary-600 to-primary-400 transition-all duration-500 dark:from-primary-500 dark:to-primary-300"
+                    [style.width]="ltvWidth()"
+                    aria-hidden="true"></div>
+                </div>
+              </div>
+              <div class="border-t border-gray-100 pt-3.5 dark:border-navy-700/50">
+                <div class="flex items-center justify-between gap-4">
+                  <dt class="text-sm text-gray-500 dark:text-navy-300">{{ 'simulator.step7.total_repayable' | translate }}</dt>
+                  <dd class="text-sm font-semibold tabular-nums text-gray-800 dark:text-white">{{ fmt(totalRepayable()) }}</dd>
+                </div>
+              </div>
+            </dl>
+          </div>
+
+          <!-- Monthly finances -->
+          <div class="rounded-2xl bg-white p-6 ring-1 ring-gray-100 shadow-[0_2px_12px_rgba(54,62,127,0.07),0_1px_3px_rgba(0,0,0,0.04)] dark:bg-navy-800 dark:ring-navy-700/60 dark:shadow-none">
+            <h2 class="mb-5 text-[10px] font-semibold uppercase tracking-wider text-gray-400 dark:text-navy-400">
+              {{ 'simulator.step7.section_finances' | translate }}
+            </h2>
+            <dl class="space-y-3.5">
+              <div class="flex items-center justify-between gap-4">
+                <dt class="text-sm text-gray-500 dark:text-navy-300">{{ 'simulator.step7.monthly_income' | translate }}</dt>
+                <dd class="text-sm font-semibold tabular-nums text-gray-800 dark:text-white">{{ fmt(sim.calculation_result.monthly_income) }}</dd>
+              </div>
+              <div class="flex items-center justify-between gap-4">
+                <dt class="text-sm text-gray-500 dark:text-navy-300">{{ 'simulator.step7.monthly_liabilities' | translate }}</dt>
+                <dd class="text-sm font-semibold tabular-nums text-red-500 dark:text-red-400">{{ liabilitiesDisplay() }}</dd>
+              </div>
+              <div class="border-t border-gray-100 pt-3.5 dark:border-navy-700/50">
+                <div class="flex items-center justify-between gap-4">
+                  <dt class="text-sm font-medium text-gray-700 dark:text-navy-200">{{ 'simulator.step7.net_income' | translate }}</dt>
+                  <dd class="text-base font-bold tabular-nums text-gray-900 dark:text-white">{{ fmt(sim.calculation_result.net_available_income) }}</dd>
+                </div>
+              </div>
+              <div class="border-t border-gray-100 pt-3.5 dark:border-navy-700/50">
+                <div class="flex items-center justify-between gap-4">
+                  <dt class="text-sm text-gray-500 dark:text-navy-300">{{ 'simulator.step7.monthly_payment' | translate }}</dt>
+                  <dd class="text-sm font-semibold tabular-nums text-primary-700 dark:text-primary-400">{{ fmt(sim.calculation_result.monthly_payment) }}</dd>
+                </div>
+              </div>
+              <div>
+                <div class="mb-2 flex items-center justify-between text-[11px]">
+                  <span class="font-medium text-gray-400 dark:text-navy-400">{{ 'simulator.step7.debt_ratio' | translate }}</span>
+                  <span [class]="debtRatioValueClass()">{{ fmtPct(debtRatio()) }}</span>
+                </div>
+                <div
+                  class="h-1.5 overflow-hidden rounded-full bg-gray-100 dark:bg-navy-700/80"
+                  role="progressbar"
+                  [attr.aria-valuenow]="debtRatio()"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                  [attr.aria-label]="'simulator.step7.debt_ratio' | translate">
+                  <div
+                    class="h-1.5 rounded-full transition-all duration-500"
+                    [class]="debtRatioBarClass()"
+                    [style.width]="debtRatioWidth()"
+                    aria-hidden="true"></div>
+                </div>
+              </div>
+            </dl>
+          </div>
+        </div>
+
+        <!-- Rate locked + office info strip -->
+        <div class="rounded-2xl bg-white px-5 py-4 ring-1 ring-gray-100 shadow-[0_2px_12px_rgba(54,62,127,0.07),0_1px_3px_rgba(0,0,0,0.04)] dark:bg-navy-800 dark:ring-navy-700/60 dark:shadow-none sm:px-6">
+          <div class="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-gray-500 dark:text-navy-400">
+            <span class="flex items-center gap-2">
+              <svg class="h-4 w-4 shrink-0 text-primary-400 dark:text-primary-500" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/>
+              </svg>
+              {{ 'simulation_detail.rate_locked' | translate }}:
+              <span class="font-semibold text-gray-800 dark:text-white">{{ fmtDate(sim.rate_locked_until) }}</span>
+            </span>
+            <span class="flex items-center gap-2">
+              <svg class="h-4 w-4 shrink-0 text-primary-400 dark:text-primary-500" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a1 1 0 110 2h-3a1 1 0 01-1-1v-2a1 1 0 00-1-1H9a1 1 0 00-1 1v2a1 1 0 01-1 1H4a1 1 0 110-2V4zm3 1h2v2H7V5zm2 4H7v2h2V9zm2-4h2v2h-2V5zm2 4h-2v2h2V9z" clip-rule="evenodd"/>
+              </svg>
+              <span class="font-semibold text-gray-800 dark:text-white">{{ sim.selected_office.name }}</span>
+              <span class="text-gray-400 dark:text-navy-500">· {{ sim.selected_office.city }}</span>
+            </span>
+          </div>
+        </div>
+
+        <!-- Disclaimer -->
+        <p class="text-center text-[11px] text-gray-400 dark:text-navy-500">
+          {{ 'simulator.step7.disclaimer' | translate }}
+        </p>
+
+      </div>
+    }
+
+  </div>
+</div>
+
+<!-- Delete confirmation dialog -->
+@if (confirmDelete()) {
+  <div
+    class="fixed inset-0 z-50 flex items-center justify-center p-4"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="detail-delete-dialog-title">
+    <div
+      class="absolute inset-0 bg-black/50 backdrop-blur-sm"
+      aria-hidden="true"
+      (click)="onDeleteCancel()"></div>
+    <div class="relative w-full max-w-sm rounded-2xl bg-white p-6 shadow-2xl ring-1 ring-gray-100 dark:bg-navy-800 dark:ring-navy-700/60">
+      <h2
+        id="detail-delete-dialog-title"
+        class="text-base font-semibold text-gray-900 dark:text-white">
+        {{ 'dashboard.delete_confirm.title' | translate }}
+      </h2>
+      <p class="mt-2 text-sm text-gray-500 dark:text-navy-300">
+        {{ 'dashboard.delete_confirm.message' | translate }}
+      </p>
+      <div class="mt-5 flex justify-end gap-3">
+        <button
+          type="button"
+          class="rounded-lg px-4 py-2 text-sm font-medium text-gray-700 ring-1 ring-inset ring-gray-300 transition-colors hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 dark:text-navy-200 dark:ring-navy-600 dark:hover:bg-navy-700"
+          (click)="onDeleteCancel()">
+          {{ 'dashboard.delete_confirm.cancel' | translate }}
+        </button>
+        <button
+          type="button"
+          class="rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-red-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2 disabled:opacity-60"
+          [disabled]="deleting()"
+          (click)="onDeleteConfirm()">
+          @if (deleting()) {
+            {{ 'dashboard.delete_confirm.deleting' | translate }}
+          } @else {
+            {{ 'dashboard.delete_confirm.confirm' | translate }}
+          }
+        </button>
+      </div>
+    </div>
+  </div>
+}

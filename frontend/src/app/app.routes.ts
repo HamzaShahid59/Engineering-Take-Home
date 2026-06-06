@@ -35,6 +35,12 @@ export const routes: Routes = [
       import('./features/dashboard/dashboard').then(m => m.DashboardComponent),
   },
   {
+    path: 'simulations/:id',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./features/simulations/simulation-detail/simulation-detail').then(m => m.SimulationDetailComponent),
+  },
+  {
     path: 'applications',
     canActivate: [authGuard],
     loadComponent: () =>

@@ -53,8 +53,9 @@
       <div class="space-y-4" role="list">
         @for (sim of simulations(); track sim.id) {
           <article
-            class="overflow-hidden rounded-2xl shadow-xl shadow-primary-900/20 ring-1 ring-primary-400/20 dark:shadow-navy-950/50 dark:ring-navy-700/40"
-            role="listitem">
+            class="overflow-hidden rounded-2xl shadow-xl shadow-primary-900/20 ring-1 ring-primary-400/20 dark:shadow-navy-950/50 dark:ring-navy-700/40 cursor-pointer"
+            role="listitem"
+            (click)="onViewSimulation(sim.id)">
 
             <!-- Hero (dark gradient — same pattern as Step 7 hero section) -->
             <div class="relative overflow-hidden bg-gradient-to-br from-primary-700 via-primary-800 to-navy-900 p-5 sm:p-6">
@@ -113,7 +114,7 @@
                       type="button"
                       class="rounded-lg p-1.5 text-white/40 transition-colors hover:text-red-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400/50"
                       [attr.aria-label]="'dashboard.card.delete' | translate"
-                      (click)="onDeleteClick(sim.id)">
+                      (click)="$event.stopPropagation(); onDeleteClick(sim.id)">
                       <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                         <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"/>
                       </svg>

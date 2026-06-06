@@ -1,4 +1,5 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
+import { Router } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { AuthService } from '../../core/services/auth.service';
 import { MortgageSimulationService } from '../../core/services/mortgage-simulation.service';
@@ -14,6 +15,7 @@ export class DashboardComponent implements OnInit {
   private readonly authService = inject(AuthService);
   private readonly simService = inject(MortgageSimulationService);
   private readonly toastService = inject(ToastService);
+  private readonly router = inject(Router);
 
   protected readonly currentUser = this.authService.currentUser;
   protected readonly simulations = signal<SavedSimulation[]>([]);
@@ -35,6 +37,10 @@ export class DashboardComponent implements OnInit {
         this.loadError.set(true);
       },
     });
+  }
+
+  protected onViewSimulation(id: string): void {
+    this.router.navigate(['/simulations', id]);
   }
 
   protected onDeleteClick(id: string): void {

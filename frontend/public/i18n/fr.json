@@ -283,6 +283,14 @@
       "cancel": "Annuler"
     }
   },
+  "simulation_detail": {
+    "back": "Retour au tableau de bord",
+    "load_error": "Impossible de charger la simulation. Veuillez actualiser la page.",
+    "rate_locked": "Taux fixé jusqu'au",
+    "action_review": "Examiner & Soumettre",
+    "action_edit": "Modifier",
+    "action_delete": "Supprimer"
+  },
   "page": {
     "simulator": {
       "title": "Simulateur hypothécaire",

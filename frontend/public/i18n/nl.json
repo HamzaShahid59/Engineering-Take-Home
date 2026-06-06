@@ -283,6 +283,14 @@
       "cancel": "Annuleren"
     }
   },
+  "simulation_detail": {
+    "back": "Terug naar dashboard",
+    "load_error": "Simulatie kon niet worden geladen. Vernieuw de pagina.",
+    "rate_locked": "Tarief vastgezet tot",
+    "action_review": "Beoordelen & Aanvragen",
+    "action_edit": "Bewerken",
+    "action_delete": "Verwijderen"
+  },
   "page": {
     "simulator": {
       "title": "Hypotheeksimulator",

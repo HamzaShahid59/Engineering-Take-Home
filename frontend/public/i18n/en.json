@@ -283,6 +283,14 @@
       "cancel": "Cancel"
     }
   },
+  "simulation_detail": {
+    "back": "Back to dashboard",
+    "load_error": "Could not load simulation. Please refresh.",
+    "rate_locked": "Rate locked until",
+    "action_review": "Review & Apply",
+    "action_edit": "Edit",
+    "action_delete": "Delete"
+  },
   "page": {
     "simulator": {
       "title": "Mortgage Simulator",
