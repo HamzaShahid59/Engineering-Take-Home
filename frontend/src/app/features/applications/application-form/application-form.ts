@@ -15,7 +15,7 @@ import type {
   ApplicationFormField,
   SubmitMortgageApplicationRequest,
 } from '../../../core/models/application.models';
-
+import { JsonPipe } from '@angular/common';
 interface AppFormStep {
   index: number;
   labelKey: string;
@@ -31,7 +31,15 @@ const STEPS: AppFormStep[] = [
 
 @Component({
   selector: 'app-application-form',
-  imports: [TranslatePipe, Step1ProjectDetailsComponent, Step2BorrowerDetailsComponent, Step3IncomeDetailsComponent, Step4LiabilityDetailsComponent, Step5DescriptionComponent],
+  imports: [
+    TranslatePipe,
+    JsonPipe,
+    Step1ProjectDetailsComponent,
+    Step2BorrowerDetailsComponent,
+    Step3IncomeDetailsComponent,
+    Step4LiabilityDetailsComponent,
+    Step5DescriptionComponent,
+  ],
   templateUrl: './application-form.html',
 })
 export class ApplicationFormComponent implements OnInit {
@@ -224,10 +232,13 @@ export class ApplicationFormComponent implements OnInit {
   }
 
   protected onSubmitConfirm(): void {
+    //  console.log('ON SUBMIT CONFIRM FIRED');
     const id = this.formState.applicationId();
     const draft = this.formState.draftFormData();
+    // console.log('Application ID:', id);
+// console.log('Draft:', draft);
     if (!id || !draft) return;
-
+// console.log("after return")
     const payload: SubmitMortgageApplicationRequest = {
       application_details: {
         project_details: draft.project_details!,

@@ -148,6 +148,7 @@ export interface PrefilledLiability {
 }
 
 export interface ApplicationFormResponse extends MortgageApplicationResponse {
+  application_id: string;
   field_schema: ApplicationFieldSchema;
   prefilled_data?: {
     financial_details?: {

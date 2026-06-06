@@ -59,7 +59,7 @@ export class ApplicationFormStateService {
 
   /** Store API response data and persist. Draft form data is preserved. */
   setFromApiResponse(app: ApplicationFormResponse): void {
-    this._applicationId.set(app.id);
+    this._applicationId.set(app.application_id);
     this._status.set(app.status);
     this._fieldSchema.set(app.field_schema);
     this._prefilledData.set(app.application_details ?? null);
