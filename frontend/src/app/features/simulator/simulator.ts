@@ -9,6 +9,7 @@ import { Step3PropertyComponent } from './steps/step3-property/step3-property';
 import { Step4ContributionComponent } from './steps/step4-contribution/step4-contribution';
 import { Step5FinancialComponent } from './steps/step5-financial/step5-financial';
 import { Step6PersonalComponent } from './steps/step6-personal/step6-personal';
+import { Step7ResultComponent } from './steps/step7-result/step7-result';
 
 interface SimulatorStep {
   index: number;
@@ -27,7 +28,7 @@ const STEPS: SimulatorStep[] = [
 
 @Component({
   selector: 'app-simulator',
-  imports: [TranslatePipe, Step1PurposeComponent, Step2BorrowerComponent, Step3PropertyComponent, Step4ContributionComponent, Step5FinancialComponent, Step6PersonalComponent],
+  imports: [TranslatePipe, Step1PurposeComponent, Step2BorrowerComponent, Step3PropertyComponent, Step4ContributionComponent, Step5FinancialComponent, Step6PersonalComponent, Step7ResultComponent],
   templateUrl: './simulator.html',
 })
 export class SimulatorComponent {
@@ -101,6 +102,10 @@ export class SimulatorComponent {
     return false;
   });
 
+  protected readonly innerContainerClass = computed(() =>
+    this.state.currentStep() === 7 ? 'mx-auto max-w-4xl' : 'mx-auto max-w-2xl'
+  );
+
   protected readonly continueLabel = computed(() =>
     this.state.currentStep() === 6 ? 'simulator.show_result' : 'simulator.continue'
   );
@@ -151,11 +156,15 @@ export class SimulatorComponent {
 
     this.simService.calculate(payload).subscribe({
       next: result => {
-        console.log('[Simulator] calculate result:', result);
+        this.state.setResultWithSliders(result, this.state.contribution()!.own_funds!, 25);
         this.state.setStep(7);
       },
       error: err => console.error('[Simulator] calculate error:', err),
     });
+  }
+
+  protected onSaveLock(): void {
+    console.log('[Simulator] Save & Lock Rate clicked');
   }
 
   protected startOver(): void {

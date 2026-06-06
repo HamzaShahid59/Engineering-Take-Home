@@ -1,0 +1,352 @@
+<article aria-label="Mortgage simulation results" class="space-y-5 sm:space-y-6">
+
+  <!-- ═══ Hero ═══ -->
+  <section
+    class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary-700 via-primary-800 to-navy-900 p-6 shadow-xl shadow-primary-900/20 dark:shadow-navy-950/50 sm:p-8"
+    aria-label="Simulation summary">
+    <!-- decorative glows -->
+    <div
+      class="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full bg-primary-400/10 blur-3xl"
+      aria-hidden="true"></div>
+    <div
+      class="pointer-events-none absolute -bottom-16 left-4 h-40 w-56 rounded-full bg-white/[0.03] blur-2xl"
+      aria-hidden="true"></div>
+    <!-- content -->
+    <div class="relative flex flex-wrap items-start justify-between gap-5 sm:items-center">
+      <!-- title + badge -->
+      <div class="space-y-2.5">
+        <p class="text-[10px] font-semibold uppercase tracking-[0.15em] text-white/50">
+          {{ 'simulator.step7.subtitle' | translate }}
+        </p>
+        <h2 class="text-2xl font-bold leading-tight text-white sm:text-3xl">
+          {{ 'simulator.step7.title' | translate }}
+        </h2>
+        @if (feasible()) {
+          <span
+            class="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/20 px-3 py-1 text-[11px] font-semibold text-emerald-300 ring-1 ring-inset ring-emerald-500/40">
+            <span class="h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-400" aria-hidden="true"></span>
+            {{ 'simulator.step7.feasible' | translate }}
+          </span>
+        } @else if (conditionallyFeasible()) {
+          <span
+            class="inline-flex items-center gap-1.5 rounded-full bg-amber-500/20 px-3 py-1 text-[11px] font-semibold text-amber-300 ring-1 ring-inset ring-amber-500/40">
+            <span class="h-1.5 w-1.5 shrink-0 rounded-full bg-amber-400" aria-hidden="true"></span>
+            {{ 'simulator.step7.conditionally_feasible' | translate }}
+          </span>
+        } @else {
+          <span
+            class="inline-flex items-center gap-1.5 rounded-full bg-red-500/20 px-3 py-1 text-[11px] font-semibold text-red-300 ring-1 ring-inset ring-red-500/40">
+            <span class="h-1.5 w-1.5 shrink-0 rounded-full bg-red-400" aria-hidden="true"></span>
+            {{ 'simulator.step7.not_feasible' | translate }}
+          </span>
+        }
+      </div>
+      <!-- monthly payment chip -->
+      <div
+        class="shrink-0 rounded-2xl bg-white/[0.1] px-5 py-4 ring-1 ring-inset ring-white/[0.15] backdrop-blur-sm">
+        <p class="text-[10px] font-semibold uppercase tracking-wider text-white/55">
+          {{ 'simulator.step7.monthly_payment' | translate }}
+        </p>
+        <p
+          class="mt-1 text-2xl font-bold tabular-nums text-white sm:text-3xl"
+          [class.animate-pulse]="isRecalculating()">
+          {{ fmt(result().monthly_payment) }}
+        </p>
+        <p class="mt-0.5 text-[10px] font-medium text-white/40">
+          {{ 'simulator.step7.per_month' | translate }}
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ Sliders ═══ -->
+  <section
+    class="rounded-2xl bg-gradient-to-br from-primary-50 to-white p-5 ring-1 ring-primary-100 shadow-[0_2px_12px_rgba(54,62,127,0.07),0_1px_3px_rgba(0,0,0,0.04)] dark:from-navy-950 dark:to-navy-800 dark:ring-navy-700/50 dark:shadow-none sm:p-6"
+    aria-label="Adjust simulation">
+    <div class="mb-5 flex items-center justify-between gap-3">
+      <h3 class="text-[10px] font-semibold uppercase tracking-wider text-primary-600/80 dark:text-primary-400/70">
+        {{ 'simulator.step7.adjust' | translate }}
+      </h3>
+      @if (isRecalculating()) {
+        <div
+          class="flex items-center gap-1.5 text-[11px] text-gray-400 dark:text-navy-400"
+          role="status"
+          aria-live="polite">
+          <svg
+            class="h-3 w-3 animate-spin text-primary-500 dark:text-primary-400"
+            viewBox="0 0 24 24"
+            fill="none"
+            aria-hidden="true">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+          </svg>
+          {{ 'simulator.step7.recalculating' | translate }}
+        </div>
+      }
+    </div>
+
+    <div class="space-y-6">
+
+      <!-- Own funds slider -->
+      <div>
+        <div class="mb-3 flex items-start justify-between gap-4">
+          <div>
+            <label for="slider-own-funds" class="block text-sm font-medium text-gray-700 dark:text-navy-200">
+              {{ 'simulator.step7.own_funds_label' | translate }}
+            </label>
+            <p class="mt-0.5 text-[11px] text-gray-400 dark:text-navy-500">
+              {{ 'simulator.step7.loan_preview_label' | translate }}:
+              <span class="font-semibold text-primary-600 dark:text-primary-400">{{ fmt(loanPreview()) }}</span>
+            </p>
+          </div>
+          <span class="shrink-0 text-base font-bold tabular-nums text-emerald-600 dark:text-emerald-400">
+            {{ fmt(ownFunds()) }}
+          </span>
+        </div>
+        <input
+          id="slider-own-funds"
+          type="range"
+          [min]="0"
+          [max]="propertyPrice()"
+          step="1000"
+          [value]="ownFunds()"
+          (input)="onOwnFundsChange($event)"
+          class="h-2 w-full cursor-pointer appearance-none rounded-full bg-gray-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:bg-navy-600 dark:focus-visible:ring-offset-navy-900
+                 [&::-webkit-slider-thumb]:h-[22px] [&::-webkit-slider-thumb]:w-[22px] [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-primary-600 [&::-webkit-slider-thumb]:shadow-[0_2px_8px_rgba(63,72,164,0.45),0_0_0_2.5px_white] [&::-webkit-slider-thumb]:transition-transform [&::-webkit-slider-thumb]:hover:scale-110 [&::-webkit-slider-thumb]:cursor-grab [&::-webkit-slider-thumb]:active:cursor-grabbing
+                 dark:[&::-webkit-slider-thumb]:bg-primary-400 dark:[&::-webkit-slider-thumb]:shadow-[0_2px_10px_rgba(113,121,209,0.65)]
+                 [&::-moz-range-thumb]:h-[22px] [&::-moz-range-thumb]:w-[22px] [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-[2.5px] [&::-moz-range-thumb]:border-white [&::-moz-range-thumb]:bg-primary-600 [&::-moz-range-thumb]:shadow-[0_2px_8px_rgba(63,72,164,0.45)]
+                 dark:[&::-moz-range-thumb]:bg-primary-400 dark:[&::-moz-range-thumb]:border-navy-900"
+          aria-label="Own funds" />
+      </div>
+
+      <div class="border-t border-primary-100 dark:border-navy-700/50" aria-hidden="true"></div>
+
+      <!-- Duration slider -->
+      <div>
+        <div class="mb-3 flex items-center justify-between gap-4">
+          <label for="slider-duration" class="text-sm font-medium text-gray-700 dark:text-navy-200">
+            {{ 'simulator.step7.duration_label' | translate }}
+          </label>
+          <span class="shrink-0 text-base font-bold tabular-nums text-gray-900 dark:text-white">
+            {{ durationYears() }}<span class="ml-1 text-sm font-medium text-gray-400 dark:text-navy-400">{{ 'simulator.step7.years' | translate }}</span>
+          </span>
+        </div>
+        <input
+          id="slider-duration"
+          type="range"
+          min="5"
+          max="30"
+          step="5"
+          [value]="durationYears()"
+          (input)="onDurationChange($event)"
+          class="h-2 w-full cursor-pointer appearance-none rounded-full bg-gray-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:bg-navy-600 dark:focus-visible:ring-offset-navy-900
+                 [&::-webkit-slider-thumb]:h-[22px] [&::-webkit-slider-thumb]:w-[22px] [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-primary-600 [&::-webkit-slider-thumb]:shadow-[0_2px_8px_rgba(63,72,164,0.45),0_0_0_2.5px_white] [&::-webkit-slider-thumb]:transition-transform [&::-webkit-slider-thumb]:hover:scale-110 [&::-webkit-slider-thumb]:cursor-grab [&::-webkit-slider-thumb]:active:cursor-grabbing
+                 dark:[&::-webkit-slider-thumb]:bg-primary-400 dark:[&::-webkit-slider-thumb]:shadow-[0_2px_10px_rgba(113,121,209,0.65)]
+                 [&::-moz-range-thumb]:h-[22px] [&::-moz-range-thumb]:w-[22px] [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-[2.5px] [&::-moz-range-thumb]:border-white [&::-moz-range-thumb]:bg-primary-600 [&::-moz-range-thumb]:shadow-[0_2px_8px_rgba(63,72,164,0.45)]
+                 dark:[&::-moz-range-thumb]:bg-primary-400 dark:[&::-moz-range-thumb]:border-navy-900"
+          aria-label="Duration in years" />
+        <div class="mt-2 flex justify-between px-0.5 text-[10px] text-gray-300 dark:text-navy-600" aria-hidden="true">
+          <span>5</span><span>10</span><span>15</span><span>20</span><span>25</span><span>30</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══ Key metrics strip ═══ -->
+  <div
+    class="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4"
+    [class.opacity-60]="isRecalculating()"
+    role="list"
+    aria-label="Key metrics">
+
+    <!-- Loan amount — primary accent -->
+    <div
+      class="rounded-2xl bg-white p-4 ring-1 ring-primary-100 shadow-[0_2px_12px_rgba(54,62,127,0.08),0_1px_3px_rgba(0,0,0,0.04)] transition-shadow hover:shadow-[0_4px_18px_rgba(54,62,127,0.12),0_1px_4px_rgba(0,0,0,0.05)] dark:bg-navy-800 dark:ring-navy-700/60 dark:shadow-none sm:p-5"
+      role="listitem">
+      <p class="text-[10px] font-semibold uppercase tracking-wider text-primary-400 dark:text-primary-500">
+        {{ 'simulator.step7.loan_amount' | translate }}
+      </p>
+      <p class="mt-2 text-xl font-bold tabular-nums text-primary-700 dark:text-primary-400 sm:text-2xl">
+        {{ fmt(result().loan_amount) }}
+      </p>
+      <div
+        class="mt-3 h-0.5 w-10 rounded-full bg-gradient-to-r from-primary-500 to-primary-300 dark:from-primary-600 dark:to-primary-400"
+        aria-hidden="true"></div>
+    </div>
+
+    <!-- Duration -->
+    <div
+      class="rounded-2xl bg-white p-4 ring-1 ring-gray-100 shadow-[0_2px_12px_rgba(54,62,127,0.07),0_1px_3px_rgba(0,0,0,0.04)] transition-shadow hover:shadow-[0_4px_18px_rgba(54,62,127,0.10),0_1px_4px_rgba(0,0,0,0.05)] dark:bg-navy-800 dark:ring-navy-700/60 dark:shadow-none sm:p-5"
+      role="listitem">
+      <p class="text-[10px] font-semibold uppercase tracking-wider text-gray-400 dark:text-navy-400">
+        {{ 'simulator.step7.duration' | translate }}
+      </p>
+      <p class="mt-2 text-xl font-bold tabular-nums text-gray-900 dark:text-white sm:text-2xl">
+        {{ result().duration_years }}<span
+          class="ml-1 text-sm font-medium text-gray-400 dark:text-navy-400">{{ 'simulator.step7.years' | translate }}</span>
+      </p>
+      <div class="mt-3 h-0.5 w-10 rounded-full bg-gray-100 dark:bg-navy-700" aria-hidden="true"></div>
+    </div>
+
+    <!-- Interest rate -->
+    <div
+      class="rounded-2xl bg-white p-4 ring-1 ring-gray-100 shadow-[0_2px_12px_rgba(54,62,127,0.07),0_1px_3px_rgba(0,0,0,0.04)] transition-shadow hover:shadow-[0_4px_18px_rgba(54,62,127,0.10),0_1px_4px_rgba(0,0,0,0.05)] dark:bg-navy-800 dark:ring-navy-700/60 dark:shadow-none sm:p-5"
+      role="listitem">
+      <p class="text-[10px] font-semibold uppercase tracking-wider text-gray-400 dark:text-navy-400">
+        {{ 'simulator.step7.interest_rate' | translate }}
+      </p>
+      <p class="mt-2 text-xl font-bold tabular-nums text-gray-900 dark:text-white sm:text-2xl">
+        {{ fmtRate(result().interest_rate) }}
+      </p>
+      <div class="mt-3 h-0.5 w-10 rounded-full bg-gray-100 dark:bg-navy-700" aria-hidden="true"></div>
+    </div>
+
+    <!-- LTV -->
+    <div
+      class="rounded-2xl bg-white p-4 ring-1 ring-gray-100 shadow-[0_2px_12px_rgba(54,62,127,0.07),0_1px_3px_rgba(0,0,0,0.04)] transition-shadow hover:shadow-[0_4px_18px_rgba(54,62,127,0.10),0_1px_4px_rgba(0,0,0,0.05)] dark:bg-navy-800 dark:ring-navy-700/60 dark:shadow-none sm:p-5"
+      role="listitem">
+      <p class="text-[10px] font-semibold uppercase tracking-wider text-gray-400 dark:text-navy-400">
+        {{ 'simulator.step7.ltv' | translate }}
+      </p>
+      <p class="mt-2 text-xl font-bold tabular-nums text-gray-900 dark:text-white sm:text-2xl">
+        {{ fmtPct(ltv()) }}
+      </p>
+      <div class="mt-3 h-0.5 w-10 rounded-full bg-gray-100 dark:bg-navy-700" aria-hidden="true"></div>
+    </div>
+  </div>
+
+  <!-- ═══ Detail cards ═══ -->
+  <div
+    class="grid gap-4 sm:gap-5 lg:grid-cols-2"
+    [class.opacity-60]="isRecalculating()">
+
+    <!-- ── Mortgage overview ── -->
+    <div class="rounded-2xl bg-white p-6 ring-1 ring-gray-100 shadow-[0_2px_12px_rgba(54,62,127,0.07),0_1px_3px_rgba(0,0,0,0.04)] dark:bg-navy-800 dark:ring-navy-700/60 dark:shadow-none">
+      <h3 class="mb-5 text-[10px] font-semibold uppercase tracking-wider text-gray-400 dark:text-navy-400">
+        {{ 'simulator.step7.section_overview' | translate }}
+      </h3>
+      <dl class="space-y-3.5">
+        <div class="flex items-center justify-between gap-4">
+          <dt class="text-sm text-gray-500 dark:text-navy-300">{{ 'simulator.step7.property_price' | translate }}</dt>
+          <dd class="text-sm font-semibold tabular-nums text-gray-800 dark:text-white">{{ fmt(result().property_price) }}</dd>
+        </div>
+        <div class="flex items-center justify-between gap-4">
+          <dt class="text-sm text-gray-500 dark:text-navy-300">{{ 'simulator.step7.own_funds' | translate }}</dt>
+          <dd class="text-sm font-semibold tabular-nums text-emerald-600 dark:text-emerald-400">{{ fmt(result().own_funds) }}</dd>
+        </div>
+        <div class="border-t border-gray-100 pt-3.5 dark:border-navy-700/50">
+          <div class="flex items-center justify-between gap-4">
+            <dt class="text-sm font-medium text-gray-700 dark:text-navy-200">{{ 'simulator.step7.loan_amount' | translate }}</dt>
+            <dd class="text-base font-bold tabular-nums text-primary-700 dark:text-primary-400">{{ fmt(result().loan_amount) }}</dd>
+          </div>
+        </div>
+        <!-- LTV progress -->
+        <div>
+          <div class="mb-2 flex items-center justify-between text-[11px]">
+            <span class="font-medium text-gray-400 dark:text-navy-400">{{ 'simulator.step7.ltv' | translate }}</span>
+            <span class="font-semibold text-gray-600 dark:text-navy-300">{{ fmtPct(ltv()) }}</span>
+          </div>
+          <div
+            class="h-1.5 overflow-hidden rounded-full bg-gray-100 dark:bg-navy-700/80"
+            role="progressbar"
+            [attr.aria-valuenow]="ltv()"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            [attr.aria-label]="'simulator.step7.ltv' | translate">
+            <div
+              class="h-1.5 rounded-full bg-gradient-to-r from-primary-600 to-primary-400 transition-all duration-500 dark:from-primary-500 dark:to-primary-300"
+              [style.width]="ltvWidth()"
+              aria-hidden="true"></div>
+          </div>
+        </div>
+        <div class="border-t border-gray-100 pt-3.5 dark:border-navy-700/50">
+          <div class="flex items-center justify-between gap-4">
+            <dt class="text-sm text-gray-500 dark:text-navy-300">{{ 'simulator.step7.total_repayable' | translate }}</dt>
+            <dd class="text-sm font-semibold tabular-nums text-gray-800 dark:text-white">{{ fmt(totalRepayable()) }}</dd>
+          </div>
+        </div>
+      </dl>
+    </div>
+
+    <!-- ── Monthly finances ── -->
+    <div class="rounded-2xl bg-white p-6 ring-1 ring-gray-100 shadow-[0_2px_12px_rgba(54,62,127,0.07),0_1px_3px_rgba(0,0,0,0.04)] dark:bg-navy-800 dark:ring-navy-700/60 dark:shadow-none">
+      <h3 class="mb-5 text-[10px] font-semibold uppercase tracking-wider text-gray-400 dark:text-navy-400">
+        {{ 'simulator.step7.section_finances' | translate }}
+      </h3>
+      <dl class="space-y-3.5">
+        <div class="flex items-center justify-between gap-4">
+          <dt class="text-sm text-gray-500 dark:text-navy-300">{{ 'simulator.step7.monthly_income' | translate }}</dt>
+          <dd class="text-sm font-semibold tabular-nums text-gray-800 dark:text-white">{{ fmt(result().monthly_income) }}</dd>
+        </div>
+        <div class="flex items-center justify-between gap-4">
+          <dt class="text-sm text-gray-500 dark:text-navy-300">{{ 'simulator.step7.monthly_liabilities' | translate }}</dt>
+          <dd class="text-sm font-semibold tabular-nums text-red-500 dark:text-red-400">{{ liabilitiesDisplay() }}</dd>
+        </div>
+        <div class="border-t border-gray-100 pt-3.5 dark:border-navy-700/50">
+          <div class="flex items-center justify-between gap-4">
+            <dt class="text-sm font-medium text-gray-700 dark:text-navy-200">{{ 'simulator.step7.net_income' | translate }}</dt>
+            <dd class="text-base font-bold tabular-nums text-gray-900 dark:text-white">{{ fmt(result().net_available_income) }}</dd>
+          </div>
+        </div>
+        <div class="border-t border-gray-100 pt-3.5 dark:border-navy-700/50">
+          <div class="flex items-center justify-between gap-4">
+            <dt class="text-sm text-gray-500 dark:text-navy-300">{{ 'simulator.step7.monthly_payment' | translate }}</dt>
+            <dd class="text-sm font-semibold tabular-nums text-primary-700 dark:text-primary-400">{{ fmt(result().monthly_payment) }}</dd>
+          </div>
+        </div>
+        <!-- Debt ratio progress -->
+        <div>
+          <div class="mb-2 flex items-center justify-between text-[11px]">
+            <span class="font-medium text-gray-400 dark:text-navy-400">{{ 'simulator.step7.debt_ratio' | translate }}</span>
+            <span [class]="debtRatioValueClass()">{{ fmtPct(debtRatio()) }}</span>
+          </div>
+          <div
+            class="h-1.5 overflow-hidden rounded-full bg-gray-100 dark:bg-navy-700/80"
+            role="progressbar"
+            [attr.aria-valuenow]="debtRatio()"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            [attr.aria-label]="'simulator.step7.debt_ratio' | translate">
+            <div
+              class="h-1.5 rounded-full transition-all duration-500"
+              [class]="debtRatioBarClass()"
+              [style.width]="debtRatioWidth()"
+              aria-hidden="true"></div>
+          </div>
+        </div>
+      </dl>
+    </div>
+  </div>
+
+  <!-- ═══ Save & Lock CTA ═══ -->
+  <div
+    class="overflow-hidden rounded-2xl bg-gradient-to-r from-primary-700 to-primary-500 shadow-xl shadow-primary-700/20 ring-1 ring-primary-400/30 dark:from-primary-800 dark:to-primary-600 dark:shadow-primary-950/40">
+    <div class="flex flex-col gap-4 px-6 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-8 sm:py-6">
+      <div>
+        <p class="text-sm font-semibold text-white sm:text-base">
+          {{ 'simulator.step7.save_lock' | translate }}
+        </p>
+        <p class="mt-0.5 text-[13px] text-primary-200/80">
+          {{ 'simulator.step7.save_lock_hint' | translate }}
+        </p>
+      </div>
+      <button
+        type="button"
+        class="inline-flex shrink-0 items-center gap-2 rounded-xl bg-white px-6 py-2.5 text-sm font-semibold text-primary-700 shadow-sm transition-all hover:bg-primary-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary-600 dark:text-primary-800">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+          <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+        </svg>
+        {{ 'simulator.step7.save_lock' | translate }}
+      </button>
+    </div>
+  </div>
+
+  <!-- ═══ Disclaimer ═══ -->
+  <p class="text-center text-[11px] text-gray-400 dark:text-navy-500">
+    {{ 'simulator.step7.disclaimer' | translate }}
+  </p>
+
+</article>
