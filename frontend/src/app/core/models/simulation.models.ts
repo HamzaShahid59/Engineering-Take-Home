@@ -84,6 +84,21 @@ export interface SaveLockRequest {
   selected_office: Office;
 }
 
+export interface SavedSimulation {
+  id: string;
+  status: string;
+  created_at: string;
+  updated_at: string;
+  rate_locked_until?: string | null;
+  project_details: ProjectDetails;
+  contribution: Contribution;
+  financial_details: FinancialDetails;
+  personal_details: PersonalDetails;
+  preferred_duration_years: number;
+  calculation_result: SimulationResult;
+  selected_office: Office;
+}
+
 export interface SimulationOptions {
   project_purposes: DropdownOption[];
   borrower_types: DropdownOption[];

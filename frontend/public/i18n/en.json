@@ -258,6 +258,22 @@
       "required": "Please select an office"
     }
   },
+  "dashboard": {
+    "greeting": "Hello, {{name}}",
+    "locked_simulations": "Locked Simulations",
+    "loading": "Loading your simulations…",
+    "empty": "No simulations yet.",
+    "empty_hint": "Complete the simulator and save & lock a rate to see it here.",
+    "load_error": "Could not load your simulations. Please refresh.",
+    "card": {
+      "property_price": "Property price",
+      "monthly_payment": "Monthly payment",
+      "rate_locked_until": "Rate locked until",
+      "office": "Office",
+      "edit": "Edit simulation",
+      "delete": "Delete simulation"
+    }
+  },
   "page": {
     "simulator": {
       "title": "Mortgage Simulator",

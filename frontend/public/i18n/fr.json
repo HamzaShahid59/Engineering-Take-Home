@@ -258,6 +258,22 @@
       "required": "Veuillez sélectionner une agence"
     }
   },
+  "dashboard": {
+    "greeting": "Bonjour, {{name}}",
+    "locked_simulations": "Simulations verrouillées",
+    "loading": "Chargement des simulations…",
+    "empty": "Aucune simulation pour l'instant.",
+    "empty_hint": "Complétez le simulateur et enregistrez un taux pour le voir ici.",
+    "load_error": "Impossible de charger vos simulations. Veuillez actualiser.",
+    "card": {
+      "property_price": "Prix du bien",
+      "monthly_payment": "Mensualité",
+      "rate_locked_until": "Taux fixé jusqu'au",
+      "office": "Agence",
+      "edit": "Modifier la simulation",
+      "delete": "Supprimer la simulation"
+    }
+  },
   "page": {
     "simulator": {
       "title": "Simulateur hypothécaire",

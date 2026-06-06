@@ -258,6 +258,22 @@
       "required": "Selecteer een kantoor"
     }
   },
+  "dashboard": {
+    "greeting": "Hallo, {{name}}",
+    "locked_simulations": "Vergrendelde simulaties",
+    "loading": "Simulaties laden…",
+    "empty": "Nog geen simulaties.",
+    "empty_hint": "Voltooi de simulator en sla een tarief op om het hier te zien.",
+    "load_error": "Uw simulaties konden niet worden geladen. Vernieuw de pagina.",
+    "card": {
+      "property_price": "Aankoopprijs",
+      "monthly_payment": "Maandbetaling",
+      "rate_locked_until": "Tarief vastgezet tot",
+      "office": "Kantoor",
+      "edit": "Simulatie bewerken",
+      "delete": "Simulatie verwijderen"
+    }
+  },
   "page": {
     "simulator": {
       "title": "Hypotheeksimulator",

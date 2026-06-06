@@ -1,8 +1,11 @@
 import { Component, computed, inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { SimulatorStateService } from './simulator-state.service';
 import { MortgageSimulationService } from '../../core/services/mortgage-simulation.service';
 import { SimulationCalculateRequest } from '../../core/models/simulation.models';
+import { AuthService } from '../../core/services/auth.service';
+import { AuthReturnIntentService } from '../../core/services/auth-return-intent.service';
 import { Step1PurposeComponent } from './steps/step1-purpose/step1-purpose';
 import { Step2BorrowerComponent } from './steps/step2-borrower/step2-borrower';
 import { Step3PropertyComponent } from './steps/step3-property/step3-property';
@@ -35,6 +38,9 @@ export class SimulatorComponent {
   protected readonly state = inject(SimulatorStateService);
   private readonly translate = inject(TranslateService);
   private readonly simService = inject(MortgageSimulationService);
+  private readonly router = inject(Router);
+  private readonly authService = inject(AuthService);
+  private readonly returnIntentService = inject(AuthReturnIntentService);
   protected readonly steps = STEPS;
 
   protected readonly canContinue = computed(() => {
@@ -164,7 +170,12 @@ export class SimulatorComponent {
   }
 
   protected onSaveLock(): void {
-    console.log('[Simulator] Save & Lock Rate clicked');
+    if (!this.authService.isAuthenticated()) {
+      this.returnIntentService.set('save-lock');
+      this.router.navigateByUrl('/register');
+    } else {
+      this.router.navigateByUrl('/select-office');
+    }
   }
 
   protected startOver(): void {
