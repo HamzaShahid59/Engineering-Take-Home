@@ -12,7 +12,6 @@ import { Step3IncomeDetailsComponent } from './step3-income-details/step3-income
 import { Step4LiabilityDetailsComponent } from './step4-liability-details/step4-liability-details';
 import { Step5DescriptionComponent } from './step5-description/step5-description';
 import type { SubmitMortgageApplicationRequest } from '../../../core/models/application.models';
-import { JsonPipe } from '@angular/common';
 interface AppFormStep {
   index: number;
   labelKey: string;
@@ -30,7 +29,6 @@ const STEPS: AppFormStep[] = [
   selector: 'app-application-form',
   imports: [
     TranslatePipe,
-    JsonPipe,
     Step1ProjectDetailsComponent,
     Step2BorrowerDetailsComponent,
     Step3IncomeDetailsComponent,
