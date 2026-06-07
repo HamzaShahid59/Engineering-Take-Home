@@ -1,6 +1,8 @@
 from bson import ObjectId
 from motor.motor_asyncio import AsyncIOMotorDatabase
 
+from app.modules.documents.schemas import DocumentType
+
 
 # Keeps document MongoDB queries in one place.
 class DocumentRepository:
@@ -55,3 +57,13 @@ class DocumentRepository:
                 "user_id": user_id,
             }
         )
+
+    # Returns document types used by the frontend upload form.
+    def get_document_types(self):
+        return [
+            {
+                "value": document_type.value,
+                "label": document_type.value,
+            }
+            for document_type in DocumentType
+        ]

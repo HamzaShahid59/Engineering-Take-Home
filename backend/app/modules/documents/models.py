@@ -12,6 +12,9 @@ class DocumentModel(BaseModel):
     user_id: ObjectId
     application_id: ObjectId
 
+    # Business document category selected by the borrower.
+    document_type: str
+
     original_file_name: str
     file_url: str
     storage_file_id: str

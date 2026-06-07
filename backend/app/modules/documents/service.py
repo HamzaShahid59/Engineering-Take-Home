@@ -8,12 +8,14 @@ from fastapi import HTTPException, UploadFile, status
 
 from app.core.config import settings
 from app.modules.documents.repository import DocumentRepository
+from app.modules.documents.schemas import DocumentType
 from app.modules.mortgage_applications.repository import MortgageApplicationRepository
 
 
 ALLOWED_FILE_EXTENSIONS = [".pdf", ".png", ".jpg", ".jpeg"]
 ALLOWED_CONTENT_TYPES = ["application/pdf", "image/png", "image/jpeg"]
 MAX_FILE_SIZE_BYTES = 5 * 1024 * 1024
+
 
 # Handles document upload, validation, cloud storage, and metadata persistence.
 class DocumentService:
@@ -29,6 +31,7 @@ class DocumentService:
     async def upload_document(
         self,
         application_id: str,
+        document_type: str,
         file: UploadFile,
         current_user: dict,
     ) -> dict:
@@ -38,6 +41,8 @@ class DocumentService:
             application_object_id=application_object_id,
             current_user=current_user,
         )
+
+        validated_document_type = self._validate_document_type(document_type)
 
         self._validate_file(file)
 
@@ -54,7 +59,7 @@ class DocumentService:
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail="File size must not exceed 5 MB",
             )
-            
+
         original_file_name = Path(file.filename or "document").name
 
         imagekit_response = await self._upload_to_imagekit(
@@ -69,6 +74,7 @@ class DocumentService:
         document_data = {
             "user_id": current_user["_id"],
             "application_id": application_object_id,
+            "document_type": validated_document_type,
             "original_file_name": original_file_name,
             "file_url": imagekit_response["url"],
             "storage_file_id": imagekit_response["fileId"],
@@ -81,6 +87,10 @@ class DocumentService:
         document = await self.document_repository.create_document(document_data)
 
         return self._serialize_document(document)
+
+    # Returns document types allowed for uploads.
+    def get_document_types(self) -> list:
+        return self.document_repository.get_document_types()
 
     # Returns all documents linked to the user's application.
     async def get_application_documents(
@@ -168,6 +178,17 @@ class DocumentService:
             )
 
         return application
+
+    # Validates the selected business document type.
+    def _validate_document_type(self, document_type: str) -> str:
+        for allowed_document_type in DocumentType:
+            if document_type == allowed_document_type.value:
+                return allowed_document_type.value
+
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid document type",
+        )
 
     # Validates both extension and MIME type before upload.
     def _validate_file(self, file: UploadFile):
@@ -262,6 +283,7 @@ class DocumentService:
             "id": str(document["_id"]),
             "user_id": str(document["user_id"]),
             "application_id": str(document["application_id"]),
+            "document_type": document["document_type"],
             "original_file_name": document["original_file_name"],
             "file_url": document["file_url"],
             "storage_file_id": document["storage_file_id"],

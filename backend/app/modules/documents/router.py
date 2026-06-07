@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, File, UploadFile
+from fastapi import APIRouter, Depends, File, Form, UploadFile
 from motor.motor_asyncio import AsyncIOMotorDatabase
 
 from app.core.database import get_database
@@ -29,16 +29,27 @@ def get_document_service(
     )
 
 
+# Returns available document types for upload forms.
+@router.get("/documents/types")
+async def get_document_types(
+    document_service: DocumentService = Depends(get_document_service),
+):
+    data = document_service.get_document_types()
+    return success_response(data)
+
+
 # Uploads one supporting document for an owned application.
 @router.post("/{application_id}/documents", status_code=201)
 async def upload_document(
     application_id: str,
+    document_type: str = Form(...),
     file: UploadFile = File(...),
     current_user: dict = Depends(get_current_user),
     document_service: DocumentService = Depends(get_document_service),
 ):
     data = await document_service.upload_document(
         application_id=application_id,
+        document_type=document_type,
         file=file,
         current_user=current_user,
     )
