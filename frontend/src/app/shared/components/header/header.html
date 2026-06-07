@@ -121,7 +121,7 @@
         } @else {
           <button
             type="button"
-            (click)="authService.requestLogout()"
+            (click)="onLogoutClick()"
             class="hidden md:inline-flex rounded-md px-2.5 py-1.5 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-100 hover:text-gray-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 dark:text-navy-300 dark:hover:bg-navy-800 dark:hover:text-white">
             {{ 'nav.logout' | translate }}
           </button>
@@ -207,7 +207,7 @@
             } @else {
               <button
                 type="button"
-                (click)="authService.requestLogout(); closeMenu()"
+                (click)="onLogoutClick(); closeMenu()"
                 class="rounded-md px-2.5 py-1.5 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-100 hover:text-gray-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 dark:text-navy-300 dark:hover:bg-navy-800 dark:hover:text-white">
                 {{ 'nav.logout' | translate }}
               </button>

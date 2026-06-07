@@ -4,6 +4,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { ThemeService, Theme } from '../../../core/services/theme.service';
 import { LanguageService, Language } from '../../../core/services/language.service';
 import { AuthService } from '../../../core/services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -14,6 +15,7 @@ export class HeaderComponent {
   protected readonly themeService = inject(ThemeService);
   protected readonly languageService = inject(LanguageService);
   protected readonly authService = inject(AuthService);
+  private readonly router = inject(Router);
 
   protected readonly languages: Language[] = ['en', 'nl', 'fr'];
   protected readonly menuOpen = signal(false);
@@ -66,5 +68,14 @@ export class HeaderComponent {
     return active
       ? `${base} font-semibold text-primary-700 bg-primary-50 dark:text-primary-400 dark:bg-navy-700`
       : `${base} text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-navy-300 dark:hover:bg-navy-700 dark:hover:text-white`;
+  }
+
+  protected onLogoutClick(): void {
+    if (this.router.url.startsWith('/applications/') && this.router.url.endsWith('/form')) {
+      this.authService.requestLogout();
+      return;
+    }
+
+    this.authService.logout();
   }
 }
