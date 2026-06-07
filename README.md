@@ -18,94 +18,40 @@ The solution consists of a FastAPI backend and an Angular frontend.
 
 ---
 
-# Project Structure
+## What Was Built
 
-```text
-/
-├── backend/
-├── frontend/
-└── README.md
-```
+### Authentication
 
----
+* User registration
+* User login
+* JWT authentication
+* Protected routes and endpoints
 
-# Technology Stack
-
-## Backend
-
-* FastAPI
-* MongoDB Atlas
-* Motor
-* Pydantic
-* JWT Authentication
-* ImageKit
-* Pytest
-
-## Frontend
-
-* Angular
-* TypeScript
-* Angular Signals
-* Tailwind CSS
-* Reactive Forms
-* ngx-translate
-* JWT Authentication
-* Route Guards
-* HTTP Interceptors
-
----
-
-# Implemented Features
-
-## Authentication
-
-* User Registration
-* User Login
-* JWT Authentication
-* Protected Endpoints
-
----
-
-## Mortgage Simulator
+### Mortgage Simulator
 
 * Multi-step mortgage simulator
-* Dynamic mortgage calculations
-* Mortgage feasibility assessment
-* Save & Lock Rate
+* Mortgage affordability and feasibility calculation
+* Save & Lock Rate workflow
 * Office selection
-* Anonymous calculations
+* Anonymous simulations
 
----
-
-## Dashboard
-
-### My Simulations
+### Dashboard
 
 * View simulations
 * Edit simulations
 * Delete simulations
-* Select preferred office
-
-### My Applications
-
 * View applications
-* Access application details
 
----
-
-## Mortgage Applications
+### Mortgage Applications
 
 * Create application from simulation
 * Draft application workflow
 * Multi-step application form
-* Auto-save draft progress
-* Submit application
-* Application overview page
-* Application detail page
+* Draft persistence
+* Application submission
+* Read-only submitted applications
 
----
-
-## Documents
+### Documents
 
 * Upload documents
 * Delete documents
@@ -119,7 +65,7 @@ Supported document types:
 * ID Card
 * Payslip
 * Bank Statement
-* Employment/Business Contract
+* Employment / Business Contract
 * Property Document
 
 Supported file formats:
@@ -131,15 +77,79 @@ Supported file formats:
 
 ---
 
-# User Journey
+## What Was Intentionally Not Built
 
-## 1. Authentication
+To keep the scope manageable and focus on the borrower journey, the following items were intentionally not implemented:
 
-The borrower creates an account or logs into an existing account.
+* Email notifications
+* Role-based access control
+* Document approval and rejection workflows
+* Frontend automated tests
 
 ---
 
-## 2. Mortgage Simulation
+## Architecture Summary
+
+### Frontend
+
+Angular SPA responsible for:
+
+* Authentication
+* Mortgage simulations
+* Applications
+* Document management
+* Localization
+* Theme management
+
+### Backend
+
+FastAPI API responsible for:
+
+* Authentication
+* Mortgage calculations
+* Application workflows
+* Document management
+* Business validation
+
+### Storage
+
+MongoDB Atlas stores:
+
+* Users
+* Simulations
+* Applications
+* Document metadata
+
+ImageKit stores:
+
+* Uploaded document files
+
+---
+
+## Data Model
+
+The core entities are:
+
+* User
+* Mortgage Simulation
+* Mortgage Application
+* Document
+
+A mortgage application is created from a locked mortgage simulation.
+
+Applications store a snapshot of simulation data to preserve historical information even if future simulations are modified.
+
+Uploaded documents are linked to a specific application. Files are stored in ImageKit while metadata is stored in MongoDB Atlas.
+
+---
+
+## User Journey
+
+### 1. Authentication
+
+The borrower creates an account or logs into an existing account.
+
+### 2. Mortgage Simulation
 
 The borrower:
 
@@ -150,9 +160,7 @@ The borrower:
 
 The simulator is publicly accessible and does not require authentication.
 
----
-
-## 3. Save & Lock Rate
+### 3. Save & Lock Rate
 
 If the borrower wants to continue:
 
@@ -161,21 +169,11 @@ If the borrower wants to continue:
 * A mortgage rate is locked
 * The simulation is saved
 
----
-
-## 4. Office Selection
+### 4. Office Selection
 
 The borrower selects a preferred office.
 
-Example offices:
-
-* Antwerp Office
-* Brussels Office
-* Ghent Office
-
----
-
-## 5. Dashboard
+### 5. Dashboard
 
 The borrower can:
 
@@ -183,42 +181,32 @@ The borrower can:
 * Edit simulations
 * Delete simulations
 
----
-
-## 6. Create Mortgage Application
+### 6. Create Mortgage Application
 
 The borrower reviews a saved simulation and creates a mortgage application.
 
 A draft application is generated from the locked simulation.
 
----
+### 7. Complete Application
 
-## 7. Complete Application
+The borrower completes:
 
-The borrower completes a multi-step application flow:
+1. Property Details
+2. Borrower Details
+3. Income Details
+4. Liabilities
+5. Description
+6. Submit Application
 
-1. Review Simulation Summary
-2. Property Details
-3. Borrower Details
-4. Income Details
-5. Liabilities
-6. Description
-7. Review
-8. Submit
-
----
-
-## 8. Application Submission
+### 8. Application Submission
 
 When submitted:
 
 * Draft becomes submitted
-* Application information becomes read-only
+* Application becomes read-only
 * Application snapshot is preserved
 
----
-
-## 9. Document Upload
+### 9. Document Upload
 
 After submission:
 
@@ -226,9 +214,7 @@ After submission:
 * Documents can be viewed
 * Documents can be deleted
 
----
-
-## 10. Tracking Progress
+### 10. Tracking Progress
 
 The borrower can:
 
@@ -238,168 +224,116 @@ The borrower can:
 
 ---
 
-# Backend Architecture
+## Technology Stack
 
-The backend follows a modular architecture organized by feature.
+### Backend
 
-```text
-app/
-│
-├── core/
-│
-├── modules/
-│   ├── auth/
-│   ├── mortgage_simulations/
-│   ├── mortgage_applications/
-│   └── documents/
-│
-└── shared/
-```
+* FastAPI
+* MongoDB Atlas
+* Motor
+* Pydantic
+* JWT Authentication
+* ImageKit
+* Pytest
 
-Each module follows the same structure:
+### Frontend
 
-```text
-module/
-│
-├── router.py
-├── service.py
-├── repository.py
-├── schemas.py
-└── models.py
-```
-
-### Responsibilities
-
-#### router.py
-
-* API endpoints
-* Request handling
-* Response formatting
-
-#### service.py
-
-* Business logic
-* Validation
-* Workflow coordination
-
-#### repository.py
-
-* MongoDB operations
-
-#### schemas.py
-
-* Request and response validation
-
-#### models.py
-
-* MongoDB document representation
+* Angular
+* TypeScript
+* Angular Signals
+* Tailwind CSS
+* Reactive Forms
+* ngx-translate
+* Route Guards
+* HTTP Interceptors
 
 ---
 
-# Frontend Architecture
+## Backend Architecture
+
+The backend follows a modular feature-based architecture.
+
+```text
+app/
+├── core/
+├── modules/
+│   ├── users/
+│   ├── mortgage_simulations/
+│   ├── mortgage_applications/
+│   └── documents/
+└── shared/
+```
+
+Each module follows:
+
+```text
+router.py
+service.py
+repository.py
+schemas.py
+models.py
+```
+
+Responsibilities:
+
+* router.py → API endpoints
+* service.py → business logic
+* repository.py → database operations
+* schemas.py → validation
+* models.py → persistence models
+
+---
+
+## Frontend Architecture
 
 ```text
 src/app/
-│
 ├── core/
 │   ├── services/
 │   ├── interceptors/
 │   ├── guards/
-│   ├── models/
-│   └── theme/
-│
+│   └── models/
 ├── features/
 │   ├── auth/
 │   ├── simulator/
 │   ├── dashboard/
-│   └── applications/
-│
-├── shared/
-│   ├── components/
-│   └── utils/
-│
-└── app.routes.ts
+│   ├── applications/
+│   └── documents/
+└── shared/
 ```
 
-### Frontend Features
+Key frontend features:
 
 * Standalone Components
 * Angular Signals
 * Reactive Forms
-* Route Guards
-* HTTP Interceptors
 * Translation Support
 * Theme Support
+* Route Guards
+* HTTP Interceptors
 
 ---
 
-# Internationalization
+## Local Development
 
-The application supports:
-
-* English
-* Dutch
-* French
-
-All UI text is implemented through translation keys from the beginning using ngx-translate.
-
----
-
-# Theme Support
-
-The application supports:
-
-* Light Theme
-* Dark Theme
-* System Theme
-
-User preferences are persisted in local storage.
-
----
-
-# Draft Persistence
-
-Application progress is automatically saved in local storage.
-
-Features:
-
-* Auto-save
-* Restore after refresh
-* Start Over action
-* Stepper navigation
-
----
-
-# Backend Setup
-
-## Requirements
-
-* Python 3.12+
-* MongoDB Atlas
-
-## Installation
+### Backend
 
 ```bash
 cd backend
-
 python -m venv venv
-
-source venv/bin/activate
-# Windows:
-# venv\Scripts\activate
-
 pip install -r requirements.txt
+uvicorn app.main:app --reload
 ```
 
----
+### Frontend
 
-## Environment Variables
-
-Create:
-
-```env
-.env
+```bash
+cd frontend
+npm install
+npm start
 ```
+
+### Environment Variables (Backend Only)
 
 ```env
 MONGO_URI=
@@ -416,85 +350,51 @@ IMAGEKIT_URL_ENDPOINT=
 
 ---
 
-## Run Backend
+## Deployment
 
-```bash
-uvicorn app.main:app --reload
-```
+### Frontend
 
----
+https://engineering-take-home.vercel.app/
 
-## Run Tests
+### Backend
 
-```bash
-pytest
-```
-
-Implemented test coverage currently includes:
-
-* Authentication
-* Mortgage Simulations
+https://engineering-take-home.fly.dev/
 
 ---
 
-# Frontend Setup
+## Testing
 
-## Requirements
+Current automated tests cover:
 
-* Node.js
-* Angular CLI
-
-## Installation
-
-```bash
-cd frontend
-
-npm install
-```
+* User registration
+* User login
+* Authentication validation
+* Mortgage simulation workflows
 
 ---
 
-## Run Frontend
+## Trade-offs Due To Time Limit
 
-```bash
-ng serve
-```
+To prioritize delivering a complete end-to-end workflow:
 
-Application:
-
-```text
-http://localhost:4200
-```
+* Implemented a simplified mortgage calculation model
+* Limited automated testing to backend authentication and simulation workflows
+* Kept document handling metadata-based without approval workflows
+* Prioritized feature completeness and clean architecture over advanced optimizations
 
 ---
 
-# Deployment
+## AI Usage
 
-## Backend
+The overall architecture, workflows, and implementation decisions were defined by me and then implemented with AI assistance.
 
-```text
-[TODO]
-```
+AI-generated code was reviewed, tested, debugged, and adjusted manually before being integrated into the application.
 
-## Frontend
+### Backend Development
 
-```text
-[TODO]
-```
+Primarily developed with ChatGPT Plus.
 
----
-
-# AI Usage
-
-AI tools were used throughout development as productivity and implementation assistants.
-
-## Backend Development
-
-Primarily developed with:
-
-* ChatGPT Plus
-
-Usage included:
+Used for:
 
 * Architecture discussions
 * Code generation
@@ -502,109 +402,83 @@ Usage included:
 * Testing support
 * Refactoring assistance
 
----
+### Frontend Development
 
-## Frontend Development
+Primarily developed with Claude.
 
-Primarily developed with:
-
-* Claude
-
-Usage included:
+Used for:
 
 * Angular implementation
 * UI workflows
 * Form architecture
-* Translation support
+* Localization support
 * Theme implementation
 
 ---
 
-# Lessons Learned
+## Time Spent
 
-## ChatGPT
+I exceeded the suggested 2-hour limit.
 
-Observed strengths:
+Estimated active development time:
+
+* Backend implementation: ~30–35 minutes
+* Backend debugging and testing: ~15–20 minutes
+* Frontend implementation: ~45–50 minutes
+* Frontend debugging and testing: ~40–45 minutes
+
+Total active human time: approximately 2.2–2.5 hours.
+
+A significant portion of the time was spent debugging and validating end-to-end workflows rather than implementing new features.
+
+---
+
+## Lessons Learned
+
+### ChatGPT
+
+Strengths:
 
 * Rapid backend implementation
 * Strong architecture discussions
 * Helpful validation and testing support
 
-Observed challenges:
+Challenges:
 
 * Sometimes produced inconsistent naming and schemas
 * Occasionally introduced tighter coupling than desired
-* Required explicit reminders to maintain established architecture and coding style
-* Needed continuous context reinforcement to preserve consistency
+* Required explicit reminders to maintain architecture consistency
+* Needed continuous context reinforcement
 
----
+### Claude
 
-## Claude
-
-Observed strengths:
+Strengths:
 
 * Strong Angular implementation support
 * Effective UI workflow generation
 * Helpful frontend architecture guidance
 
-Observed challenges:
+Challenges:
 
-* Large multi-fix prompts could lead to hallucinations
-* Sometimes drifted from the intended architecture if not constrained
-* Could spend excessive tokens on small UI adjustments
-* Benefited from strict architecture guidance through project instructions
-
----
-
-# Key Takeaways
-
-* Build the initial architecture yourself before relying on AI
-* Verify generated code rather than accepting it blindly
-* Provide exact files and context when requesting changes
-* Maintain strict architectural boundaries
-* Manage context carefully and compact conversations strategically
-
-AI accelerated development significantly but still required engineering judgment, code review, and validation throughout the project.
+* Large prompts could lead to hallucinations
+* Occasionally drifted from intended architecture
+* Sometimes used excessive reasoning for small UI changes
+* Benefited from strict architectural instructions
 
 ---
 
-# Future Improvements
+## Future Improvements
 
-## Testing
-
-* Expand frontend test coverage
-* Add application workflow tests
-* Add document workflow tests
-
----
-
-## Frontend
-
-* Create more reusable Angular form components
-* Improve form builder capabilities
-* Improve dashboard analytics
+* Expand frontend and backend automated test coverage
+* Create more reusable Angular form abstractions
+* Add malware scanning for uploaded files
+* Add deeper file content validation
+* Implement document approval workflows
+* Introduce role-based review processes
 
 ---
 
-## Security
-
-* Add malware scanning for uploads
-* Add file content validation
-* Add rate limiting
-
----
-
-## Workflow
-
-* Advisor workflows
-* Reviewer workflows
-* Underwriter workflows
-* Role-based permissions
-* Application review lifecycle
-
----
-
-# Final Notes
+## Final Notes
 
 The objective of this project was not to build a production-ready mortgage platform but to demonstrate:
 
