@@ -591,7 +591,6 @@ AI accelerated development significantly but still required engineering judgment
 * Add malware scanning for uploads
 * Add file content validation
 * Add rate limiting
-* Add audit logging
 
 ---
 
