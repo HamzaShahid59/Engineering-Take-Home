@@ -1,8 +1,18 @@
-import { Component, OnInit, computed, inject, signal } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, computed, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
+import { forkJoin } from 'rxjs';
 import { MortgageApplicationService } from '../../../core/services/mortgage-application.service';
+import { DocumentService } from '../../../core/services/document.service';
+import { ToastService } from '../../../core/services/toast.service';
 import type { ApplicationIncomeItem, MortgageApplicationResponse } from '../../../core/models/application.models';
+import type { DocumentResponse, DocumentType } from '../../../core/models/document.models';
+
+interface DocumentRow {
+  typeValue: string;
+  typeLabel: string;
+  document: DocumentResponse | null;
+}
 
 @Component({
   selector: 'app-application-detail',
@@ -10,14 +20,41 @@ import type { ApplicationIncomeItem, MortgageApplicationResponse } from '../../.
   templateUrl: './application-detail.html',
 })
 export class ApplicationDetailComponent implements OnInit {
+  @ViewChild('fileInput') private readonly fileInputRef!: ElementRef<HTMLInputElement>;
+
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly appService = inject(MortgageApplicationService);
+  private readonly documentService = inject(DocumentService);
+  private readonly toast = inject(ToastService);
+
+  private readonly ALLOWED_MIME_TYPES = ['application/pdf', 'image/png', 'image/jpeg'];
+  private readonly MAX_FILE_SIZE = 5 * 1024 * 1024;
+  private pendingDocTypeValue = '';
 
   protected readonly application = signal<MortgageApplicationResponse | null>(null);
   protected readonly loading = signal(true);
   protected readonly loadError = signal(false);
   protected readonly activeTab = signal<'details' | 'documents'>('details');
+
+  private applicationId: string | null = null;
+
+  protected readonly documentTypes = signal<DocumentType[]>([]);
+  protected readonly documents = signal<DocumentResponse[]>([]);
+  protected readonly docsLoading = signal(false);
+  protected readonly docsError = signal(false);
+  protected readonly uploadingDocTypes = signal(new Set<string>());
+  protected readonly confirmDeleteDoc = signal<DocumentResponse | null>(null);
+  protected readonly docDeleting = signal(false);
+  private docsLoaded = false;
+
+  protected readonly documentRows = computed<DocumentRow[]>(() =>
+    this.documentTypes().map(type => ({
+      typeValue: type.value,
+      typeLabel: type.label,
+      document: this.documents().find(d => d.document_type === type.value) ?? null,
+    }))
+  );
 
   protected readonly ltv = computed(() => {
     const r = this.application()?.simulation_snapshot.calculation_result;
@@ -66,6 +103,7 @@ export class ApplicationDetailComponent implements OnInit {
       this.router.navigateByUrl('/applications');
       return;
     }
+    this.applicationId = id;
     this.appService.getApplicationById(id).subscribe({
       next: app => {
         this.application.set(app);
@@ -74,6 +112,124 @@ export class ApplicationDetailComponent implements OnInit {
       error: () => {
         this.loading.set(false);
         this.loadError.set(true);
+      },
+    });
+  }
+
+  protected activateDocumentsTab(): void {
+    this.activeTab.set('documents');
+    if (!this.docsLoaded && this.applicationId) {
+      this.docsLoading.set(true);
+      this.docsError.set(false);
+      forkJoin({
+        types: this.documentService.getDocumentTypes(),
+        docs: this.documentService.getApplicationDocuments(this.applicationId),
+      }).subscribe({
+        next: ({ types, docs }) => {
+          this.documentTypes.set(types);
+          this.documents.set(docs);
+          this.docsLoading.set(false);
+          this.docsLoaded = true;
+        },
+        error: () => {
+          this.docsLoading.set(false);
+          this.docsError.set(true);
+        },
+      });
+    }
+  }
+
+  protected docStatusBadgeClass(status: string): string {
+    const base = 'inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-semibold ring-1 ring-inset';
+    switch (status) {
+      case 'verified': return `${base} bg-emerald-500/20 text-emerald-600 ring-emerald-500/30 dark:text-emerald-400`;
+      case 'rejected': return `${base} bg-red-500/20 text-red-600 ring-red-500/30 dark:text-red-400`;
+      default: return `${base} bg-amber-500/20 text-amber-600 ring-amber-500/30 dark:text-amber-400`;
+    }
+  }
+
+  protected docStatusKey(status: string): string {
+    return `application_detail.documents.status.${status}`;
+  }
+
+  protected onUploadClick(typeValue: string): void {
+    this.pendingDocTypeValue = typeValue;
+    this.fileInputRef.nativeElement.value = '';
+    this.fileInputRef.nativeElement.click();
+  }
+
+  protected onFileSelected(event: Event): void {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (!file) return;
+
+    if (!this.ALLOWED_MIME_TYPES.includes(file.type)) {
+      this.toast.show('application_detail.documents.error_file_type', 'error');
+      return;
+    }
+
+    if (file.size > this.MAX_FILE_SIZE) {
+      this.toast.show('application_detail.documents.error_file_size', 'error');
+      return;
+    }
+
+    if (!this.applicationId) return;
+
+    const typeValue = this.pendingDocTypeValue;
+    this.setUploading(typeValue, true);
+
+    this.documentService.uploadDocument(this.applicationId, typeValue, file).subscribe({
+      next: () => {
+        this.toast.show('application_detail.documents.upload_success', 'success');
+        this.documentService.getApplicationDocuments(this.applicationId!).subscribe({
+          next: docs => { this.documents.set(docs); this.setUploading(typeValue, false); },
+          error: () => { this.setUploading(typeValue, false); },
+        });
+      },
+      error: () => {
+        this.setUploading(typeValue, false);
+        this.toast.show('application_detail.documents.error_upload', 'error');
+      },
+    });
+  }
+
+  private setUploading(typeValue: string, uploading: boolean): void {
+    this.uploadingDocTypes.update(prev => {
+      const next = new Set(prev);
+      uploading ? next.add(typeValue) : next.delete(typeValue);
+      return next;
+    });
+  }
+
+  protected onViewClick(fileUrl: string): void {
+    window.open(fileUrl, '_blank');
+  }
+
+  protected onDeleteClick(doc: DocumentResponse): void {
+    this.confirmDeleteDoc.set(doc);
+  }
+
+  protected onDeleteCancel(): void {
+    if (this.docDeleting()) return;
+    this.confirmDeleteDoc.set(null);
+  }
+
+  protected onDeleteConfirm(): void {
+    const doc = this.confirmDeleteDoc();
+    if (!doc || !this.applicationId || this.docDeleting()) return;
+
+    this.docDeleting.set(true);
+    this.documentService.deleteDocument(this.applicationId, doc.id).subscribe({
+      next: () => {
+        this.toast.show('application_detail.documents.delete_success', 'success');
+        this.documentService.getApplicationDocuments(this.applicationId!).subscribe({
+          next: docs => { this.documents.set(docs); this.docDeleting.set(false); this.confirmDeleteDoc.set(null); },
+          error: () => { this.docDeleting.set(false); this.confirmDeleteDoc.set(null); },
+        });
+      },
+      error: () => {
+        this.docDeleting.set(false);
+        this.confirmDeleteDoc.set(null);
+        this.toast.show('application_detail.documents.error_delete', 'error');
       },
     });
   }

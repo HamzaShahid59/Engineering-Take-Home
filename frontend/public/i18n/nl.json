@@ -360,6 +360,33 @@
       "monthly_repayment": "Maandelijkse aflossing",
       "outstanding_balance": "Openstaand saldo",
       "additional_obligations": "Aanvullende financiële verplichtingen"
+    },
+    "documents": {
+      "loading": "Documenten laden…",
+      "load_error": "Documenten konden niet worden geladen. Vernieuw de pagina.",
+      "no_document": "Geen document geüpload",
+      "upload": "Uploaden",
+      "view": "Bekijken",
+      "delete": "Verwijderen",
+      "status": {
+        "to_be_verified": "In behandeling",
+        "verified": "Geverifieerd",
+        "rejected": "Afgewezen"
+      },
+      "uploading": "Uploaden…",
+      "upload_success": "Document succesvol geüpload.",
+      "error_upload": "Document kon niet worden geüpload. Probeer het opnieuw.",
+      "delete_success": "Document succesvol verwijderd.",
+      "error_delete": "Document kon niet worden verwijderd. Probeer het opnieuw.",
+      "delete_confirm": {
+        "title": "Document verwijderen",
+        "message": "Weet u zeker dat u dit document wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.",
+        "confirm": "Verwijderen",
+        "deleting": "Verwijderen…",
+        "cancel": "Annuleren"
+      },
+      "error_file_type": "Alleen PDF-, JPG- en PNG-bestanden zijn toegestaan.",
+      "error_file_size": "Bestandsgrootte mag niet meer dan 5 MB zijn."
     }
   },
   "application_form": {

@@ -360,6 +360,33 @@
       "monthly_repayment": "Remboursement mensuel",
       "outstanding_balance": "Solde restant dû",
       "additional_obligations": "Obligations financières supplémentaires"
+    },
+    "documents": {
+      "loading": "Chargement des documents…",
+      "load_error": "Impossible de charger les documents. Veuillez rafraîchir.",
+      "no_document": "Aucun document téléchargé",
+      "upload": "Télécharger",
+      "view": "Voir",
+      "delete": "Supprimer",
+      "status": {
+        "to_be_verified": "En attente",
+        "verified": "Vérifié",
+        "rejected": "Rejeté"
+      },
+      "uploading": "Téléchargement…",
+      "upload_success": "Document téléchargé avec succès.",
+      "error_upload": "Impossible de télécharger le document. Veuillez réessayer.",
+      "delete_success": "Document supprimé avec succès.",
+      "error_delete": "Impossible de supprimer le document. Veuillez réessayer.",
+      "delete_confirm": {
+        "title": "Supprimer le document",
+        "message": "Êtes-vous sûr de vouloir supprimer ce document ? Cette action est irréversible.",
+        "confirm": "Supprimer",
+        "deleting": "Suppression…",
+        "cancel": "Annuler"
+      },
+      "error_file_type": "Seuls les fichiers PDF, JPG et PNG sont autorisés.",
+      "error_file_size": "La taille du fichier ne doit pas dépasser 5 Mo."
     }
   },
   "application_form": {
