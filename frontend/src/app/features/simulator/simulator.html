@@ -53,7 +53,7 @@
         @for (step of steps; track step.index; let last = $last) {
           <li class="flex flex-1 flex-col items-center" [class.flex-none]="last">
             <div class="flex w-full items-center">
-              @if (state.editMode() && step.index < 7) {
+              @if (isStepClickable(step.index)) {
                 <button
                   type="button"
                   (click)="jumpToStep(step.index)"

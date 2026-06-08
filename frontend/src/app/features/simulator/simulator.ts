@@ -226,6 +226,11 @@ export class SimulatorComponent {
     });
   }
 
+  protected isStepClickable(index: number): boolean {
+    if (this.state.editMode()) return index < 7;
+    return index <= this.state.highestStepReached();
+  }
+
   protected jumpToStep(index: number): void {
     this.state.setStep(index);
   }

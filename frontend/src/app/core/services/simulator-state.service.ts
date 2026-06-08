@@ -31,6 +31,7 @@ export interface PropertyDetailsDraft {
 
 interface SimulatorDraft {
   currentStep: number;
+  highestStepReached?: number;
   projectPurpose?: string;
   borrowerType?: string;
   propertyDetails?: PropertyDetailsDraft;
@@ -59,10 +60,14 @@ export class SimulatorStateService {
   private readonly _result = signal<SimulationResult | null>(this._draft.result ?? null);
   private readonly _sliderOwnFunds = signal<number | null>(this._draft.sliderOwnFunds ?? null);
   private readonly _sliderDurationYears = signal<number | null>(this._draft.sliderDurationYears ?? null);
+  private readonly _highestStepReached = signal<number>(
+    this._draft.highestStepReached ?? (this._draft.result ? 7 : this._draft.currentStep)
+  );
   private readonly _editMode = signal<boolean>(false);
   private readonly _editSimulationId = signal<string | null>(null);
 
   readonly currentStep = this._currentStep.asReadonly();
+  readonly highestStepReached = this._highestStepReached.asReadonly();
   readonly projectPurpose = this._projectPurpose.asReadonly();
   readonly borrowerType = this._borrowerType.asReadonly();
   readonly propertyDetails = this._propertyDetails.asReadonly();
@@ -77,36 +82,45 @@ export class SimulatorStateService {
 
   setStep(step: number): void {
     this._currentStep.set(step);
+    if (step > this._highestStepReached()) {
+      this._highestStepReached.set(step);
+    }
     this.persist();
   }
 
   setProjectPurpose(value: string): void {
     this._projectPurpose.set(value);
+    this.invalidateResultIfNeeded();
     this.persist();
   }
 
   setBorrowerType(value: string): void {
     this._borrowerType.set(value);
+    this.invalidateResultIfNeeded();
     this.persist();
   }
 
   setPropertyDetails(details: PropertyDetailsDraft): void {
     this._propertyDetails.set(details);
+    this.invalidateResultIfNeeded();
     this.persist();
   }
 
   setContribution(contribution: ContributionDraft): void {
     this._contribution.set(contribution);
+    this.invalidateResultIfNeeded();
     this.persist();
   }
 
   setFinancialDetails(details: FinancialDetailsDraft): void {
     this._financialDetails.set(details);
+    this.invalidateResultIfNeeded();
     this.persist();
   }
 
   setPersonalDetails(details: PersonalDetailsDraft): void {
     this._personalDetails.set(details);
+    this.invalidateResultIfNeeded();
     this.persist();
   }
 
@@ -172,13 +186,20 @@ export class SimulatorStateService {
     this._result.set(null);
     this._sliderOwnFunds.set(null);
     this._sliderDurationYears.set(null);
+    this._highestStepReached.set(1);
     this._editMode.set(false);
     this._editSimulationId.set(null);
     localStorage.removeItem(DRAFT_KEY);
   }
 
+  private invalidateResultIfNeeded(): void {
+    if (this._result() !== null && !this._editMode() && this._highestStepReached() > 6) {
+      this._highestStepReached.set(6);
+    }
+  }
+
   private persist(): void {
-    const draft: SimulatorDraft = { currentStep: this._currentStep() };
+    const draft: SimulatorDraft = { currentStep: this._currentStep(), highestStepReached: this._highestStepReached() };
     const purpose = this._projectPurpose();
     const borrower = this._borrowerType();
     const property = this._propertyDetails();
