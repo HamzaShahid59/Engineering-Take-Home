@@ -120,7 +120,8 @@
       "own_funds_placeholder": "ex. 50000",
       "error": {
         "required": "L'apport personnel est obligatoire",
-        "min": "L'apport personnel ne peut pas être négatif"
+        "min": "L'apport personnel ne peut pas être négatif",
+        "exceeds_max": "L'apport personnel ne peut pas dépasser 90% du prix du bien (max: €{{max}})"
       }
     },
     "step5": {

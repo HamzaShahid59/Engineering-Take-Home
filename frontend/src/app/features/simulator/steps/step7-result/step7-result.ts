@@ -1,4 +1,4 @@
-import { Component, computed, inject, input, signal } from '@angular/core';
+import { Component, computed,effect, inject, input, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -24,13 +24,30 @@ export class Step7ResultComponent {
   private readonly authService = inject(AuthService);
   private readonly returnIntentService = inject(AuthReturnIntentService);
 
-  protected readonly ownFunds = signal(this.state.sliderOwnFunds() ?? this.state.contribution()!.own_funds!);
+  protected readonly maxOwnFunds = computed(() =>
+    Math.floor(this.state.propertyDetails()!.property_price! * 0.9)
+  );
+
+  protected readonly ownFunds = signal(
+    Math.min(
+      this.state.sliderOwnFunds() ?? this.state.contribution()!.own_funds!,
+      Math.floor(this.state.propertyDetails()!.property_price! * 0.9),
+    )
+  );
   protected readonly durationYears = signal(this.state.sliderDurationYears() ?? 25);
   protected readonly isRecalculating = signal(false);
 
   private readonly recalcSubject = new Subject<void>();
 
   constructor() {
+    effect(() => {
+      const max = this.maxOwnFunds();
+      if (this.ownFunds() > max) {
+        this.ownFunds.set(max);
+        this.recalcSubject.next();
+      }
+    });
+
     this.recalcSubject.pipe(
       debounceTime(500),
       switchMap(() => {

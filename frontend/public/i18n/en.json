@@ -120,7 +120,8 @@
       "own_funds_placeholder": "e.g. 50000",
       "error": {
         "required": "Own funds amount is required",
-        "min": "Own funds cannot be negative"
+        "min": "Own funds cannot be negative",
+        "exceeds_max": "Own funds cannot exceed 90% of the property price (max: €{{max}})"
       }
     },
     "step5": {

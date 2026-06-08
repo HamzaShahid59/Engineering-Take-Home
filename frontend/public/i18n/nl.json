@@ -120,7 +120,8 @@
       "own_funds_placeholder": "bijv. 50000",
       "error": {
         "required": "Eigen inbreng is verplicht",
-        "min": "Eigen inbreng kan niet negatief zijn"
+        "min": "Eigen inbreng kan niet negatief zijn",
+        "exceeds_max": "Eigen inbreng mag niet meer dan 90% van de aankoopprijs bedragen (max: €{{max}})"
       }
     },
     "step5": {

@@ -1,8 +1,17 @@
-import { Component, DestroyRef, OnInit, inject } from '@angular/core';
-import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
+import { Component, DestroyRef, OnInit, computed, effect, inject } from '@angular/core';
+import { ReactiveFormsModule, FormBuilder, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TranslatePipe } from '@ngx-translate/core';
 import { SimulatorStateService, ContributionDraft } from '../../../../core/services/simulator-state.service';
+
+function maxOwnFundsValidator(getMax: () => number | null) {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const max = getMax();
+    const value = control.value as number | null;
+    if (max === null || value === null || value === undefined) return null;
+    return value > max ? { exceeds_max: { max } } : null;
+  };
+}
 
 @Component({
   selector: 'app-step4-contribution',
@@ -14,9 +23,21 @@ export class Step4ContributionComponent implements OnInit {
   private readonly fb = inject(FormBuilder);
   private readonly destroyRef = inject(DestroyRef);
 
-  protected readonly form = this.fb.group({
-    own_funds: [null as number | null, [Validators.required, Validators.min(0)]],
+  protected readonly maxOwnFunds = computed(() => {
+    const price = this.state.propertyDetails()?.property_price ?? null;
+    return price !== null ? Math.floor(price * 0.9) : null;
   });
+
+  protected readonly form = this.fb.group({
+    own_funds: [null as number | null, [Validators.required, Validators.min(0), maxOwnFundsValidator(() => this.maxOwnFunds())]],
+  });
+
+  constructor() {
+    effect(() => {
+      this.maxOwnFunds();
+      this.form.controls.own_funds.updateValueAndValidity({ emitEvent: false });
+    });
+  }
 
   ngOnInit(): void {
     const saved = this.state.contribution();

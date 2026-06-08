@@ -107,7 +107,7 @@
           id="slider-own-funds"
           type="range"
           [min]="0"
-          [max]="propertyPrice()"
+          [max]="maxOwnFunds()"
           step="1000"
           [value]="ownFunds()"
           (input)="onOwnFundsChange($event)"

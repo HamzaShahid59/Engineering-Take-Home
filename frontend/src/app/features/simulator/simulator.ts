@@ -59,7 +59,10 @@ export class SimulatorComponent {
     }
     if (step === 4) {
       const c = this.state.contribution();
-      return c !== null && c.own_funds !== null && c.own_funds >= 0;
+      if (c === null || c.own_funds === null || c.own_funds < 0) return false;
+      const pd = this.state.propertyDetails();
+      if (pd?.property_price != null && c.own_funds > pd.property_price * 0.9) return false;
+      return true;
     }
     if (step === 5) {
       const fd = this.state.financialDetails();
